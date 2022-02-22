@@ -33,7 +33,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 
-router.get('/aboutus', checkLogin, async function (req, res, next) {
+router.get('/aboutus', async function (req, res, next) {
 
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
