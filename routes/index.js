@@ -46,5 +46,11 @@ router.get('/setting', async function(req, res, next) {
     });
 });
 
+router.get('/home', async function(req, res, next) {
+  
+    res.render('admin/home/home');
+      
+ });
+
 
 module.exports = router;
