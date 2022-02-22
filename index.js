@@ -95,7 +95,7 @@ app.get('/setting', async function(req, res, next) {
    });
 });
 
-app.get('/',  async function(req, res, next) {
+app.get('/home',  async function(req, res, next) {
   
   await MongoClient.connect(url, function(err, db) {
     if (err) throw err;
