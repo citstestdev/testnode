@@ -33,7 +33,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 
-
+  
+app.listen(process.env.PORT || 5000)
 
 app.use('/', indexRouter);
 
@@ -94,15 +95,11 @@ app.get('/setting', async function(req, res, next) {
    });
 });
 
-app.get('/home', async function(req, res, next) {
+app.get('/home', async function(req, res) {
  
    res.render('admin/home/home');
      
 });
-
-
-  
-  app.listen(process.env.PORT || 5000)
 
 
 
