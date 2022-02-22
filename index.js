@@ -95,11 +95,47 @@ app.get('/setting', async function(req, res, next) {
    });
 });
 
-app.get('/home', async function(req, res) {
- 
-   res.render('admin/home/home');
-     
+app.get('/',  async function(req, res, next) {
+  
+  await MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("myFirstDatabase");
+    
+    var homepage = [];
+     dbo.collection('homes').findOne(function (err, result) {
+         homepage = result;
+      });
+      
+    var headermenu_dynamic= [];  
+     dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "1"}]}]}).sort({'index':1}).toArray(function (err, result) {
+        // console.log(result);
+        if (err) {return};
+        console.log(err);
+
+         headermenu_dynamic = result;
+      });
+
+    var setting_dynamic = [];  
+     dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "2"}]}]}).sort({'index':1}).toArray(function (err, result) {
+        // console.log(result);
+        if (err) {return};
+        console.log(err);
+
+         setting_dynamic = result;
+      });
+
+
+     dbo.collection('option').findOne(function (err, result) {
+        // console.log(result);
+        if (err) {return};
+        console.log(err);
+  
+           res.render('admin/home/home', { title:"home", headermenu:headermenu_dynamic, settingmenu:setting_dynamic,opt:result,pagedata:homepage, 'msg':''});
+      });
+  });
+
 });
+
 
 
 
