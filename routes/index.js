@@ -4,14 +4,17 @@ var router = express.Router();
 // var checkLogin = require('../../middleware/check');
   
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017?ssl=true";
+// var url = "mongodb://localhost:27017?ssl=true";
+
+var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+
 var { ObjectID } = require('mongodb');
 
 router.get('/setting', async function(req, res, next) {
    // res.send("Fds");
     await MongoClient.connect(url, function(err, db) {
       if (err) throw err;
-      var dbo = db.db("conative");
+      var dbo = db.db("myFirstDatabase");
 
       var headermenu_dynamic = [];  
        dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "1"}]}]}).sort({'index':1}).toArray(function (err, result) {
