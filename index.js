@@ -1,5 +1,5 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
 
 app.get('/', function(req, res) {
 
@@ -7,4 +7,4 @@ app.get('/', function(req, res) {
   });
   
 
-  app.listen(process.env.PORT || 5000);
+  app.listen(process.env.PORT || 5000)
