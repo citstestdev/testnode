@@ -36,11 +36,65 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/', indexRouter);
 
 
+app.get('/', function(req, res) {
+
+  // res.send('Working!')
+  res.send('wellcome conative!');
+})
+
 app.get('/hello', function(req, res) {
 
     // res.send('Working!')
     res.send('working!');
   })
+
+
+
+
+
+app.get('/setting', async function(req, res, next) {
+  // res.send("Fds");
+   await MongoClient.connect(url, function(err, db) {
+     if (err) throw err;
+     var dbo = db.db("myFirstDatabase");
+
+     var headermenu_dynamic = [];  
+      dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "1"}]}]}).sort({'index':1}).toArray(function (err, result) {
+         // console.log(result);
+         if (err) {return};
+         console.log(err);
+          headermenu_dynamic = result;
+       });
+
+     var setting_dynamic = [];  
+      dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "2"}]}]}).sort({'index':1}).toArray(function (err, result) {
+         // console.log(result);
+         if (err) {return};
+         console.log(err);
+
+          setting_dynamic = result;
+     });
+
+      dbo.collection('option').findOne(function (err, result) {
+         // console.log(result);
+         if (err) {return};
+         if(!result){
+          res.send("Page Not Found");
+          console.log(err);
+         }else{ 
+          res.render('admin/home/setting', {title:'Setting', opt:result,headermenu:headermenu_dynamic,settingmenu:setting_dynamic,'msg':''});
+        }
+       });
+   });
+});
+
+app.get('/home', async function(req, res, next) {
+ 
+   res.render('admin/home/home');
+     
+});
+
+
   
   app.listen(process.env.PORT || 5000)
 
