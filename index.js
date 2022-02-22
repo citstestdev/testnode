@@ -1,12 +1,14 @@
 const express = require('express')
 const app = express()
 var path = require('path');
-const helmet = require("helmet");
-const fs = require("fs"); 
+const helmet = require("helmet")
+const fs = require("fs")
 const  ejs = require('ejs')
-var expressLayout = require('express-ejs-layouts');
+var expressLayout = require('express-ejs-layouts')
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser')
+const cors = require('cors')
+var axios = require('axios')
 
 
 
@@ -49,8 +51,12 @@ app.get('/hello', function(req, res) {
   })
 
 
+var MongoClient = require('mongodb').MongoClient;
+// var url = "mongodb://localhost:27017?ssl=true";
 
+var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
+var { ObjectID } = require('mongodb');
 
 app.get('/setting', async function(req, res, next) {
   // res.send("Fds");
