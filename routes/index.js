@@ -4,7 +4,7 @@ var router = express.Router();
 // var checkLogin = require('../../middleware/check');
   
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/";
+var url = "mongodb://localhost:27017?ssl=true";
 var { ObjectID } = require('mongodb');
 
 router.get('/setting', async function(req, res, next) {
