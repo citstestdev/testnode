@@ -9,10 +9,12 @@ const mongoose = require('mongoose');
 var bodyParser = require('body-parser')
 const cors = require('cors')
 var axios = require('axios')
+var multer  =   require('multer');
 
 
 
 var indexRouter = require('./routes/index');
+var AboutFirstRoutes = require('./routes/aboutus/AboutFirstRoutes');
 
 
 
@@ -32,12 +34,27 @@ app.use(expressLayout);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use('/uploads', express.static(__dirname +'/uploads'));
+ var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+      cb(null, new Date().toISOString()+file.originalname)
+    }
+  })
+   
+  var upload = multer({ storage: storage })
+
+
+
+
 
   
 app.listen(process.env.PORT || 5000)
 
 app.use('/', indexRouter);
-
+app.use('/', AboutFirstRoutes);
 
 app.get('/', function(req, res) {
 
@@ -135,10 +152,6 @@ app.get('/home',  async function(req, res, next) {
   });
 
 });
-
-
-
-
 
 
 module.exports = app;
