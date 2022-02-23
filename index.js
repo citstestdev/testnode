@@ -1,3 +1,4 @@
+var createError = require('http-errors')
 const express = require('express')
 const app = express()
 var path = require('path');
@@ -5,34 +6,80 @@ const helmet = require("helmet")
 const fs = require("fs")
 const  ejs = require('ejs')
 var expressLayout = require('express-ejs-layouts')
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 var bodyParser = require('body-parser')
+const flash = require('connect-flash')
+var cookieParser = require('cookie-parser')
+const session = require('express-session')
+var jwt = require('jsonwebtoken')
+var checkLogin=require('./middleware/check')
+const bcrypt = require("bcrypt");
 const cors = require('cors')
 var axios = require('axios')
+const async = require('async')
 var multer  =   require('multer');
+var logger = require('morgan');
+const mongodb = require('mongodb')
+const { check, validationResult } = require('express-validator');
+
+const register = require('./models/Registermodel');
+
+
+// run this port 
+app.listen(process.env.PORT || 5000)
 
 
 
-var indexRouter = require('./routes/index');
+var SettingRouter = require('./routes/common/setting');
 var AboutFirstRoutes = require('./routes/aboutus/AboutFirstRoutes');
+var homeRoutes = require('./routes/admin/homeRoutes');
 
-
-
+app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(cookieParser());
 app.use(helmet());
 
 
-// const urlencodedParser = bodyParser.urlencoded({ extended: false })
-// app.use(bodyParser.json());
+
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(bodyParser.json());
 
 
 
 app.use(express.static('public'));
 app.use(expressLayout);
 
+app.use(session({
+  secret: 'secret token',
+  resave: false,
+  saveUninitialized: true,
+  unset: 'destroy',
+  name: 'session cookie name',
+  genid: (req) => {
+      // Returns a random string to be used as a session ID
+  }
+}));
+
+
+app.use(flash());
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept,Authorization"
+  );
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE,OPTIONS');
+  next();
+});
+
+
 
 app.use('/uploads', express.static(__dirname +'/uploads'));
  var storage = multer.diskStorage({
@@ -51,107 +98,360 @@ app.use('/uploads', express.static(__dirname +'/uploads'));
 
 
   
-app.listen(process.env.PORT || 5000)
+// app.listen(process.env.PORT || 5000)
 
-app.use('/', indexRouter);
+app.use('/', SettingRouter);
 app.use('/', AboutFirstRoutes);
+app.use('/',homeRoutes);
 
-app.get('/', function(req, res) {
+// app.get('/', function(req, res) {
 
-  // res.send('Working!')
-  res.send('wellcome conative!');
-})
+//   // res.send('Working!')
+//   res.send('wellcome conative!');
+// })
+
+// app.get('/hello', function(req, res) {
+
+//     // res.send('Working!')
+//     res.send('working!');
+//   })
+
 
 app.get('/hello', function(req, res) {
 
     // res.send('Working!')
-    res.send('working!');
+    res.render('admin/home/test');
   })
 
 
-var MongoClient = require('mongodb').MongoClient;
-// var url = "mongodb://localhost:27017?ssl=true";
-
-var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
-
-var { ObjectID } = require('mongodb');
-
-app.get('/setting', async function(req, res, next) {
-  // res.send("Fds");
-   await MongoClient.connect(url, function(err, db) {
-     if (err) throw err;
-     var dbo = db.db("conative");
-
-     var headermenu_dynamic = [];  
-      dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "1"}]}]}).sort({'index':1}).toArray(function (err, result) {
-         // console.log(result);
-         if (err) {return};
-         console.log(err);
-          headermenu_dynamic = result;
-       });
-
-     var setting_dynamic = [];  
-      dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "2"}]}]}).sort({'index':1}).toArray(function (err, result) {
-         // console.log(result);
-         if (err) {return};
-         console.log(err);
-
-          setting_dynamic = result;
-     });
-
-      dbo.collection('option').findOne(function (err, result) {
-         // console.log(result);
-         if (err) {return};
-         if(!result){
-          res.send("Page Not Found");
-          console.log(err);
-         }else{ 
-          res.render('admin/home/setting', {title:'Setting', opt:result,headermenu:headermenu_dynamic,settingmenu:setting_dynamic,'msg':''});
-        }
-       });
-   });
-});
-
-app.get('/home',  async function(req, res, next) {
+app.post('/addtest', function(req, res, next) {
+      
+  console.log("bodytype",req.body)
   
+  })
+
+
+
+
+
+// mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority`);  
+// var MongoClient = require('mongodb').MongoClient;
+// // var url = "mongodb://localhost:27017?ssl=true";
+// var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+// var { ObjectID } = require('mongodb');
+
+
+try {
+  mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority`);  
+  var MongoClient = require('mongodb').MongoClient;
+  // var url = "mongodb://localhost:27017?ssl=true";
+  var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+  var { ObjectID } = require('mongodb');
+  console.log("connected to database.");
+} catch (error) {
+  console.log("could not connect to database", error);
+}
+
+
+app.get('/setting',checkLogin, async function(req, res, next) {
+
   await MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
-    
-    var homepage = [];
-     dbo.collection('homes').findOne(function (err, result) {
-         homepage = result;
-      });
-      
-    var headermenu_dynamic= [];  
-     dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "1"}]}]}).sort({'index':1}).toArray(function (err, result) {
-        // console.log(result);
-        if (err) {return};
-        console.log(err);
 
+    var headermenu_dynamic = [];  
+     dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "1"}]}]}).sort({'index':1}).toArray(function (err, result) {
+        if (err) {return};
+      //   console.log(err);
          headermenu_dynamic = result;
       });
 
     var setting_dynamic = [];  
      dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "2"}]}]}).sort({'index':1}).toArray(function (err, result) {
-        // console.log(result);
+
         if (err) {return};
-        console.log(err);
+      //   console.log(err);
 
          setting_dynamic = result;
-      });
-
+    });
 
      dbo.collection('option').findOne(function (err, result) {
-        // console.log(result);
         if (err) {return};
-        console.log(err);
-  
-           res.render('admin/home/home', { title:"home", headermenu:headermenu_dynamic, settingmenu:setting_dynamic,opt:result,pagedata:homepage, 'msg':''});
+        if(!result){
+         res.send("Page Not Found");
+         console.log(err);
+        }else{ 
+         res.render('admin/home/setting', {title:'Setting', opt:result,headermenu:headermenu_dynamic,settingmenu:setting_dynamic,'msg':"ds"});
+       }
       });
   });
+});
+
+
+
+///      ==================== login     ========================
+
+app.post('/checklogin', async function(req, res, next) {
+  
+
+   const { Loginmodel, validate } = require("./models/Loginmodel");
+  
+    await MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("conative");
+ 
+       var username=req.body.email;
+       dbo.collection('users').findOne({"email":req.body.email,"password":req.body.password},function (err, result) {
+
+        if(result){
+      
+           var user = {
+            _id:result._id,
+            email:result.email
+           }
+
+            var token = jwt.sign(user, 'seceret');
+                  // console.log(token);
+            axios.defaults.headers.common['Authorization']=`Bearer ${token}`;
+          }
+     
+        if(jwt.verify(token, 'seceret')){
+         var decode= jwt.verify(token, 'seceret');
+               res.cookie(`token`,token, { maxAge: 3000, httpOnly: true });
+
+         sessions.tokenseesion = token;
+        //  console.log(req.sessions);
+           res.redirect('/portfolio');
+        }else{
+          res.status(401).json({
+              error:"Invalid Token"
+          });
+        }
+
+        });
+});
 
 });
+
+
+// app.get('/home',  async function(req, res, next) {
+  
+//   await MongoClient.connect(url, function(err, db) {
+//     if (err) throw err;
+//     var dbo = db.db("conative");
+    
+//     var homepage = [];
+//      dbo.collection('homes').findOne(function (err, result) {
+//          homepage = result;
+//       });
+      
+//     var headermenu_dynamic= [];  
+//      dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "1"}]}]}).sort({'index':1}).toArray(function (err, result) {
+//         if (err) {return}
+//         console.log(err);
+
+//          headermenu_dynamic = result;
+//       });
+
+//     var setting_dynamic = [];  
+//      dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "2"}]}]}).sort({'index':1}).toArray(function (err, result) {
+//         if (err) {return}
+//         console.log(err);
+
+//          setting_dynamic = result;
+//       });
+
+
+//      dbo.collection('option').findOne(function (err, result) {
+//         if (err) {return}
+//         console.log(err);
+  
+//            res.render('admin/home/home', { title:"home", headermenu:headermenu_dynamic, settingmenu:setting_dynamic,opt:result,pagedata:homepage, 'msg':''});
+//       });
+//   });
+
+// });
+
+
+
+///      ==================== login part  ========================
+
+
+app.get("/register", async function(req, res, next){
+  
+  let token = req.cookies.token ? true : false;
+
+   if(token){
+      return res.redirect("/home");
+   }
+
+  return res.render("common/register");
+});
+
+app.get("/admin", (req, res) => {
+
+  let bad_auth = req.query.msg ? true : false;
+  let token = req.cookies.token ? true : false;
+   
+   if(token){
+      return res.redirect("/home");
+   }
+  // if there exists, send the error.
+  if (bad_auth) {
+    return res.render("common/login_1", {
+      error: "Invalid username or password",
+    });
+  } else {
+    // else just render the login
+    return res.render("common/login_1",{opt:[]});
+  }
+});
+
+app.get("/home", checkLogin, (req, res) => {
+  let username = req.cookies.username;
+  let token = req.cookies.token ? true : false;
+
+   if(!token){
+      return res.redirect("/admin");
+   }
+  // render welcome page
+   return res.redirect("/home");
+});
+
+
+app.post("/process_login", async (req, res) => {
+  // get the data
+  let { username, password } = req.body;
+  
+        await MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("conative");
+            
+             // var username=username;
+        dbo.collection('users').findOne({"email":username}, async function (err, result) {     
+       // basic check
+
+       if(!result){
+                return res.redirect("/admin?msg=fail");
+       }else{
+         
+            const validPassword = await bcrypt.compare(req.body.password, result.password);
+            if(validPassword && username === result.email){
+               var user = {
+                    _id:result._id,
+                    email:result.email
+                   }
+              session.massage = "Login successfully";
+              var token = jwt.sign(user, 'seceret');
+              res.cookie("token", token);
+              res.cookie("username", username);
+              // redirect
+              return res.redirect("/home");
+            }else{
+               return res.redirect("/admin?msg=fail");
+            }
+        }
+
+    });
+
+ });
+
+});
+
+
+app.post('/adduser', urlencodedParser, [
+    check('username','Please enter username')
+        .exists()
+        .trim()
+        .isLength({ min: 3 }),
+    check('email','Please enter email')
+        .exists()
+        .trim()
+        .isEmail().withMessage('Please enter valid email')
+        .normalizeEmail()
+        .custom((value, {req}) => {
+            return new Promise((resolve, reject) => {
+              register.findOne({email:req.body.email}, function(err, user){
+                if(err) {
+                  console.log("ser");
+                  reject(new Error('Server Error'))
+                }
+                if(Boolean(user)) {
+                  // console.log("mmm");
+                  // $('#username').val("ddd");
+                  reject(new Error('E-mail already in use'))
+                }
+                resolve(true)
+              });
+            });
+          }),
+    check('password','Please enter password')
+        .exists()
+        .trim()
+        .isLength({min:5}),
+    check('confirmPassword')
+    .trim()
+    .isLength({min:5})
+    .withMessage('Password must be minlength 5 characters')
+    .custom(async (confirmPassword, {req}) => {
+      const password = req.body.password
+      if(password !== confirmPassword){
+        throw new Error('Passwords must be same')
+      }
+    }),
+], async (req, res)=> {
+    // console.log("yesygdfgfdg");
+    const errors = validationResult(req)
+    if(!errors.isEmpty()) {
+      // console.log("yesy");
+        // return res.status(422).jsonp(errors.array())
+        const alert = errors.array();
+        res.render('common/register', {
+            alert,
+        })
+
+    }else{
+     
+      const salt = await bcrypt.genSalt(10);
+  // console.log("nooo");
+     const hashpassword = await bcrypt.hash(req.body.password, salt);
+
+      var myobj = new register({ 
+        username: req.body.username, 
+        email: req.body.email,
+        password : hashpassword
+      });
+      myobj.save();
+      return res.redirect('/admin');
+    }
+    // setTimeout(function(){ return res.redirect("/welcome"); }, 5000);
+})
+
+
+app.get("/logout", (req, res) => {
+  // clear the cookie
+  res.clearCookie("token");
+  res.clearCookie("username");
+   req.flash('success', `You've been successfully redirected to the Message route!`)
+    // res.redirect('/message')
+  // redirect to login
+  return res.redirect("/admin");
+});
+
+
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  console.log("hello",req.originalUrl);
+  if(req.originalUrl === "/adduser"){
+    res.redirect("/register");
+  }else{
+    next(createError(404));
+  }
+});
+
+
 
 
 module.exports = app;

@@ -3,14 +3,14 @@
         padding: 10px;
     }
     </style>
-    <%- include('../../header') %>
+    <%- include('../../common/header') %>
     <section class="center-wr" style="margin-top:77px;">
     <div class="row page-wraper">
       <div class="col-md-12 full-content-wraper">
         <div class="title-header"><h1 class="cmn-heading"><%= title.replace(/\w/, c => c.toUpperCase()) %></h1></div>
              <% if(msg) { %> <div style="background-color:#cfe7c0"><span class="cmn-message"><%= msg %></span></div><% } %>
         <div class="col-md-2 sidebar-menu">
-        <%- include('../../sidebar_common') %>
+        <%- include('../../common/sidebar_common') %>
         </div>
          <div class="col-md-5 content-wraper"> 
     

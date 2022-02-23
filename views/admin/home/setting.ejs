@@ -3,13 +3,13 @@
 <div class="row page-wraper">
   <div class="col-md-12 full-content-wraper">
     <div class="title-header"><h1 class="cmn-heading"><%= title.replace(/\w/, c => c.toUpperCase()) %></h1></div>
-    <% if(msg) { %> <div style="background-color:#cfe7c0"><span class="cmn-message"><%= msg %></span></div><% } %>
+    <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>
     <div class="col-md-2 sidebar-menu">
     <%- include('../../common/sidebar_common') %>
     </div>
     <div class="col-md-6 content-wraper"> 
 
-    <form method="POST" action="/setting" enctype="multipart/form-data">
+    <form method="POST" action="/addsetting" enctype="multipart/form-data">
         <label>Name:<input type="text" name="clientname" <% if(opt.name) { %> value="<%= opt.name %>" <% } %> required></label>
         <br>
         <label>Email:<input type="text" name="clientemail" <% if(opt.email) { %> value="<%= opt.email %>" <% } %> ></label>
