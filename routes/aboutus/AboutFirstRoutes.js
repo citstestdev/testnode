@@ -6,7 +6,7 @@ var multer = require('multer');
 // var serviceModelData = require('../models/ServiceModel'); 
 var MongoClient = require('mongodb').MongoClient;
 // var url = "mongodb://localhost:27017/";
-var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 var { ObjectID } = require('mongodb');
 
 router.use(function(req, res, next) {
@@ -37,7 +37,7 @@ router.get('/aboutus', async function (req, res, next) {
 
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
-    var dbo = db.db("myFirstDatabase");
+    var dbo = db.db("conative");
 
     var aboutarr = [];
     dbo.collection('abouts').findOne(function (err, result1) {
@@ -78,7 +78,7 @@ router.get('/api/about-us',  function (req, res, next) {
 
    MongoClient.connect(url, function (err, db) {
     if (err) throw err;
-    var dbo = db.db("myFirstDatabase");
+    var dbo = db.db("conative");
 
     dbo.collection('abouts').findOne(function (err, result) {
       console.log(result);
@@ -121,7 +121,7 @@ router.post('/aboutus', upload.single('userPhoto'), async function(req, res, nex
   
           await MongoClient.connect(url, function (err, db) {
           if (err) throw err;
-          var dbo = db.db("myFirstDatabase");
+          var dbo = db.db("conative");
           dbo.collection('abouts').findOne(function (err, result) {
             console.log(result);
             if (err) { return };
@@ -148,7 +148,7 @@ router.post('/aboutus', upload.single('userPhoto'), async function(req, res, nex
 
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
-    var dbo = db.db("myFirstDatabase");
+    var dbo = db.db("conative");
 
     var aboutarr = [];
     dbo.collection('abouts').findOne(function (err, result1) {

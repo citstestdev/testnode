@@ -6,7 +6,7 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 // var url = "mongodb://localhost:27017?ssl=true";
 
-var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 
 var { ObjectID } = require('mongodb');
 

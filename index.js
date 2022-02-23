@@ -72,7 +72,7 @@ app.get('/hello', function(req, res) {
 var MongoClient = require('mongodb').MongoClient;
 // var url = "mongodb://localhost:27017?ssl=true";
 
-var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 
 var { ObjectID } = require('mongodb');
 
@@ -80,7 +80,7 @@ app.get('/setting', async function(req, res, next) {
   // res.send("Fds");
    await MongoClient.connect(url, function(err, db) {
      if (err) throw err;
-     var dbo = db.db("myFirstDatabase");
+     var dbo = db.db("conative");
 
      var headermenu_dynamic = [];  
       dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "1"}]}]}).sort({'index':1}).toArray(function (err, result) {
@@ -116,7 +116,7 @@ app.get('/home',  async function(req, res, next) {
   
   await MongoClient.connect(url, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("myFirstDatabase");
+    var dbo = db.db("conative");
     
     var homepage = [];
      dbo.collection('homes').findOne(function (err, result) {
