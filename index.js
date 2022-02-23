@@ -33,13 +33,15 @@ app.listen(process.env.PORT || 5000)
 var SettingRouter = require('./routes/common/setting');
 var AboutFirstRoutes = require('./routes/aboutus/AboutFirstRoutes');
 var homeRoutes = require('./routes/admin/homeRoutes');
+var expertiseRoutes = require('./routes/admin/expertiseRoutes')
+
 
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser());
 app.use(helmet());
-
+app.use(express.json()) 
 
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -103,6 +105,7 @@ app.use('/uploads', express.static(__dirname +'/uploads'));
 app.use('/', SettingRouter);
 app.use('/', AboutFirstRoutes);
 app.use('/',homeRoutes);
+app.use('/',expertiseRoutes);
 
 // app.get('/', function(req, res) {
 
@@ -181,7 +184,7 @@ app.get('/setting',checkLogin, async function(req, res, next) {
          res.send("Page Not Found");
          console.log(err);
         }else{ 
-         res.render('admin/home/setting', {title:'Setting', opt:result,headermenu:headermenu_dynamic,settingmenu:setting_dynamic,'msg':"ds"});
+         res.render('admin/home/setting', {title:'Setting', opt:result,headermenu:headermenu_dynamic,settingmenu:setting_dynamic,'msg':""});
        }
       });
   });
@@ -443,7 +446,7 @@ app.get("/logout", (req, res) => {
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-  console.log("hello",req.originalUrl);
+  // console.log("hello",req.originalUrl);
   if(req.originalUrl === "/adduser"){
     res.redirect("/register");
   }else{

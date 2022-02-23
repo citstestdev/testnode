@@ -114,12 +114,15 @@ router.get('/home', checkLogin,  function(req, res, next) {
           console.log(err);
           
            res.render('admin/home/home', { title:"home", headermenu:headermenu_dynamic,settingmenu:setting_dynamic, opt:result,pagedata:homepage,  'msg':session.massage});
+           setTimeout(function() {
+            session.massage = '';
+         }, 5000);
         });
     });
 
-        setTimeout(function() {
-           session.massage = '';
-        }, 2000);
+        // setTimeout(function() {
+        //    session.massage = '';
+        // }, 2000);
     // res.render('setting', {opt:result});
 });
 
