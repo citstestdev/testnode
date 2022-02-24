@@ -34,6 +34,7 @@ var SettingRouter = require('./routes/common/setting');
 var AboutFirstRoutes = require('./routes/aboutus/AboutFirstRoutes');
 var homeRoutes = require('./routes/admin/homeRoutes');
 var expertiseRoutes = require('./routes/admin/expertiseRoutes')
+var ourProjectsRouters = require('./routes/admin/ourProjectsRouters')
 
 
 app.use(logger('dev'));
@@ -106,6 +107,7 @@ app.use('/', SettingRouter);
 app.use('/', AboutFirstRoutes);
 app.use('/',homeRoutes);
 app.use('/',expertiseRoutes);
+app.use('/',ourProjectsRouters);
 
 // app.get('/', function(req, res) {
 
@@ -134,10 +136,7 @@ app.post('/addtest', function(req, res, next) {
   })
 
 
-
-
-
-// mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority`);  
+// mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority`)
 // var MongoClient = require('mongodb').MongoClient;
 // // var url = "mongodb://localhost:27017?ssl=true";
 // var url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";

@@ -1452,6 +1452,7 @@ figure.india:hover figcaption, figure.canada:hover figcaption,figure.australia:h
 {
     border:none !important;
     margin-left: 3%;
+    border-radius: 8px;
 }
 .cmn-heading
 {
