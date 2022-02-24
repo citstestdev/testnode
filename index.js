@@ -29,7 +29,7 @@ const register = require('./models/Registermodel');
 app.listen(process.env.PORT || 5000)
 
 
-
+// var SettingRouter = require('./')
 var SettingRouter = require('./routes/common/setting')
 var menuRoutes = require('./routes/common/menuRoutes')
 var socialRoutes = require('./routes/common/socialRoutes')
@@ -102,9 +102,6 @@ app.use('/uploads', express.static(__dirname +'/uploads'));
   })
    
   var upload = multer({ storage: storage })
-
-
-
 
 
   
@@ -292,9 +289,9 @@ app.post('/checklogin', async function(req, res, next) {
 
 ///      ==================== login part  ========================
 
-app.get("/", async function(req, res, next){
-  return res.redirect("/admin");
-});
+// app.get("/", async function(req, res, next){
+//   return res.redirect("/admin");
+// });
 
 app.get("/register", async function(req, res, next){
   
@@ -360,7 +357,7 @@ app.post("/process_login", async (req, res) => {
                     _id:result._id,
                     email:result.email
                    }
-              session.massage = "Login successfully";
+              // session.massage = "Login successfully";
               var token = jwt.sign(user, 'seceret');
               res.cookie("token", token);
               res.cookie("username", username);
