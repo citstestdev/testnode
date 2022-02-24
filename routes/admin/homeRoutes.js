@@ -15,8 +15,6 @@ const url = "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative
 const { ObjectID } = require('mongodb');
 
 
-
-
 router.use('/uploads', express.static(__dirname +'/uploads'));
  var storage = multer.diskStorage({
     destination: function (req, file, cb) {

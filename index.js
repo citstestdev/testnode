@@ -30,11 +30,18 @@ app.listen(process.env.PORT || 5000)
 
 
 
-var SettingRouter = require('./routes/common/setting');
-var AboutFirstRoutes = require('./routes/aboutus/AboutFirstRoutes');
+var SettingRouter = require('./routes/common/setting')
+var menuRoutes = require('./routes/common/menuRoutes')
+var socialRoutes = require('./routes/common/socialRoutes')
+var AboutFirstRoutes = require('./routes/aboutus/AboutFirstRoutes')
 var homeRoutes = require('./routes/admin/homeRoutes');
 var expertiseRoutes = require('./routes/admin/expertiseRoutes')
 var ourProjectsRouters = require('./routes/admin/ourProjectsRouters')
+var digitallegacyRoutes = require('./routes/admin/digitallegacyRoutes')
+var ourProcessRouters = require('./routes/admin/ourProcessRouters')
+var clientProject = require('./routes/admin/clientProjectRoutes')
+var startProjectRoutes = require('./routes/admin/startProjectRoutes');
+
 
 
 app.use(logger('dev'));
@@ -104,10 +111,17 @@ app.use('/uploads', express.static(__dirname +'/uploads'));
 // app.listen(process.env.PORT || 5000)
 
 app.use('/', SettingRouter);
+app.use('/',menuRoutes);
+app.use('/',socialRoutes);
 app.use('/', AboutFirstRoutes);
 app.use('/',homeRoutes);
 app.use('/',expertiseRoutes);
 app.use('/',ourProjectsRouters);
+app.use('/',digitallegacyRoutes);
+app.use('/',ourProcessRouters);
+app.use('/',clientProject);
+app.use('/',startProjectRoutes);
+
 
 // app.get('/', function(req, res) {
 
@@ -122,18 +136,18 @@ app.use('/',ourProjectsRouters);
 //   })
 
 
-app.get('/hello', function(req, res) {
+// app.get('/hello', function(req, res) {
 
-    // res.send('Working!')
-    res.render('admin/home/test');
-  })
+//     // res.send('Working!')
+//     res.render('admin/home/test');
+//   })
 
 
-app.post('/addtest', function(req, res, next) {
+// app.post('/addtest', function(req, res, next) {
       
-  console.log("bodytype",req.body)
+//   console.log("bodytype",req.body)
   
-  })
+//   })
 
 
 // mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority`)
@@ -278,6 +292,9 @@ app.post('/checklogin', async function(req, res, next) {
 
 ///      ==================== login part  ========================
 
+app.get("/", async function(req, res, next){
+  return res.redirect("/admin");
+});
 
 app.get("/register", async function(req, res, next){
   

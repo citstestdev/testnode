@@ -8,7 +8,7 @@
     <div class="row page-wraper">
       <div class="col-md-12 full-content-wraper">
         <div class="title-header"><h1 class="cmn-heading"><%= title.replace(/\w/, c => c.toUpperCase()) %></h1></div>
-             <% if(msg) { %> <div style="background-color:#cfe7c0"><span class="cmn-message"><%= msg %></span></div><% } %>
+        <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>
         <div class="col-md-2 sidebar-menu">
         <%- include('../../common/sidebar_common') %>
         </div>
@@ -18,7 +18,7 @@
               <input type="hidden" name="id" value="<% if (pagedata) { %><%= pagedata._id %> <% } %>">
               <label>Name:<input type="text" name="title"  value="<% if (pagedata) { %><%= pagedata.title %> <% } %>" required></label>
               <br>
-              <label>Description:<br><textarea name="description"><% if (pagedata) { %><%= pagedata.description %> <% } %></textarea></label>
+              <label>Description:<br><textarea id="editor1" name="description"><% if (pagedata) { %><%= pagedata.description %> <% } %></textarea></label>
               <br>
                <input type="hidden" name="oldimage"  value="<% if (pagedata) { %><%= pagedata.image %> <% } %>" >
               <input type="file" name="userPhoto" id="" placeholder=""  style="border:none;width:100%;">
