@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
+var session = require('express-session');
 // var checkLogin=require('../../middleware/check');
 // var alert = require('alert');
 // var serviceModelData = require('../models/ServiceModel'); 
@@ -68,7 +69,11 @@ router.get('/aboutus', async function (req, res, next) {
       if (err) { return };
       console.log(err);
       // res.render('header')
-      res.render('admin/aboutus/about_us', { title: "About Us", headermenu:headermenu_dynamic,settingmenu:setting_dynamic, pagedata: aboutarr, opt: result, 'msg': '' });
+      res.render('admin/aboutus/about_us', { title: "About Us", headermenu:headermenu_dynamic,settingmenu:setting_dynamic, pagedata: aboutarr, opt: result, 'msg': session.message });
+       
+      setTimeout(function() {
+        session.massage = '';
+     }, 4000);
     });
   });
 });
@@ -115,7 +120,7 @@ router.post('/aboutus', upload.single('userPhoto'), async function(req, res, nex
       });
       await myobj.save();
      
-      message = 'About us add successfully';
+      session.message = 'About us added successfully';
          
     }else{
   
@@ -142,7 +147,7 @@ router.post('/aboutus', upload.single('userPhoto'), async function(req, res, nex
             });
           });
 
-          message = 'About us updated successfully';
+          session.message = 'About us updated successfully';
 
     }
 
@@ -178,7 +183,7 @@ router.post('/aboutus', upload.single('userPhoto'), async function(req, res, nex
       if (err) { return };
       console.log(err);
       // res.render('header')
-      res.render('admin/aboutus/about_us', { title: "About Us",headermenu:headermenu_dynamic,settingmenu:setting_dynamic, pagedata: aboutarr, opt: result, 'msg': message });
+      res.render('admin/aboutus/about_us', { title: "About Us",headermenu:headermenu_dynamic,settingmenu:setting_dynamic, pagedata: aboutarr, opt: result, 'msg': session.message });
     });
   }); 
 });

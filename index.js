@@ -33,7 +33,10 @@ app.listen(process.env.PORT || 5000)
 var SettingRouter = require('./routes/common/setting')
 var menuRoutes = require('./routes/common/menuRoutes')
 var socialRoutes = require('./routes/common/socialRoutes')
+var contactRoutes = require('./routes/common/contactRoutes')
 var AboutFirstRoutes = require('./routes/aboutus/AboutFirstRoutes')
+
+// ============== adminRouter =========================================
 var homeRoutes = require('./routes/admin/homeRoutes');
 var expertiseRoutes = require('./routes/admin/expertiseRoutes')
 var ourProjectsRouters = require('./routes/admin/ourProjectsRouters')
@@ -41,6 +44,10 @@ var digitallegacyRoutes = require('./routes/admin/digitallegacyRoutes')
 var ourProcessRouters = require('./routes/admin/ourProcessRouters')
 var clientProject = require('./routes/admin/clientProjectRoutes')
 var startProjectRoutes = require('./routes/admin/startProjectRoutes');
+
+// ======================= PortfolioRoutes =========================
+var PortfolioRoutes =  require('./routes/portfolio/PortfolioRoutes')
+
 
 
 
@@ -110,6 +117,7 @@ app.use('/uploads', express.static(__dirname +'/uploads'));
 app.use('/', SettingRouter);
 app.use('/',menuRoutes);
 app.use('/',socialRoutes);
+app.use('/',contactRoutes);
 app.use('/', AboutFirstRoutes);
 app.use('/',homeRoutes);
 app.use('/',expertiseRoutes);
@@ -118,6 +126,8 @@ app.use('/',digitallegacyRoutes);
 app.use('/',ourProcessRouters);
 app.use('/',clientProject);
 app.use('/',startProjectRoutes);
+
+app.use('/',PortfolioRoutes);
 
 
 // app.get('/', function(req, res) {
@@ -326,7 +336,10 @@ app.get("/admin", (req, res) => {
 app.get("/home", checkLogin, (req, res) => {
   let username = req.cookies.username;
   let token = req.cookies.token ? true : false;
-
+    setTimeout(function() {
+      session.message = null;
+      session.massage = '';
+  }, 4000);
    if(!token){
       return res.redirect("/admin");
    }
@@ -438,6 +451,7 @@ app.post('/adduser', urlencodedParser, [
         password : hashpassword
       });
       myobj.save();
+      // session.message = "Register successfully";
       return res.redirect('/admin');
     }
     // setTimeout(function(){ return res.redirect("/welcome"); }, 5000);
@@ -450,6 +464,7 @@ app.get("/logout", (req, res) => {
   res.clearCookie("username");
    req.flash('success', `You've been successfully redirected to the Message route!`)
     // res.redirect('/message')
+    // session.message = "Logout successfully";
   // redirect to login
   return res.redirect("/admin");
 });

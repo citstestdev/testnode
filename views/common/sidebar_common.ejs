@@ -1,13 +1,13 @@
  <nav class="menu-wrp">
   <ul class="menu-list sidebar">
-    <li><a href="javascript:function() { return false; }">Home</a>
+    <li><a href="/home">Home</a>
         <ul class="sub-menu">
            <% for (var headermenus of headermenu) {  %>
           <li><a href="/<%= headermenus.urlslug %>"><% if(headermenus) { %><%= headermenus.title.replace(/\w/, c => c.toUpperCase()) %><% } %></a></li>
           <% } %>
         </ul>
     </li>
-    <li><a href="javascript:function() { return false; }">Setting</a>
+    <li><a href="/setting">Setting</a>
       <ul class="sub-menu">
            <% for (var settingmenus of settingmenu) {  %>
           <li><a href="/<%= settingmenus.urlslug %>"><% if(settingmenus) { %><%= settingmenus.title.replace(/\w/, c => c.toUpperCase()) %><% } %></a></li>

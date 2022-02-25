@@ -63,8 +63,13 @@ router.get('/', checkLogin,  async function(req, res, next) {
           console.log(err);
     
              res.render('admin/home/home', { title:"home", headermenu:headermenu_dynamic, settingmenu:setting_dynamic,opt:result,pagedata:homepage, 'msg':''});
+             setTimeout(function() {
+              // session.massage = null;
+              session.massage = '';
+           }, 4000);
         });
     });
+
 
 });
 
@@ -113,6 +118,7 @@ router.get('/home', checkLogin,  function(req, res, next) {
           
            res.render('admin/home/home', { title:"home", headermenu:headermenu_dynamic,settingmenu:setting_dynamic, opt:result,pagedata:homepage,  'msg':session.massage});
            setTimeout(function() {
+            // session.massage = null;
             session.massage = '';
          }, 5000);
         });
