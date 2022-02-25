@@ -336,10 +336,7 @@ app.get("/admin", (req, res) => {
 app.get("/home", checkLogin, (req, res) => {
   let username = req.cookies.username;
   let token = req.cookies.token ? true : false;
-    setTimeout(function() {
-      session.message = null;
-      session.massage = '';
-  }, 4000);
+
    if(!token){
       return res.redirect("/admin");
    }
@@ -451,7 +448,6 @@ app.post('/adduser', urlencodedParser, [
         password : hashpassword
       });
       myobj.save();
-      // session.message = "Register successfully";
       return res.redirect('/admin');
     }
     // setTimeout(function(){ return res.redirect("/welcome"); }, 5000);
@@ -464,7 +460,6 @@ app.get("/logout", (req, res) => {
   res.clearCookie("username");
    req.flash('success', `You've been successfully redirected to the Message route!`)
     // res.redirect('/message')
-    // session.message = "Logout successfully";
   // redirect to login
   return res.redirect("/admin");
 });

@@ -23,8 +23,7 @@
                 <h2>Login</h2>
                 <% if(locals.error) {%>
                  <div class="alert alert-danger alertmsg" role="alert"><%= error %></div>
-                <%}%>
-                <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>                
+                <%}%>           
                 <div class="input-field">
                     <input type="text" name="username" id="username" placeholder="Enter Email"/>
                 </div>
