@@ -1,14 +1,20 @@
- <nav class="menu-wrp">
+<script>
+  // var url = location.pathname.substr(location.pathname.lastIndexOf("/")+1);;
+  // alert(url);
+</script>
+<nav class="menu-wrp">
   <ul class="menu-list sidebar">
     <li><a href="/home">Home</a>
         <ul class="sub-menu">
            <% for (var headermenus of headermenu) {  %>
-          <li><a href="/<%= headermenus.urlslug %>"><% if(headermenus) { %><%= headermenus.title.replace(/\w/, c => c.toUpperCase()) %><% } %></a></li>
+          <li ><a href="/<%= headermenus.urlslug %>"><% if(headermenus) { %><%= headermenus.title.replace(/\w/, c => c.toUpperCase()) %><% } %></a></li>
           <% } %>
         </ul>
     </li>
     <li><a href="/setting">Setting</a>
       <ul class="sub-menu">
+        <li><a href="/frontend-menu">Frontend Menu</a></li>
+        <li><a href="/backend-menu">Backend Menu</a></li>
            <% for (var settingmenus of settingmenu) {  %>
           <li><a href="/<%= settingmenus.urlslug %>"><% if(settingmenus) { %><%= settingmenus.title.replace(/\w/, c => c.toUpperCase()) %><% } %></a></li>
           <% } %>
@@ -22,6 +28,6 @@
         </ul>
     </li>
      <li><a href="/portfolio">Portfolio</a></li>
-   <!--  <li><a href="/joinus">Join Us</a></li>  -->
+    <li><a href="/contact">Contact Us</a></li> 
   </ul>
 </nav>
