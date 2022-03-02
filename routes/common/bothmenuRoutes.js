@@ -66,7 +66,6 @@ router.get("/frontend-menu", checkLogin, async function (req, res, next) {
         msg: session.message,
       });
       setTimeout(function () {
-        session.massage = null;
         session.massage = "";
       }, 3000);
     });
@@ -170,7 +169,6 @@ router.get("/backend-menu", checkLogin, async function (req, res, next) {
         msg: session.message,
       });
       setTimeout(function () {
-        session.massage = null;
         session.massage = "";
       }, 3000);
     });

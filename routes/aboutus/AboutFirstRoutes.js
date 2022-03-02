@@ -50,10 +50,7 @@ router.get("/aboutus", checkLogin, async function (req, res, next) {
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "1" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "1" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -68,10 +65,7 @@ router.get("/aboutus", checkLogin, async function (req, res, next) {
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "2" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "2" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -197,7 +191,7 @@ router.post(
         .collection("menus")
         .find({
           $and: [
-            { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
+            { $or: [{ displaymenu: "b" }] },
             { $or: [{ parent_id: "1" }] },
           ],
         })
@@ -215,7 +209,7 @@ router.post(
         .collection("menus")
         .find({
           $and: [
-            { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
+            { $or: [{ displaymenu: "b" }] },
             { $or: [{ parent_id: "2" }] },
           ],
         })

@@ -397,7 +397,6 @@ app.get("/logout", (req, res) => {
   // clear the cookie
   res.clearCookie("token");
   res.clearCookie("username");
-  session.destroy(null);
   req.flash(
     "success",
     `You've been successfully redirected to the Message route!`
@@ -406,32 +405,32 @@ app.get("/logout", (req, res) => {
   return res.redirect("/admin");
 });
 
-app.get("/show-page", (req, res) => {
-  res.render("modelpop");
-});
+// app.get("/show-page", (req, res) => {
+//   res.render("modelpop");
+// });
 
-app.get("/simple", (req, res) => {
-  res.render("simple");
-});
+// app.get("/simple", (req, res) => {
+//   res.render("simple");
+// });
 
-app.post("/page-model", function (req, res) {
-  const show_modal = !!req.body.modal; // Cast to boolean
-  res.render("page-model", { show_modal });
-});
+// app.post("/page-model", function (req, res) {
+//   const show_modal = !!req.body.modal; // Cast to boolean
+//   res.render("page-model", { show_modal });
+// });
 
-app.post("/contactmodel", function (req, res) {
-  var contactUsInfo = {
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    email: req.body.email,
-    regarding: req.body.regarding,
-    message: req.body.message,
-  };
+// app.post("/contactmodel", function (req, res) {
+//   var contactUsInfo = {
+//     firstName: req.body.firstname,
+//     lastName: req.body.lastname,
+//     email: req.body.email,
+//     regarding: req.body.regarding,
+//     message: req.body.message,
+//   };
 
-  if (sendEmail(contactUsInfo)) {
-    res.render("modelpop", { testing: "Hello" });
-  }
-});
+//   if (sendEmail(contactUsInfo)) {
+//     res.render("modelpop", { testing: "Hello" });
+//   }
+// });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

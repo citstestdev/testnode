@@ -10,11 +10,11 @@ td,th {
   <div class="col-md-12 full-content-wraper">
     <div class="title-header"><h1 class="cmn-heading"><%= title.replace(/\w/, c => c.toUpperCase()) %></h1></div>
     <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>
-        <span><button class="cmn-btn"><a href="/createdigital">Change</a></button></sapn>
+        <span><button class="cmn-btn btn-show-hide"><a  href="javascript:void(0);" id="digitalform">Change</a></button></sapn>
     <div class="col-md-2  sidebar-menu">
     <%- include('../../common/sidebar_common') %>
     </div>
-     <div class="col-md-6 content-wraper"> 
+     <div class="col-md-5 content-wraper"> 
     <h1><% if(pagedata){ %><%= pagedata.name %> <% } %></h1>
     <br>
     <h3><% if(pagedata){ %><%= pagedata.title %> <% } %></h3>
@@ -23,9 +23,37 @@ td,th {
     <br>
    <% if(pagedata){ %> <%= pagedata.description %> <% } %>
 </div>
-   <div class="col-md-4">
-     
+   <div class="col-md-4 form-wraper" style="display: none;" id="form-wrapper-form">
+    <div id="digitalcreateform" style="display: none;">
+      <h3>EXPERTISE ITEM</h3>
+    <form method="POST" action="/adddigital" enctype="multipart/form-data">
+      <label>Name:<input type="text" name="name" required></label>
+      <br>
+      <label>Title:<input type="text" name="title" required></label>
+      <br>
+      <br>
+      <label>Experience:<input type="text" name="experience" required></label>
+      <br>
+      <label>Description:<br><textarea name="description" required></textarea></label>
+      <br>
+       <input type="hidden" name="oldimage">
+      <input type="file" name="userPhoto" id="userPhoto" placeholder=""  style="border:none;width:100%;" accept="image/*" multiple>
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+     </div>
     </div>
   </div>
 </div> 
 </section>
+<script>
+  $('#digitalform').click(function(){
+    
+    $('#form-wrapper-form').show();
+    $('#digitalcreateform').toggle();
+    $('#userPhoto').val("");
+    
+})
+
+</script>
+<!-- href="/createdigital"  -->
