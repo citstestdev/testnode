@@ -20,6 +20,7 @@ const async = require("async");
 var multer = require("multer");
 var logger = require("morgan");
 const mongodb = require("mongodb");
+// const { createProxyMiddleware } = require("http-proxy-middleware");
 const { check, validationResult } = require("express-validator");
 
 const register = require("./models/Registermodel");
@@ -76,7 +77,22 @@ app.use(
   })
 );
 
+// app.use(
+//   "/",
+//   createProxyMiddleware({
+//     target: "http://localhost:5000/",
+//     changeOrigin: true,
+//   })
+// );
+// app.listen(3000);
+
 app.use(flash());
+// const corsOptions = {
+//   //   origin: ["http://localhost:3000"],
+//   origin: true,
+//   credentials: true,
+// };
+// app.use(cors(corsOptions));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -91,6 +107,7 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Methods",
     "GET,PUT,PATCH,POST,DELETE,OPTIONS"
   );
+  res.header("Cross-Origin-Resource-Policy", "same-site");
   next();
 });
 

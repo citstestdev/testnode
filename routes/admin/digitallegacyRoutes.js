@@ -26,9 +26,9 @@ router.get("/digitallegacy", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
-    var digitallegaciesdata = [];
-    dbo.collection("digitallegacies").findOne(function (err, result) {
-      digitallegaciesdata = result;
+    var option = [];
+    dbo.collection("option").findOne(function (err, result) {
+      option = result;
     });
 
     var headermenu_dynamic = [];
@@ -61,7 +61,7 @@ router.get("/digitallegacy", checkLogin, async function (req, res, next) {
         setting_dynamic = result;
       });
 
-    dbo.collection("option").findOne(function (err, result) {
+    dbo.collection("digitallegacies").findOne(function (err, result) {
       if (err) {
         return;
       }
@@ -70,8 +70,8 @@ router.get("/digitallegacy", checkLogin, async function (req, res, next) {
         title: "Digital Legacy",
         headermenu: headermenu_dynamic,
         settingmenu: setting_dynamic,
-        opt: result,
-        pagedata: digitallegaciesdata,
+        opt: option,
+        pagedata: result,
         msg: session.message,
       });
 

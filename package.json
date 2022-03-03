@@ -25,6 +25,7 @@
     "fs": "^0.0.1-security",
     "helmet": "^5.0.2",
     "http-errors": "^2.0.0",
+    "http-proxy-middleware": "^2.0.3",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.4.0",
     "mongoose": "^6.2.3",
