@@ -149,49 +149,6 @@ router.get("/home", checkLogin, function (req, res, next) {
   });
 });
 
-// router.post(
-//   "/home",
-//   upload.single("userPhoto"),
-//   async function (req, res, next) {
-//     await MongoClient.connect(url, function (err, db) {
-//       if (err) throw err;
-//       var dbo = db.db("conative");
-//       dbo.collection("homes").deleteMany();
-//     });
-
-//     await MongoClient.connect(url, function (err, db) {
-//       if (err) throw err;
-//       var dbo = db.db("conative");
-
-//       const file = req.file;
-//       // console.warn("fileee",file);
-
-//       var imagepath = "";
-//       if (req.body.oldimage != "") {
-//         imagepath = req.body.oldimage;
-//       }
-//       if (file && !file.length) {
-//         imagepath = file.path;
-//       }
-
-//       var myobj = {
-//         name: req.body.name.trim(),
-//         title: req.body.title.trim(),
-//         description: req.body.description.trim(),
-//         image: imagepath,
-//       };
-
-//       dbo.collection("homes").insertOne(myobj, function (err, res) {
-//         if (err) throw err;
-//         console.log("document review inserted");
-//         session.massage = "Home updated successfully";
-//       });
-//     });
-
-//     return res.redirect("/home");
-//   }
-// );
-
 router.post(
   "/home",
   upload.single("userPhoto"),

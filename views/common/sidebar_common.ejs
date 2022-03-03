@@ -1,17 +1,17 @@
 <script>
-  // var url = location.pathname.substr(location.pathname.lastIndexOf("/")+1);;
+  //  url = location.pathname.substr(location.pathname.lastIndexOf("/")+1);
   // alert(url);
 </script>
 <nav class="menu-wrp">
   <ul class="menu-list sidebar">
-    <li><a href="/home">Home</a>
+    <li><a class="<% if(title.toLowerCase() == 'home' || title.toLowerCase() == 'our projects' || title.toLowerCase() == 'our expertise' || title.toLowerCase() == 'our process' || title.toLowerCase() == 'client project' || title.toLowerCase() == 'start project' || title.toLowerCase() == 'digital legacy') { %> <%= 'active' %> <% } %>" href="/home">Home</a>
         <ul class="sub-menu">
            <% for (var headermenus of headermenu) {  %>
           <li ><a href="/<%= headermenus.urlslug %>"><% if(headermenus) { %><%= headermenus.title.replace(/\w/, c => c.toUpperCase()) %><% } %></a></li>
           <% } %>
         </ul>
     </li>
-    <li><a href="/setting">Setting</a>
+    <li><a class="<% if(title.toLowerCase() == 'setting' || title.toLowerCase() == 'frontend menu' || title.toLowerCase() == 'backend menu' || title.toLowerCase() == 'social media') { %> <%= 'active' %> <% } %>" href="/setting">Setting</a>
       <ul class="sub-menu">
         <li><a href="/frontend-menu">Frontend Menu</a></li>
         <li><a href="/backend-menu">Backend Menu</a></li>
@@ -20,14 +20,14 @@
           <% } %>
         </ul>
     </li> 
-    <li><a href="javascript:function() { return false; }">About Us</a>
+    <li><a class="<% if(title.toLowerCase() == 'about us') { %> <%= 'active' %> <% } %>" href="/aboutus">About Us</a>
         <ul class="sub-menu">
-          <li><a href="/aboutus" class="active">About us</a></li>
+          <li><a href="/aboutus">About us</a></li>
        <!--    <li><a href="/about-service">About service</a></li> -->
        <!--    <li><a href="/about-client">About Client</a></li> -->
         </ul>
     </li>
-     <li><a href="/portfolio">Portfolio</a></li>
-    <li><a href="/contact">Contact Us</a></li> 
+     <li><a class="<% if(title.toLowerCase() == 'portfolio') { %> <%= 'active' %> <% } %>" href="/portfolio">Portfolio</a></li>
+    <li><a class="<% if(title.toLowerCase() == 'contact') { %> <%= 'active' %> <% } %>" href="/contact">Contact Us</a></li> 
   </ul>
 </nav>

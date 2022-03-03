@@ -2,6 +2,11 @@
   background-color: #f58220 !important;
   border-radius: 7px !important;
 }
+a.active {
+  background-color: #fa6400 !important;
+  color: #ffffff !important;
+}
+
 ul.sub-menu {
   position: absolute;
   /*background-color: #f58220;*/

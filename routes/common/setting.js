@@ -68,7 +68,7 @@ router.get("/setting", checkLogin, async function (req, res, next) {
         console.log(err);
       } else {
         res.render("admin/home/setting", {
-          title: "Setting",
+          title: "setting",
           opt: result,
           headermenu: headermenu_dynamic,
           settingmenu: setting_dynamic,
