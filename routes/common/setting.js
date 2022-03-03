@@ -64,7 +64,7 @@ router.get("/setting", checkLogin, async function (req, res, next) {
         return;
       }
       if (!result) {
-        res.send("Page Not Found");
+        res.send("Data Not Found Please Check Collection");
         console.log(err);
       } else {
         res.render("admin/home/setting", {
@@ -72,8 +72,11 @@ router.get("/setting", checkLogin, async function (req, res, next) {
           opt: result,
           headermenu: headermenu_dynamic,
           settingmenu: setting_dynamic,
-          msg: "",
+          msg: session.massage,
         });
+        setTimeout(function () {
+          session.massage = "";
+        }, 3000);
       }
     });
   });
@@ -84,12 +87,6 @@ router.post(
   upload.single("userPhoto"),
   async function (req, res, next) {
     var person = req.body;
-
-    await MongoClient.connect(url, function (err, db) {
-      if (err) throw err;
-      var dbo = db.db("conative");
-      dbo.collection("option").deleteMany();
-    });
 
     const file = req.file;
     await MongoClient.connect(url, function (err, db) {
@@ -107,6 +104,7 @@ router.post(
       }
 
       var myobj = {
+        oid: "1",
         name: req.body.clientname.trim(),
         email: req.body.clientemail.trim(),
         description: req.body.description.trim(),
@@ -122,45 +120,19 @@ router.post(
         button: req.body.button.trim(),
       };
 
-      console.log("dddddddd", myobj);
+      // console.log("dddddddd", myobj);
 
-      dbo.collection("option").insertOne(myobj, function (err, res) {
-        if (err) throw err;
-        console.log("1 document inserted");
-        // db.close();
-        // session.massage = "Setting updated successfully";
-      });
+      dbo
+        .collection("option")
+        .findOneAndUpdate(
+          { oid: "1" },
+          { $set: myobj },
+          { upsert: true, returnNewDocument: true },
+          function (err, res) {
+            session.massage = "Setting updated successfully";
+          }
+        );
     });
-
-    // await MongoClient.connect(url, function(err, db) {
-    //    if (err) throw err;
-    //    var dbo = db.db("conative");
-
-    //     var headermenu_dynamic = [];
-    //     dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "1"}]}]}).sort({'index':1}).toArray(function (err, result) {
-
-    //        if (err) {return};
-    //        console.log(err);
-    //         headermenu_dynamic = result;
-    //      });
-
-    //    var setting_dynamic = [];
-    //     dbo.collection('menus').find({$and: [{ $or:[ {'displaymenu':'b'},{'displaymenu':'fb'}]},{$or: [{"parent_id": "2"}]}]}).sort({'index':1}).toArray(function (err, result) {
-
-    //        if (err) {return};
-    //        console.log(err);
-
-    //         setting_dynamic = result;
-    //    });
-
-    //     dbo.collection('option').findOne(function (err, result) {
-    //        console.log(result);
-    //        if (err) {return};
-    //        console.log(err);
-    //         // res.render('header')
-    //         res.render('admin/home/setting', {title:'Setting', opt:result, headermenu:headermenu_dynamic, settingmenu:setting_dynamic,'msg':'Setting is updated successfully'});
-    //      });
-    //  });
 
     return res.redirect("/setting");
   }

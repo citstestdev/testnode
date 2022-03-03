@@ -148,10 +148,7 @@ app.get("/setting", checkLogin, async function (req, res, next) {
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "1" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "1" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -166,10 +163,7 @@ app.get("/setting", checkLogin, async function (req, res, next) {
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "2" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "2" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -184,7 +178,7 @@ app.get("/setting", checkLogin, async function (req, res, next) {
         return;
       }
       if (!result) {
-        res.send("Page Not Found");
+        res.send("Page Not Found Please Check Collection");
         console.log(err);
       } else {
         res.render("admin/home/setting", {
@@ -404,33 +398,6 @@ app.get("/logout", (req, res) => {
 
   return res.redirect("/admin");
 });
-
-// app.get("/show-page", (req, res) => {
-//   res.render("modelpop");
-// });
-
-// app.get("/simple", (req, res) => {
-//   res.render("simple");
-// });
-
-// app.post("/page-model", function (req, res) {
-//   const show_modal = !!req.body.modal; // Cast to boolean
-//   res.render("page-model", { show_modal });
-// });
-
-// app.post("/contactmodel", function (req, res) {
-//   var contactUsInfo = {
-//     firstName: req.body.firstname,
-//     lastName: req.body.lastname,
-//     email: req.body.email,
-//     regarding: req.body.regarding,
-//     message: req.body.message,
-//   };
-
-//   if (sendEmail(contactUsInfo)) {
-//     res.render("modelpop", { testing: "Hello" });
-//   }
-// });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

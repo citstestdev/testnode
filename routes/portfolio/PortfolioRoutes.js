@@ -43,13 +43,10 @@ router.get("/portfolio", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
-    var aboutarr = [];
-    dbo
-      .collection("portfolios")
-      .find()
-      .toArray(function (err, result1) {
-        aboutarr = result1;
-      });
+    var option = [];
+    dbo.collection("option").findOne(function (err, result) {
+      option = result;
+    });
 
     var headermenu_dynamic = [];
     dbo
@@ -81,23 +78,26 @@ router.get("/portfolio", checkLogin, async function (req, res, next) {
         setting_dynamic = result;
       });
 
-    dbo.collection("option").findOne(function (err, result) {
-      if (err) {
-        return;
-      }
-      console.log(err);
-      res.render("admin/portfolio/portfolio", {
-        title: "Portfolio",
-        headermenu: headermenu_dynamic,
-        settingmenu: setting_dynamic,
-        pagedata: aboutarr,
-        opt: result,
-        msg: session.message,
+    dbo
+      .collection("portfolios")
+      .find()
+      .toArray(function (err, result1) {
+        if (err) {
+          return;
+        }
+        console.log(err);
+        res.render("admin/portfolio/portfolio", {
+          title: "Portfolio",
+          headermenu: headermenu_dynamic,
+          settingmenu: setting_dynamic,
+          pagedata: result1,
+          opt: option,
+          msg: session.message,
+        });
+        setTimeout(function () {
+          session.massage = "";
+        }, 4000);
       });
-      setTimeout(function () {
-        session.massage = "";
-      }, 4000);
-    });
   });
 });
 

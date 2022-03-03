@@ -203,46 +203,4 @@ router.post("/backend-menu", checkLogin, async function (req, res, next) {
   return res.redirect("/backend-menu");
 });
 
-// router.get("/show-front-menu", function (req, res, _next) {
-//   var fullUrl = req.protocol + "://" + req.get("host");
-
-//   MongoClient.connect(url, function (err, db) {
-//     if (err) throw err;
-//     var dbo = db.db("conative");
-
-//     dbo
-//       .collection("menus")
-//       .find({ $or: [{ displaymenu: "f" }, { displaymenu: "fb" }] })
-//       .sort({ index: 1 })
-//       .toArray(function (err, result) {
-//         if (err) {
-//           return;
-//         }
-//         console.log(err);
-//         res.status(200).json(result);
-//       });
-//   });
-// });
-
-// router.get("/show-backend-menu", checkLogin, function (req, res, _next) {
-//   var fullUrl = req.protocol + "://" + req.get("host");
-
-//   MongoClient.connect(url, function (err, db) {
-//     if (err) throw err;
-//     var dbo = db.db("conative");
-
-//     dbo
-//       .collection("menus")
-//       .find({ $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] })
-//       .sort({ index: 1 })
-//       .toArray(function (err, result) {
-//         if (err) {
-//           return;
-//         }
-//         console.log(err);
-//         res.status(200).json(result);
-//       });
-//   });
-// });
-
 module.exports = router;

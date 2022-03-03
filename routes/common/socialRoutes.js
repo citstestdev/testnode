@@ -26,14 +26,19 @@ router.get("/social", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
-    var socials = [];
-    dbo
-      .collection("socials")
-      .find()
-      .sort({ _id: -1 })
-      .toArray(function (err, result1) {
-        socials = result1;
-      });
+    var option = [];
+    dbo.collection("option").findOne(function (_err, result1) {
+      option = result1;
+    });
+
+    // var socials = [];
+    // dbo
+    //   .collection("socials")
+    //   .find()
+    //   .sort({ _id: -1 })
+    //   .toArray(function (err, result1) {
+    //     socials = result1;
+    //   });
 
     var headermenu_dynamic = [];
     dbo
@@ -65,24 +70,28 @@ router.get("/social", checkLogin, async function (req, res, next) {
         setting_dynamic = result;
       });
 
-    dbo.collection("option").findOne(function (err, result) {
-      if (err) {
-        return;
-      }
-      console.log(err);
-      res.render("admin/home/socialmedia", {
-        title: "Social Media",
-        headermenu: headermenu_dynamic,
-        settingmenu: setting_dynamic,
-        opt: result,
-        pagedata: socials,
-        msg: session.message,
+    dbo
+      .collection("socials")
+      .find()
+      .sort({ _id: -1 })
+      .toArray(function (err, result1) {
+        if (err) {
+          return;
+        }
+        console.log(err);
+        res.render("admin/home/socialmedia", {
+          title: "Social Media",
+          headermenu: headermenu_dynamic,
+          settingmenu: setting_dynamic,
+          opt: option,
+          pagedata: result1,
+          msg: session.message,
+        });
+
+        setTimeout(function () {
+          session.message = "";
+        }, 3000);
       });
-      setTimeout(function () {
-        session.massage = "";
-        // msg='';
-      }, 5000);
-    });
   });
 });
 
@@ -90,7 +99,7 @@ router.post(
   "/social",
   checkLogin,
   upload.single("userPhoto"),
-  async function (req, res, _next) {
+  async function (req, res, next) {
     await MongoClient.connect(url, function (err, db) {
       if (err) throw err;
       var dbo = db.db("conative");
@@ -183,8 +192,34 @@ router.get("/social/:id", checkLogin, function (req, res, next) {
   });
 });
 
+router.get("/socialremove/:id", checkLogin, async function (req, res, next) {
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    dbo.collection("socials").remove({ _id: ObjectID(req.params.id) });
+  });
+
+  session.message = "Social media deleted successfully";
+
+  return res.redirect("/social");
+});
+
+router.get("/getsocialitem/:id", async function (req, res, next) {
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    var aid = req.params.id;
+    // var updatearr = [];
+    dbo
+      .collection("socials")
+      .findOne({ _id: ObjectID(aid) }, function (err, result) {
+        res.status(200).json(result);
+      });
+  });
+});
+
 router.post(
-  "/social/:id",
+  "/socialedit",
   checkLogin,
   upload.single("userPhoto"),
   async function (req, res, next) {
@@ -217,7 +252,7 @@ router.post(
       var collection = dbo.collection("socials");
 
       collection.updateOne(
-        { _id: ObjectID(req.params.id) },
+        { _id: ObjectID(req.body.editid) },
         myobj,
         function (err, result) {
           if (err) {
@@ -232,17 +267,5 @@ router.post(
     return res.redirect("/social");
   }
 );
-
-router.get("/socialremove/:id", checkLogin, async function (req, res, _next) {
-  await MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("conative");
-    dbo.collection("socials").remove({ _id: ObjectID(req.params.id) });
-  });
-
-  session.message = "Social media deleted successfully";
-
-  return res.redirect("/social");
-});
 
 module.exports = router;

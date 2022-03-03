@@ -10,12 +10,12 @@ td,th {
   <div class="col-md-12 full-content-wraper">
     <div class="title-header"><h1 class="cmn-heading"><%= title.replace(/\w/, c => c.toUpperCase()) %></h1></div>
     <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>
-        <span><button class="cmn-btn"><a href="/projectsform" style="float:right">Add Project</a></button></sapn>
-    <span><button class="cmn-btn"><a href="/ourprojectsitemform" style="float:right;">Add Item</a></button></span>
+        <span><button class="cmn-btn btn-show-hide"><a href="javascript:void(0);" id="projectbtn" style="float:right">Add Project</a></button></sapn>
+    <span><button class="cmn-btn btn-show-hide"><a href="javascript:void(0);" id="projectitembtn" style="float:right;">Add Item</a></button></span>
     <div class="col-md-2  sidebar-menu">
     <%- include('../../common/sidebar_common') %>
     </div>
-     <div class="col-md-7 content-wraper"> 
+     <div class="col-md-6 content-wraper"> 
     <h1><% if(pagedata) { %><%= pagedata.title %><% } %></h1>
     <br>
     <h3><% if(pagedata) { %><%= pagedata.name %><% } %></h3>
@@ -40,7 +40,7 @@ td,th {
       <%= item.description %>
       </td>
        <td> 
-      <a href="/ourprojectsitemedit/<%= item._id %>">Edit</a>
+      <a href="javascript:void(0)"  onclick="geteditform('<%= item._id %>')">Edit</a>
       </td> 
       <td> 
       <a href="/ourprojectsitemremove/<%= item._id %>" onclick="return confirm('Are you sure you want to delete this item')">X</a>
@@ -49,9 +49,131 @@ td,th {
 <% } %>
 </table>
 </div>
-<div class="col-md-2">
+<div class="col-md-3 form-wraper" style="display: none;" id="form-wrapper-form">
+
+  <div id="projectmainform" style="display: none;">
+    <h3><%= title %></h3>
+    <form method="POST" action="/projects" class="common-form">
+      <label>Title:<input type="text" name="title" required></label>
+      <br>
+      <label>Name:<input type="text" name="name" required></label>
+      <br>
+      <label>Description:<br><textarea id="editorform" name="description" rows="10" cols="80"></textarea></label>
+      <br>
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+
+   <div id="projectitemform" style="display: none;">
+    <h3><%= title %></h3>
+    <form method="POST" action="/ourprojectsitem" enctype="multipart/form-data">
+      <label>Name:<input type="text" name="name" required></label>
+      <br>
+      <label>Description:<input type="text" name="description" required></label>
+      <br>
+      <input type="hidden" name="oldimage">
+      <input type="file" name="userPhoto"  onchange="readURL('create',this);" id="userPhoto" placeholder=""  style="border:none;width:100%;" accept="image/*">
+      <img id="create-show-image" src="/images/user.png" alt="your image" width="100px" height="100px" />
+      <br>
+      <br>
+      <input type="submit" value="Submit">
+  </form>
+  </div>
+
+
+  <div id="edititemform" style="display: none;">
+    <h3><%= title %></h3>
+    <form method="POST" action="/ourprojectsitemedit" enctype="multipart/form-data">
+       <input type="hidden" name="editid" id="editid"/>
+      <label>Name:<input type="text" name="name" id="name"  required></label>
+      <br>
+      <label>Description:<input type="text" id="description" name="description" required></label>
+      <br>
+      <input type="hidden" name="oldimage" id="oldfile">
+      <input type="file" name="userPhoto"  onchange="readURL('update',this);" id="userPhotoupdate" style="border:none;width:100%;" accept="image/*">
+      <img id="show-image" src="#" alt="your image" width="100px" height="100px"/>
+      <br>
+      <br>
+      <input type="submit" value="Update">
+  </form>
+  </div>
 
 </div>
   </div>
 </div> 
 </section>
+<script>
+  CKEDITOR.replace('editorform');
+</script>
+<script>
+
+$('#projectbtn').click(function(){
+    
+  $('#form-wrapper-form').show();
+  $('#projectmainform').toggle();
+  $('#projectitemform').hide();
+  $('#edititemform').hide();
+  $('#userPhoto').val("");
+  $('#userPhotoupdate').val("");
+  
+})
+
+$('#projectitembtn').click(function(){
+
+  $('#form-wrapper-form').show();
+  $('#projectmainform').hide();
+  $('#projectitemform').toggle();
+  $('#edititemform').hide();
+  $('#userPhotoupdate').val("");
+
+})
+
+
+function geteditform(editid){
+ 
+$.ajax({
+url:"/getprojectitem/"+editid,
+method:"GET",
+success: function(response){
+
+   $('#userPhoto').val("");
+   $('#userPhotoupdate').val("");
+   $('#editid').val(editid);
+   $('#name').val(response.name);
+   $('#description').val(response.description);
+   $('#oldfile').val(response.image);
+   if(response.image != ''){
+    $('#show-image').attr('src', response.image).width(100).height(100); 
+   }else{
+    $('#show-image').attr('src', '/images/user.png').width(100).height(100); 
+   }
+   $('#projectmainform').hide();
+   $('#form-wrapper-form').show();
+   $('#edititemform').show();
+   $('#projectitemform').hide();
+   
+  }
+});
+return false;
+}
+
+function readURL(ftype,input) {
+if (input.files && input.files[0]) {
+var reader = new FileReader();
+//  alert(ftype);
+reader.onload = function (e) {
+  $('#show-image').attr('src', e.target.result).width(100).height(100);
+  $('#create-show-image').attr('src', e.target.result).width(100).height(100);
+};
+
+reader.readAsDataURL(input.files[0]);
+}
+}
+
+</script>
+
+
+
+<!-- <span><button class="cmn-btn"><a href="/projectsform" style="float:right">Add Project</a></button></sapn>
+  <span><button class="cmn-btn"><a href="/ourprojectsitemform" style="float:right;">Add Item</a></button></span> -->

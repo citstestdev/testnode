@@ -40,10 +40,15 @@ router.get("/contact", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
-    var contactform = [];
-    dbo.collection("contacts").findOne(function (err, result1) {
-      contactform = result1;
+    var option = [];
+    dbo.collection("option").findOne(function (err, result1) {
+      option = result1;
     });
+
+    // var contactform = [];
+    // dbo.collection("option").findOne(function (err, result1) {
+    //   contactform = result1;
+    // });
     // var showdata = [];
     // dbo
     //   .collection("contacts")
@@ -54,14 +59,14 @@ router.get("/contact", checkLogin, async function (req, res, next) {
     //     }
     //   );
 
-    var allcontactform = [];
-    dbo
-      .collection("contacts")
-      .find()
-      .sort({ _id: -1 })
-      .toArray(function (err, result) {
-        allcontactform = result;
-      });
+    // var allcontactform = [];
+    // dbo
+    //   .collection("contacts")
+    //   .find()
+    //   .sort({ _id: -1 })
+    //   .toArray(function (err, result) {
+    //     allcontactform = result;
+    //   });
 
     var headermenu_dynamic = [];
     dbo
@@ -93,25 +98,29 @@ router.get("/contact", checkLogin, async function (req, res, next) {
         setting_dynamic = result1;
       });
 
-    dbo.collection("option").findOne(function (err, result) {
-      if (err) {
-        return;
-      }
-      console.log(err);
-      res.render("admin/contact/contact", {
-        title: "Contact",
-        headermenu: headermenu_dynamic,
-        settingmenu: setting_dynamic,
-        allcontactform: allcontactform,
-        opt: result,
-        // pagedata: showdata,
-        msg: "",
-      });
+    dbo
+      .collection("contacts")
+      .find()
+      .sort({ _id: -1 })
+      .toArray(function (err, result) {
+        if (err) {
+          return;
+        }
+        console.log(err);
+        res.render("admin/contact/contact", {
+          title: "Contact",
+          headermenu: headermenu_dynamic,
+          settingmenu: setting_dynamic,
+          allcontactform: result,
+          opt: option,
+          // pagedata: showdata,
+          msg: "",
+        });
 
-      setTimeout(function () {
-        session.massage = "";
-      }, 4000);
-    });
+        setTimeout(function () {
+          session.massage = "";
+        }, 4000);
+      });
   });
 });
 

@@ -74,6 +74,10 @@ router.get("/digitallegacy", checkLogin, async function (req, res, next) {
         pagedata: digitallegaciesdata,
         msg: session.message,
       });
+
+      setTimeout(function () {
+        session.message = "";
+      }, 3000);
     });
   });
 });
@@ -134,7 +138,7 @@ router.post(
   "/adddigital",
   checkLogin,
   upload.array("userPhoto"),
-  async function (req, res, _next) {
+  async function (req, res, next) {
     var fullUrl = req.protocol + "://" + req.get("host");
 
     const Digitalmodel = require("../../models/Digitalmodel");

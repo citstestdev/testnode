@@ -26,9 +26,9 @@ router.get("/startpjt", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
-    var digitallegaciesdata = [];
-    dbo.collection("startprojects").findOne(function (err, result) {
-      digitallegaciesdata = result;
+    var option = [];
+    dbo.collection("option").findOne(function (err, result) {
+      option = result;
     });
 
     var headermenu_dynamic = [];
@@ -61,7 +61,7 @@ router.get("/startpjt", checkLogin, async function (req, res, next) {
         setting_dynamic = result;
       });
 
-    dbo.collection("option").findOne(function (err, result) {
+    dbo.collection("startprojects").findOne(function (err, result) {
       if (err) {
         return;
       }
@@ -70,13 +70,13 @@ router.get("/startpjt", checkLogin, async function (req, res, next) {
         title: "Start Project",
         headermenu: headermenu_dynamic,
         settingmenu: setting_dynamic,
-        opt: result,
-        pagedata: digitallegaciesdata,
+        opt: option,
+        pagedata: result,
         msg: session.message,
       });
 
       setTimeout(function () {
-        session.massage = "";
+        session.message = "";
       }, 3000);
     });
   });
@@ -140,7 +140,7 @@ router.post(
   async function (req, res, next) {
     var fullUrl = req.protocol + "://" + req.get("host");
 
-    const Spmodel = require("../models/Startprojectmodel");
+    const Spmodel = require("../../models/Startprojectmodel");
     await Spmodel.deleteMany();
 
     const file = req.files;
@@ -162,7 +162,7 @@ router.post(
       image: imagearr,
     });
     await myobj.save();
-    session.message = "Item inserted successfully";
+    session.message = "Inserted successfully";
     return res.redirect("/startpjt");
   }
 );

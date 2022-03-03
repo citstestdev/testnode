@@ -26,9 +26,9 @@ router.get("/process", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
-    var expertise = [];
-    dbo.collection("process").findOne(function (err, result1) {
-      expertise = result1;
+    var option = [];
+    dbo.collection("option").findOne(function (err, result1) {
+      option = result1;
     });
 
     var expertiseitem = [];
@@ -70,84 +70,24 @@ router.get("/process", checkLogin, async function (req, res, next) {
         setting_dynamic = result;
       });
 
-    dbo.collection("option").findOne(function (err, result) {
+    dbo.collection("process").findOne(function (err, result) {
       if (err) {
         return;
       }
       console.log(err);
       res.render("admin/home/oProcess_show", {
         title: "Our Process",
-        opt: result,
+        opt: option,
         headermenu: headermenu_dynamic,
         settingmenu: setting_dynamic,
-        pagedata: expertise,
+        pagedata: result,
         expertiseitem: expertiseitem,
         msg: session.message,
       });
 
       setTimeout(function () {
-        session.massage = "";
-      }, 5000);
-    });
-  });
-});
-
-router.get("/processform", checkLogin, function (req, res, next) {
-  MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("conative");
-
-    var expertise = [];
-    dbo
-      .collection("process")
-      .find()
-      .toArray(function (err, result1) {
-        expertise = result1;
-      });
-
-    var headermenu_dynamic = [];
-    dbo
-      .collection("menus")
-      .find({
-        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "1" }] }],
-      })
-      .sort({ index: 1 })
-      .toArray(function (err, result) {
-        if (err) {
-          return;
-        }
-        console.log(err);
-        headermenu_dynamic = result;
-      });
-
-    var setting_dynamic = [];
-    dbo
-      .collection("menus")
-      .find({
-        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "2" }] }],
-      })
-      .sort({ index: 1 })
-      .toArray(function (err, result) {
-        if (err) {
-          return;
-        }
-        console.log(err);
-        setting_dynamic = result;
-      });
-
-    dbo.collection("option").findOne(function (err, result) {
-      if (err) {
-        return;
-      }
-      console.log(err);
-      res.render("admin/home/oProcess", {
-        title: "Our Process",
-        headermenu: headermenu_dynamic,
-        settingmenu: setting_dynamic,
-        opt: result,
-        pagedata: expertise,
-        msg: "",
-      });
+        session.message = "";
+      }, 3000);
     });
   });
 });
@@ -179,58 +119,6 @@ router.post("/process", checkLogin, async function (req, res, next) {
   return res.redirect("/process");
 });
 
-router.get("/processPlanform", async function (req, res, next) {
-  MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("conative");
-
-    var headermenu_dynamic = [];
-    dbo
-      .collection("menus")
-      .find({
-        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "1" }] }],
-      })
-      .sort({ index: 1 })
-      .toArray(function (err, result) {
-        if (err) {
-          return;
-        }
-        console.log(err);
-        headermenu_dynamic = result;
-      });
-
-    var setting_dynamic = [];
-    dbo
-      .collection("menus")
-      .find({
-        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "2" }] }],
-      })
-      .sort({ index: 1 })
-      .toArray(function (err, result) {
-        if (err) {
-          return;
-        }
-        console.log(err);
-        setting_dynamic = result;
-      });
-
-    dbo.collection("option").findOne(function (err, result) {
-      if (err) {
-        return;
-      }
-      console.log(err);
-      res.render("admin/home/oProcess_plan", {
-        title: "Process Plan",
-        headermenu: headermenu_dynamic,
-        settingmenu: setting_dynamic,
-        opt: result,
-        updatearr: [],
-        msg: "",
-      });
-    });
-  });
-});
-
 router.post(
   "/processplan",
   upload.single("userPhoto"),
@@ -260,107 +148,6 @@ router.post(
     });
     session.message = "Our process plan inserted successfully";
     return res.redirect("/process");
-  }
-);
-
-router.get("/processplanedit/:id", function (req, res, next) {
-  MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("conative");
-    var aid = req.params.id;
-
-    var updatearr = [];
-    dbo
-      .collection("processplan")
-      .findOne({ _id: ObjectID(aid) }, function (err, result) {
-        updatearr = result;
-      });
-
-    var headermenu_dynamic = [];
-    dbo
-      .collection("menus")
-      .find({
-        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "1" }] }],
-      })
-      .sort({ index: 1 })
-      .toArray(function (err, result) {
-        if (err) {
-          return;
-        }
-        console.log(err);
-        headermenu_dynamic = result;
-      });
-
-    var setting_dynamic = [];
-    dbo
-      .collection("menus")
-      .find({
-        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "2" }] }],
-      })
-      .sort({ index: 1 })
-      .toArray(function (err, result) {
-        if (err) {
-          return;
-        }
-        console.log(err);
-        setting_dynamic = result;
-      });
-
-    dbo.collection("option").findOne(function (err, result) {
-      if (err) {
-        return;
-      }
-      console.log(err);
-      res.render("admin/home/oProcess_plan", {
-        title: "Process Plan",
-        headermenu: headermenu_dynamic,
-        settingmenu: setting_dynamic,
-        updatearr: updatearr,
-        opt: result,
-        msg: "",
-      });
-    });
-  });
-});
-
-router.post(
-  "/processplanupdate/:id",
-  upload.single("userPhoto"),
-  async function (req, res, next) {
-    await MongoClient.connect(url, function (err, db) {
-      if (err) throw err;
-      var dbo = db.db("conative");
-
-      const file = req.file;
-      var imagepath = "";
-      if (req.body.oldimage != "") {
-        imagepath = req.body.oldimage.trim();
-      }
-      if (file && !file.length) {
-        imagepath = file.path.trim();
-      }
-
-      var myobj = {
-        $set: {
-          name: req.body.name.trim(),
-          image: imagepath,
-        },
-      };
-
-      var collection = dbo.collection("processplan");
-
-      collection.updateOne(
-        { _id: ObjectID(req.params.id) },
-        myobj,
-        function (err, result) {
-          if (err) {
-            throw err;
-          }
-          session.message = "Our process plan updated successfully";
-          res.redirect("/process");
-        }
-      );
-    });
   }
 );
 
@@ -406,5 +193,60 @@ router.get("/processplan-show", async function (req, res, next) {
       });
   });
 });
+
+router.get("/getprocessplan/:id", function (req, res, next) {
+  MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    var aid = req.params.id;
+    // var updatearr = [];
+    dbo
+      .collection("processplan")
+      .findOne({ _id: ObjectID(aid) }, function (err, result) {
+        res.status(200).json(result);
+      });
+  });
+});
+
+router.post(
+  "/processplanedit",
+  upload.single("userPhoto"),
+  async function (req, res, next) {
+    await MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("conative");
+
+      const file = req.file;
+      var imagepath = "";
+      if (req.body.oldimage != "") {
+        imagepath = req.body.oldimage.trim();
+      }
+      if (file && !file.length) {
+        imagepath = file.path.trim();
+      }
+
+      var myobj = {
+        $set: {
+          name: req.body.name.trim(),
+          image: imagepath,
+        },
+      };
+
+      var collection = dbo.collection("processplan");
+
+      collection.updateOne(
+        { _id: ObjectID(req.body.editid) },
+        myobj,
+        function (err, result) {
+          if (err) {
+            throw err;
+          }
+          session.message = "Our process plan updated successfully";
+          res.redirect("/process");
+        }
+      );
+    });
+  }
+);
 
 module.exports = router;

@@ -10,31 +10,47 @@ td,th {
   <div class="col-md-12 full-content-wraper">
     <div class="title-header"><h1 class="cmn-heading"><% if (title) { %><%= title.replace(/\w/, c => c.toUpperCase()) %><% } %></h1></div>
      <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>
+     <span><button class="cmn-btn btn-show-hide"><a  href="javascript:void(0);" id="homeform">Change</a></button></sapn>
     <div class="col-md-2 sidebar-menu">
     <%- include('../../common/sidebar_common') %>
     </div>
-     <div class="col-md-4 content-wraper"> 
+     <div class="col-md-5 content-wraper"> 
           
     <h3><% if (pagedata) { %><%= pagedata.title %> <% } %></h3>
     
     <br>
-    <% if (pagedata) { %><%= pagedata.description %><% } %>
+    <% if (pagedata) { %> <textarea id="editor-content" name="description"><%= pagedata.description %></textarea><% } %>
+   
 </div>
-   <div class="col-md-5 content-wraper"> 
+<div class="col-md-4 form-wraper" style="display: none;" id="form-wrapper-form">
+  <div id="homecreateform" style="display: none;">
     <form method="POST" action="/home" enctype="multipart/form-data">
         <label>Name:<input type="text" name="name" className="form-control" required></label>
         <br>
         <label>Title:<input type="text" name="title" required></label>
         <br>
-        <label>Description:<br><textarea name="description"></textarea></label>
+        <label>Description:<br><textarea id="editor1" name="description" required></textarea></label>
         <br>
          <input type="hidden" name="oldimage">
-        <input type="file" name="userPhoto" id="" placeholder=""  style="border:none;width:100%;" accept="image/*">
+        <input type="file" name="userPhoto" id="" placeholder=""  style="border:none;width:100%;" accept="image/*" required>
         <br>
         <input type="submit" value="Submit">
     </form>
-    
-      </div>
+    </div>
+  </div>
   </div>
 </div>  
 </section>
+<script>
+  CKEDITOR.replace('editor-content');
+</script>
+<script>
+  $('#homeform').click(function(){
+    
+    $('#form-wrapper-form').toggle();
+    $('#homecreateform').toggle();
+    $('#userPhoto').val("");
+    
+})
+
+</script>

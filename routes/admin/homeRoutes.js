@@ -28,9 +28,9 @@ router.get("/", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
-    var homepage = [];
-    dbo.collection("homes").findOne(function (err, result) {
-      homepage = result;
+    var option = [];
+    dbo.collection("option").findOne(function (err, result) {
+      option = result;
     });
 
     var headermenu_dynamic = [];
@@ -65,7 +65,7 @@ router.get("/", checkLogin, async function (req, res, next) {
         setting_dynamic = result;
       });
 
-    dbo.collection("option").findOne(function (err, result) {
+    dbo.collection("homes").findOne(function (err, result) {
       if (err) {
         return;
       }
@@ -75,8 +75,8 @@ router.get("/", checkLogin, async function (req, res, next) {
         title: "home",
         headermenu: headermenu_dynamic,
         settingmenu: setting_dynamic,
-        opt: result,
-        pagedata: homepage,
+        opt: option,
+        pagedata: result,
         msg: "",
       });
 
@@ -149,16 +149,53 @@ router.get("/home", checkLogin, function (req, res, next) {
   });
 });
 
+// router.post(
+//   "/home",
+//   upload.single("userPhoto"),
+//   async function (req, res, next) {
+//     await MongoClient.connect(url, function (err, db) {
+//       if (err) throw err;
+//       var dbo = db.db("conative");
+//       dbo.collection("homes").deleteMany();
+//     });
+
+//     await MongoClient.connect(url, function (err, db) {
+//       if (err) throw err;
+//       var dbo = db.db("conative");
+
+//       const file = req.file;
+//       // console.warn("fileee",file);
+
+//       var imagepath = "";
+//       if (req.body.oldimage != "") {
+//         imagepath = req.body.oldimage;
+//       }
+//       if (file && !file.length) {
+//         imagepath = file.path;
+//       }
+
+//       var myobj = {
+//         name: req.body.name.trim(),
+//         title: req.body.title.trim(),
+//         description: req.body.description.trim(),
+//         image: imagepath,
+//       };
+
+//       dbo.collection("homes").insertOne(myobj, function (err, res) {
+//         if (err) throw err;
+//         console.log("document review inserted");
+//         session.massage = "Home updated successfully";
+//       });
+//     });
+
+//     return res.redirect("/home");
+//   }
+// );
+
 router.post(
   "/home",
   upload.single("userPhoto"),
   async function (req, res, next) {
-    await MongoClient.connect(url, function (err, db) {
-      if (err) throw err;
-      var dbo = db.db("conative");
-      dbo.collection("homes").deleteMany();
-    });
-
     await MongoClient.connect(url, function (err, db) {
       if (err) throw err;
       var dbo = db.db("conative");
@@ -175,17 +212,36 @@ router.post(
       }
 
       var myobj = {
+        hid: "1",
         name: req.body.name.trim(),
         title: req.body.title.trim(),
         description: req.body.description.trim(),
         image: imagepath,
       };
 
-      dbo.collection("homes").insertOne(myobj, function (err, res) {
-        if (err) throw err;
-        console.log("document review inserted");
-        session.massage = "Home updated successfully";
-      });
+      dbo
+        .collection("homes")
+        .findOneAndUpdate(
+          { hid: "1" },
+          { $set: myobj },
+          { upsert: true, returnNewDocument: true },
+          function (err, res) {
+            session.massage = "Home updated successfully";
+          }
+        );
+
+      // var myobj = {
+      //   name: req.body.name.trim(),
+      //   title: req.body.title.trim(),
+      //   description: req.body.description.trim(),
+      //   image: imagepath,
+      // };
+
+      // dbo.collection("homes").insertOne(myobj, function (err, res) {
+      //   if (err) throw err;
+      //   console.log("document review inserted");
+      //   session.massage = "Home updated successfully";
+      // });
     });
 
     return res.redirect("/home");

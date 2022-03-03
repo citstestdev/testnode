@@ -21,14 +21,14 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-router.get("/clientProject", checkLogin, async function (req, res, next) {
+router.get("/clientproject", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
 
-    var expertise = [];
-    dbo.collection("tbclientproject").findOne(function (err, result1) {
-      expertise = result1;
+    var option = [];
+    dbo.collection("option").findOne(function (err, result1) {
+      option = result1;
     });
 
     var expertiseitem = [];
@@ -70,23 +70,23 @@ router.get("/clientProject", checkLogin, async function (req, res, next) {
         setting_dynamic = result;
       });
 
-    dbo.collection("option").findOne(function (err, result) {
+    dbo.collection("tbclientproject").findOne(function (err, cresult) {
       if (err) {
         return;
       }
       console.log(err);
       res.render("admin/home/ocProject_show", {
         title: "Client Project",
-        opt: result,
+        opt: option,
         headermenu: headermenu_dynamic,
         settingmenu: setting_dynamic,
-        pagedata: expertise,
+        pagedata: cresult,
         expertiseitem: expertiseitem,
         msg: session.message,
       });
 
       setTimeout(function () {
-        session.massage = "";
+        session.message = "";
       }, 3000);
     });
   });
@@ -153,7 +153,7 @@ router.get("/clientform", checkLogin, function (req, res, next) {
   });
 });
 
-router.post("/clientProject", checkLogin, async function (req, res, next) {
+router.post("/clientproject", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
@@ -431,7 +431,7 @@ router.get("/csliderform", async function (req, res, next) {
 
 router.post(
   "/addslideritem",
-  upload.single("userPhoto"),
+  upload.single("clientPhoto"),
   async function (req, res, next) {
     await MongoClient.connect(url, function (err, db) {
       if (err) throw err;
@@ -514,5 +514,63 @@ router.get("/cps-show", async function (req, res, next) {
       });
   });
 });
+
+// one page insert and update for =====================
+
+router.get("/getclientprojectitem/:id", function (req, res, next) {
+  MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    var aid = req.params.id;
+    // var updatearr = [];
+    dbo
+      .collection("tbclientinfo")
+      .findOne({ _id: ObjectID(aid) }, function (err, result) {
+        res.status(200).json(result);
+      });
+  });
+});
+
+router.post(
+  "/clientprojecteditajax",
+  upload.single("userPhoto"),
+  async function (req, res, next) {
+    await MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("conative");
+
+      const file = req.file;
+      var imagepath = "";
+      if (req.body.oldimage != "") {
+        imagepath = req.body.oldimage.trim();
+      }
+      if (file && !file.length) {
+        imagepath = file.path.trim();
+      }
+
+      var myobj = {
+        $set: {
+          name: req.body.name.trim(),
+          num: req.body.num.trim(),
+          image: imagepath,
+        },
+      };
+
+      var collection = dbo.collection("tbclientinfo");
+
+      collection.updateOne(
+        { _id: ObjectID(req.body.editid) },
+        myobj,
+        function (err, result) {
+          if (err) {
+            throw err;
+          }
+          session.message = "Our client project item updated successfully";
+          res.redirect("/clientProject");
+        }
+      );
+    });
+  }
+);
 
 module.exports = router;
