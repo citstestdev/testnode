@@ -170,6 +170,26 @@ app.get("/option-show", async function (req, res, next) {
   });
 });
 
+app.get("/social-media", async function (req, res, next) {
+  var fullUrl = req.protocol + "://" + req.get("host");
+
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    dbo
+      .collection("socials")
+      .find()
+      .toArray(function (err, result) {
+        console.log(result);
+        if (err) {
+          return;
+        }
+        console.log(err);
+        res.status(200).json(result);
+      });
+  });
+});
+
 app.get("/setting", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
