@@ -156,6 +156,20 @@ try {
   console.log("could not connect to database", error);
 }
 
+app.get("/option-show", async function (req, res, next) {
+  var fullUrl = req.protocol + "://" + req.get("host");
+
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    var footerarr = [];
+    dbo.collection("option").findOne(function (err, result1) {
+      footerarr = result1;
+      res.status(200).json(result1);
+    });
+  });
+});
+
 app.get("/setting", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
