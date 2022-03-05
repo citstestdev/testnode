@@ -89,26 +89,27 @@ app.use(
 app.use(flash());
 
 var corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+  origin: "*",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 app.use(cors(corsOptions));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept,Authorization"
+    "Origin, X-Requested-With, Content-Type, Accept,Authorization, Cross-Origin-Resource-Policy"
   );
   res.header(
     "Access-Control-Allow-Methods",
     "GET,PUT,PATCH,POST,DELETE,OPTIONS"
   );
-  res.header("Cross-Origin-Resource-Policy", "same-site");
+  res.header(
+    "Cross-Origin-Resource-Policy: same-site | same-origin | cross-origin"
+  );
   next();
 });
 
