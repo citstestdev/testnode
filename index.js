@@ -89,7 +89,7 @@ app.use(
 app.use(flash());
 
 var corsOptions = {
-  origin: 'http://stagingwebsite.co.in:30016/',
+  origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions));
