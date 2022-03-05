@@ -4,8 +4,10 @@ var multer = require("multer");
 const session = require("express-session");
 var checkLogin = require("../../middleware/check");
 var axios = require("axios");
+const cors = require("cors");
 const async = require("async");
 // const { createProxyMiddleware } = require("http-proxy-middleware");
+router.options('*', cors());
 
 const MongoClient = require("mongodb").MongoClient;
 const url =

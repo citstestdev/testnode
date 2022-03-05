@@ -87,15 +87,16 @@ app.use(
 // app.listen(3000);
 
 app.use(flash());
-// const corsOptions = {
-//   //   origin: ["http://localhost:3000"],
-//   origin: true,
-//   credentials: true,
-// };
-// app.use(cors(corsOptions));
+
+var corsOptions = {
+  origin: 'http://stagingwebsite.co.in:30016/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
