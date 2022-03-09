@@ -15,11 +15,11 @@ const url =
   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 const { ObjectID } = require("mongodb");
 var imagec = "";
-router.use("/imgupload", express.static(__dirname + "/imgupload"));
+// router.use("/imgupload", express.static(__dirname + "/imgupload"));
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
-    cb(null, "imgupload");
+    cb(null, path.join(__dirname, "../../imgupload"));
     cb(null, path.join(__dirname, "../../confrontend/public/assets/imgupload"));
     cb(
       null,
