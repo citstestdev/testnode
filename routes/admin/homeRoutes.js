@@ -15,18 +15,20 @@ const url =
 const { ObjectID } = require("mongodb");
 var imagec = "";
 // router.use("/imgupload", express.static(__dirname + "/imgupload"));
+router.use("/uploads", express.static(__dirname + "/uploads"));
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     var path = require("path");
     imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
-    cb(null, path.join(__dirname, "../../imgupload"));
+    cb(null, "uploads");
+    // cb(null, path.join(__dirname, "../../imgupload"));
     // cb(null, path.join(__dirname, "../../confrontend/public/assets/imgupload"));
-    cb(
-      null,
-      path.join(
-        "/home/user/CITS-SERVER/TRAINEEWORK/Shailendra_Tiwari/contest/assets/imgupload"
-      )
-    );
+    // cb(
+    //   null,
+    //   path.join(
+    //     "/home/user/CITS-SERVER/TRAINEEWORK/Shailendra_Tiwari/contest/assets/imgupload"
+    //   )
+    // );
   },
   filename: function (req, file, cb) {
     cb(null, imagec);
