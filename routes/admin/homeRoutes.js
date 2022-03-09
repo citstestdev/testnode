@@ -19,7 +19,7 @@ router.use("/imgupload", express.static(__dirname + "/imgupload"));
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
-    cb(null, path.join("imgupload"));
+    cb(null, "imgupload");
     cb(null, path.join(__dirname, "../../confrontend/public/assets/imgupload"));
     cb(
       null,
