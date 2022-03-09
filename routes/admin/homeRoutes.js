@@ -20,7 +20,7 @@ var storage = multer.diskStorage({
     var path = require("path");
     imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
     cb(null, path.join(__dirname, "../../imgupload"));
-    cb(null, path.join(__dirname, "../../confrontend/public/assets/imgupload"));
+    // cb(null, path.join(__dirname, "../../confrontend/public/assets/imgupload"));
   },
   filename: function (req, file, cb) {
     cb(null, imagec);
