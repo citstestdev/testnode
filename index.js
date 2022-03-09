@@ -63,7 +63,7 @@ app.use(bodyParser.json());
 
 app.use(express.static("public"));
 app.use(expressLayout);
-app.use("/uploads", express.static(path.join("testnode/uploads")));
+// app.use("/uploads", express.static(path.join("testnode/uploads")));
 app.use(
   session({
     secret: "secret token",
@@ -104,13 +104,18 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/uploads", express.static(__dirname + "/uploads"));
+// app.use(
+//   "/conbackend/public/assets/imgupload",
+//   express.static(
+//     "/home/user/Desktop/testnode/conbackend/public/assets/imgupload"
+//   )
+// );
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads");
+    cb(null, path.join(__dirname, "../confrontend/public/assets/imgupload"));
   },
   filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
+    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
   },
 });
 

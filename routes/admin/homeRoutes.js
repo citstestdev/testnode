@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var path = require("path");
 var multer = require("multer");
 const session = require("express-session");
 var checkLogin = require("../../middleware/check");
@@ -7,20 +8,28 @@ var axios = require("axios");
 const cors = require("cors");
 const async = require("async");
 // const { createProxyMiddleware } = require("http-proxy-middleware");
-router.options('*', cors());
+router.options("*", cors());
 
 const MongoClient = require("mongodb").MongoClient;
 const url =
   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 const { ObjectID } = require("mongodb");
-
-router.use("/uploads", express.static(__dirname + "/uploads"));
+var imagec = "";
+router.use("/imgupload", express.static(__dirname + "/imgupload"));
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads");
+    imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
+    cb(null, path.join("imgupload"));
+    cb(null, path.join(__dirname, "../../confrontend/public/assets/imgupload"));
+    cb(
+      null,
+      path.join(
+        "/home/user/CITS-SERVER/TRAINEEWORK/Shailendra_Tiwari/contest/assets/imgupload"
+      )
+    );
   },
   filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
+    cb(null, imagec);
   },
 });
 
@@ -168,7 +177,7 @@ router.post(
         imagepath = req.body.oldimage;
       }
       if (file && !file.length) {
-        imagepath = file.path;
+        imagepath = file.filename;
       }
 
       var myobj = {
