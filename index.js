@@ -63,7 +63,7 @@ app.use(bodyParser.json());
 
 app.use(express.static("public"));
 app.use(expressLayout);
-
+app.use("/uploads", express.static(path.join("testnode/uploads")));
 app.use(
   session({
     secret: "secret token",
@@ -77,20 +77,11 @@ app.use(
   })
 );
 
-// app.use(
-//   "/",
-//   createProxyMiddleware({
-//     target: "http://localhost:5000/",
-//     changeOrigin: true,
-//   })
-// );
-// app.listen(3000);
-
 app.use(flash());
 
 var corsOptions = {
   origin: "*",
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 
