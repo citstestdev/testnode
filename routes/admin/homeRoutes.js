@@ -1,6 +1,5 @@
 var express = require("express");
 var router = express.Router();
-var path = require("path");
 var multer = require("multer");
 const session = require("express-session");
 var checkLogin = require("../../middleware/check");
@@ -18,6 +17,7 @@ var imagec = "";
 // router.use("/imgupload", express.static(__dirname + "/imgupload"));
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    var path = require("path");
     imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
     cb(null, path.join(__dirname, "../../imgupload"));
     cb(null, path.join(__dirname, "../../confrontend/public/assets/imgupload"));
