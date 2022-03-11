@@ -47,6 +47,8 @@ var digitallegacyRoutes = require("./routes/admin/digitallegacyRoutes");
 var ourProcessRouters = require("./routes/admin/ourProcessRouters");
 var clientProject = require("./routes/admin/clientProjectRoutes");
 var startProjectRoutes = require("./routes/admin/startProjectRoutes");
+var IndustriesRoutes = require("./routes/admin/IndustriesRoutes");
+var acertificationRoutes = require("./routes/admin/acertificationRoutes");
 
 // ======================= PortfolioRoutes =========================
 var PortfolioRoutes = require("./routes/portfolio/PortfolioRoutes");
@@ -136,6 +138,8 @@ app.use("/", digitallegacyRoutes);
 app.use("/", ourProcessRouters);
 app.use("/", clientProject);
 app.use("/", startProjectRoutes);
+app.use("/", IndustriesRoutes);
+app.use("/", acertificationRoutes);
 
 app.use("/", PortfolioRoutes);
 

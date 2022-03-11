@@ -42,14 +42,20 @@ router.get("/expertise", checkLogin, async function (req, res, next) {
         expertiseitem = result2;
       });
 
+    var expertiseitemlist = [];
+    dbo
+      .collection("expertiselist")
+      .find()
+      .sort({ _id: -1 })
+      .toArray(function (err, result2) {
+        expertiseitemlist = result2;
+      });
+
     var headermenu_dynamic = [];
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "1" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "1" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -64,10 +70,7 @@ router.get("/expertise", checkLogin, async function (req, res, next) {
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "2" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "2" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -75,7 +78,6 @@ router.get("/expertise", checkLogin, async function (req, res, next) {
           return;
         }
         console.log(err);
-
         setting_dynamic = result;
       });
 
@@ -90,6 +92,7 @@ router.get("/expertise", checkLogin, async function (req, res, next) {
         headermenu: headermenu_dynamic,
         settingmenu: setting_dynamic,
         pagedata: result,
+        expertiseitemlist: expertiseitemlist,
         expertiseitem: expertiseitem,
         updatearr: [],
         msg: session.massage,
@@ -101,73 +104,66 @@ router.get("/expertise", checkLogin, async function (req, res, next) {
   });
 });
 
-router.get("/expertiseform", checkLogin, function (req, res, next) {
-  MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("conative");
+// router.get("/expertiseform", checkLogin, function (req, res, next) {
+//   MongoClient.connect(url, function (err, db) {
+//     if (err) throw err;
+//     var dbo = db.db("conative");
 
-    var option = [];
-    dbo
-      .collection("option")
-      .find()
-      .toArray(function (err, result1) {
-        option = result1;
-      });
+//     var option = [];
+//     dbo
+//       .collection("option")
+//       .find()
+//       .toArray(function (err, result1) {
+//         option = result1;
+//       });
 
-    var headermenu_dynamic = [];
-    dbo
-      .collection("menus")
-      .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "1" }] },
-        ],
-      })
-      .sort({ index: 1 })
-      .toArray(function (err, result) {
-        if (err) {
-          return;
-        }
-        console.log(err);
-        headermenu_dynamic = result;
-      });
+//     var headermenu_dynamic = [];
+//     dbo
+//       .collection("menus")
+//       .find({
+//         $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "1" }] }],
+//       })
+//       .sort({ index: 1 })
+//       .toArray(function (err, result) {
+//         if (err) {
+//           return;
+//         }
+//         console.log(err);
+//         headermenu_dynamic = result;
+//       });
 
-    var setting_dynamic = [];
-    dbo
-      .collection("menus")
-      .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "2" }] },
-        ],
-      })
-      .sort({ index: 1 })
-      .toArray(function (err, result) {
-        if (err) {
-          return;
-        }
-        console.log(err);
+//     var setting_dynamic = [];
+//     dbo
+//       .collection("menus")
+//       .find({
+//         $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "2" }] }],
+//       })
+//       .sort({ index: 1 })
+//       .toArray(function (err, result) {
+//         if (err) {
+//           return;
+//         }
+//         console.log(err);
+//         setting_dynamic = result;
+//       });
 
-        setting_dynamic = result;
-      });
-
-    dbo.collection("expertise").findOne(function (err, result) {
-      if (err) {
-        return;
-      }
-      console.log(err);
-      res.render("admin/home/expertise", {
-        title: "Expertise",
-        headermenu: headermenu_dynamic,
-        settingmenu: setting_dynamic,
-        opt: option,
-        pagedata: result,
-        updatearr: [],
-        msg: "",
-      });
-    });
-  });
-});
+//     dbo.collection("expertise").findOne(function (err, result) {
+//       if (err) {
+//         return;
+//       }
+//       console.log(err);
+//       res.render("admin/home/expertise", {
+//         title: "Expertise",
+//         headermenu: headermenu_dynamic,
+//         settingmenu: setting_dynamic,
+//         opt: option,
+//         pagedata: result,
+//         updatearr: [],
+//         msg: "",
+//       });
+//     });
+//   });
+// });
 
 router.post("/expertise", checkLogin, async function (req, res, next) {
   // await MongoClient.connect(url, function (err, db) {
@@ -219,10 +215,7 @@ router.get("/expertiseitemform", async function (req, res, next) {
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "1" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "1" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -237,10 +230,7 @@ router.get("/expertiseitemform", async function (req, res, next) {
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "2" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "2" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -248,7 +238,6 @@ router.get("/expertiseitemform", async function (req, res, next) {
           return;
         }
         console.log(err);
-
         setting_dynamic = result;
       });
 
@@ -321,10 +310,7 @@ router.get("/expertiseitemedit/:id", function (req, res, next) {
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "1" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "1" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -339,10 +325,7 @@ router.get("/expertiseitemedit/:id", function (req, res, next) {
     dbo
       .collection("menus")
       .find({
-        $and: [
-          { $or: [{ displaymenu: "b" }, { displaymenu: "fb" }] },
-          { $or: [{ parent_id: "2" }] },
-        ],
+        $and: [{ $or: [{ displaymenu: "b" }] }, { $or: [{ parent_id: "2" }] }],
       })
       .sort({ index: 1 })
       .toArray(function (err, result) {
@@ -350,7 +333,6 @@ router.get("/expertiseitemedit/:id", function (req, res, next) {
           return;
         }
         console.log(err);
-
         setting_dynamic = result;
       });
 
@@ -551,5 +533,38 @@ router.post(
     });
   }
 );
+
+//
+router.post("/expertiselistitem", async function (req, res, next) {
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+
+    var myobj = {
+      name: req.body.name,
+      description: req.body.description,
+    };
+
+    dbo.collection("expertiselist").insertOne(myobj, function (err, res) {
+      if (err) throw err;
+      console.log("document expertiselist inserted");
+
+      // db.close();
+    });
+    session.massage = "Expertise list item added successfully";
+    res.redirect("/expertise");
+  });
+});
+
+router.get("/expertiselistremove/:id", async function (req, res, next) {
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    dbo.collection("expertiselist").remove({ _id: ObjectID(req.params.id) });
+  });
+
+  session.massage = "Expertise list item deleted successfully";
+  res.redirect("/expertise");
+});
 
 module.exports = router;
