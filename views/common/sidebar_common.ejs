@@ -4,7 +4,7 @@
 </script>
 <nav class="menu-wrp">
   <ul class="menu-list sidebar">
-    <li><a class="<% if(title.toLowerCase() == 'home' || title.toLowerCase() == 'our projects' || title.toLowerCase() == 'our expertise' || title.toLowerCase() == 'our process' || title.toLowerCase() == 'client project' || title.toLowerCase() == 'start project' || title.toLowerCase() == 'digital legacy') { %> <%= 'active' %> <% } %>" href="/home">Home</a>
+    <li><a class="<% if(title.toLowerCase() == 'home' || title.toLowerCase() == 'our projects' || title.toLowerCase() == 'expertise' || title.toLowerCase() == 'our process' || title.toLowerCase() == 'client project' || title.toLowerCase() == 'start project' || title.toLowerCase() == 'digital legacy' || title.toLowerCase() == 'industries we serve'  || title.toLowerCase() == 'certification & recognition') { %> <%= 'active' %> <% } %>" href="/home">Home</a>
         <ul class="sub-menu">
            <% for (var headermenus of headermenu) {  %>
           <li ><a href="/<%= headermenus.urlslug %>"><% if(headermenus) { %><%= headermenus.title.replace(/\w/, c => c.toUpperCase()) %><% } %></a></li>

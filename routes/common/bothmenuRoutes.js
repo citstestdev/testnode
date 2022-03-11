@@ -87,8 +87,6 @@ router.post("/frontend-menu", checkLogin, async function (req, res, next) {
       parent_id: req.body.parentmenu.trim(),
     };
 
-    // console.log("memmm", myobj);
-
     dbo.collection("menus").insertOne(myobj, function (err, res) {
       if (err) throw err;
       console.log("1 document menu inserted");
@@ -96,7 +94,6 @@ router.post("/frontend-menu", checkLogin, async function (req, res, next) {
     });
   });
 
-  // session.message = ""
   return res.redirect("/frontend-menu");
 });
 
@@ -106,7 +103,7 @@ router.get("/bothmenuremove/:id", checkLogin, async function (req, res, next) {
     var dbo = db.db("conative");
     dbo.collection("menus").remove({ _id: ObjectID(req.params.id) });
   });
-  // console.log("fdsf", req.originalUrl);
+
   session.message = "Menu deleted successfully";
   return res.redirect("/" + req.originalUrl);
 });
@@ -190,8 +187,6 @@ router.post("/backend-menu", checkLogin, async function (req, res, next) {
       parent_id: req.body.parentmenu.trim(),
     };
 
-    // console.log("memmm", myobj);
-
     dbo.collection("menus").insertOne(myobj, function (err, res) {
       if (err) throw err;
       console.log("1 document menu inserted");
@@ -199,7 +194,6 @@ router.post("/backend-menu", checkLogin, async function (req, res, next) {
     });
   });
 
-  // session.message = ""
   return res.redirect("/backend-menu");
 });
 

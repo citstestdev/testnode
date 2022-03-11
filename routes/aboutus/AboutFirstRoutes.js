@@ -3,10 +3,8 @@ var router = express.Router();
 var multer = require("multer");
 var session = require("express-session");
 var checkLogin = require("../../middleware/check");
-// var alert = require('alert');
-// var serviceModelData = require('../models/ServiceModel');
+
 var MongoClient = require("mongodb").MongoClient;
-// var url = "mongodb://localhost:27017/";
 var url =
   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 var { ObjectID } = require("mongodb");

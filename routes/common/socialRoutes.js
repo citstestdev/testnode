@@ -31,15 +31,6 @@ router.get("/social", checkLogin, async function (req, res, next) {
       option = result1;
     });
 
-    // var socials = [];
-    // dbo
-    //   .collection("socials")
-    //   .find()
-    //   .sort({ _id: -1 })
-    //   .toArray(function (err, result1) {
-    //     socials = result1;
-    //   });
-
     var headermenu_dynamic = [];
     dbo
       .collection("menus")

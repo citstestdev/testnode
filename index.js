@@ -112,12 +112,24 @@ app.use(function (req, res, next) {
 //     "/home/user/Desktop/testnode/conbackend/public/assets/imgupload"
 //   )
 // );
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, path.join(__dirname, "../confrontend/public/assets/imgupload"));
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
+//   },
+// });
+
+router.use("/uploads", express.static(__dirname + "/uploads"));
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../confrontend/public/assets/imgupload"));
+    var path = require("path");
+    imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
+    cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
+    cb(null, imagec);
   },
 });
 
@@ -149,7 +161,7 @@ try {
       `mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority`
   );
   var MongoClient = require("mongodb").MongoClient;
-  // var url = "mongodb://localhost:27017?ssl=true";
+
   var url =
     "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
   var { ObjectID } = require("mongodb");
@@ -436,7 +448,6 @@ app.post(
       myobj.save();
       return res.redirect("/admin");
     }
-    // setTimeout(function(){ return res.redirect("/welcome"); }, 5000);
   }
 );
 

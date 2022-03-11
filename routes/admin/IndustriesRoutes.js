@@ -119,37 +119,37 @@ router.post("/industries", checkLogin, async function (req, res, next) {
   return res.redirect("/industries");
 });
 
-// router.post(
-//   "/processplan",
-//   upload.single("userPhoto"),
-//   async function (req, res, next) {
-//     await MongoClient.connect(url, function (err, db) {
-//       if (err) throw err;
-//       var dbo = db.db("conative");
+router.post(
+  "/industriesitem",
+  upload.single("userPhoto"),
+  async function (req, res, next) {
+    await MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("conative");
 
-//       const file = req.file;
-//       var imagepath = "";
-//       if (req.body.oldimage != "") {
-//         imagepath = req.body.oldimage.trim();
-//       }
-//       if (file && !file.length) {
-//         imagepath = file.path.trim();
-//       }
+      const file = req.file;
+      var imagepath = "";
+      if (req.body.oldimage != "") {
+        imagepath = req.body.oldimage.trim();
+      }
+      if (file && !file.length) {
+        imagepath = file.path.trim();
+      }
 
-//       var myobj = {
-//         name: req.body.name.trim(),
-//         image: imagepath,
-//       };
+      var myobj = {
+        name: req.body.name.trim(),
+        image: imagepath.trim(),
+      };
 
-//       dbo.collection("tbindustrieitem").insertOne(myobj, function (err, res) {
-//         if (err) throw err;
-//         console.log("document industrieitem inserted");
-//       });
-//     });
-//     session.message = "Industrie item inserted successfully";
-//     return res.redirect("/industries");
-//   }
-// );
+      dbo.collection("tbindustrieitem").insertOne(myobj, function (err, res) {
+        if (err) throw err;
+        console.log("document industrieitem inserted");
+      });
+    });
+    session.message = "Industrie item inserted successfully";
+    return res.redirect("/industries");
+  }
+);
 
 router.get("/industriesitemremove/:id", async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
@@ -160,39 +160,6 @@ router.get("/industriesitemremove/:id", async function (req, res, next) {
   session.message = "Industries item deleted successfully";
   res.redirect("/industries");
 });
-
-// router.get("/process-show", async function (req, res, next) {
-//   var fullUrl = req.protocol + "://" + req.get("host");
-//   await MongoClient.connect(url, function (err, db) {
-//     if (err) throw err;
-//     var dbo = db.db("conative");
-//     dbo.collection("tbindustrie").findOne(function (err, result) {
-//       if (err) {
-//         return;
-//       }
-//       console.log(err);
-//       res.status(200).json(result);
-//     });
-//   });
-// });
-
-// router.get("/processplan-show", async function (req, res, next) {
-//   var fullUrl = req.protocol + "://" + req.get("host");
-//   await MongoClient.connect(url, function (err, db) {
-//     if (err) throw err;
-//     var dbo = db.db("conative");
-//     dbo
-//       .collection("tbindustrieitem")
-//       .find()
-//       .toArray(function (err, result) {
-//         if (err) {
-//           return;
-//         }
-//         console.log(err);
-//         res.status(200).json(result);
-//       });
-//   });
-// });
 
 router.get("/getindustrieitem/:id", function (req, res, next) {
   MongoClient.connect(url, function (err, db) {

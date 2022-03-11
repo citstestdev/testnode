@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var multer = require("multer");
+var session = require("express-session");
 var checkLogin = require("../../middleware/check");
 
 var MongoClient = require("mongodb").MongoClient;
@@ -82,8 +83,11 @@ router.get("/awradscertification", checkLogin, async function (req, res, next) {
         settingmenu: setting_dynamic,
         pagedata: result,
         expertiseitem: awradsitem,
-        msg: "",
+        msg: session.message,
       });
+      setTimeout(function () {
+        session.message = "";
+      }, 3000);
     });
   });
 });
@@ -116,7 +120,7 @@ router.post(
           // db.close();
         });
     });
-
+    session.message = "Awrads added successfully";
     return res.redirect("/awradscertification");
   }
 );
@@ -189,7 +193,7 @@ router.post(
           if (err) {
             throw err;
           }
-
+          session.message = "Awrads item updated successfully";
           res.redirect("/awradscertification");
         }
       );
@@ -203,6 +207,7 @@ router.get("/awradsitemremove/:id", async function (req, res, next) {
     var dbo = db.db("conative");
     dbo.collection("tbawradsitem").remove({ _id: ObjectID(req.params.id) });
   });
+  session.message = "Awrads item deleted successfully";
   res.redirect("/awradscertification");
 });
 

@@ -164,15 +164,6 @@ router.post("/contact", async function (req, res, next) {
     dbo.collection("contacts").findOne(function (err, result1) {
       contactform = result1;
     });
-    // var showdata = [];
-    // dbo
-    //   .collection("contacts")
-    //   .findOne(
-    //     { _id: ObjectID("619e31a3d387bd16d03e874c") },
-    //     function (err, result1) {
-    //       showdata = result1;
-    //     }
-    //   );
 
     var allcontactform = [];
     dbo

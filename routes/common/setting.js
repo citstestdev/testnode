@@ -120,8 +120,6 @@ router.post(
         button: req.body.button.trim(),
       };
 
-      // console.log("dddddddd", myobj);
-
       dbo
         .collection("option")
         .findOneAndUpdate(
