@@ -121,7 +121,7 @@ app.use(function (req, res, next) {
 //   },
 // });
 
-router.use("/uploads", express.static(__dirname + "/uploads"));
+app.use("/uploads", express.static(__dirname + "/uploads"));
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     var path = require("path");
