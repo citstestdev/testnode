@@ -3,23 +3,24 @@ var router = express.Router();
 var multer = require("multer");
 var session = require("express-session");
 var checkLogin = require("../../middleware/check");
+var { upload, url } = require("../constants");
 
 const MongoClient = require("mongodb").MongoClient;
-const url =
-  "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+// const url =
+//   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 const { ObjectID } = require("mongodb");
 
-router.use("/uploads", express.static(__dirname + "/uploads"));
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
-  },
-});
+// router.use("/uploads", express.static(__dirname + "/uploads"));
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, new Date().toISOString() + file.originalname);
+//   },
+// });
 
-var upload = multer({ storage: storage });
+// var upload = multer({ storage: storage });
 
 router.get("/startpjt", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {

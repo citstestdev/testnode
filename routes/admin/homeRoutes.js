@@ -5,36 +5,12 @@ const session = require("express-session");
 var checkLogin = require("../../middleware/check");
 var axios = require("axios");
 const cors = require("cors");
+var { upload, url } = require("../constants");
 const async = require("async");
 router.options("*", cors());
 
 const MongoClient = require("mongodb").MongoClient;
-const url =
-  "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 const { ObjectID } = require("mongodb");
-var imagec = "";
-// router.use("/imgupload", express.static(__dirname + "/imgupload"));
-router.use("/uploads", express.static(__dirname + "/uploads"));
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    var path = require("path");
-    imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
-    cb(null, "uploads");
-    // cb(null, path.join(__dirname, "../../imgupload"));
-    // cb(null, path.join(__dirname, "../../confrontend/public/assets/imgupload"));
-    // cb(
-    //   null,
-    //   path.join(
-    //     "/home/user/CITS-SERVER/TRAINEEWORK/Shailendra_Tiwari/contest/assets/imgupload"
-    //   )
-    // );
-  },
-  filename: function (req, file, cb) {
-    cb(null, imagec);
-  },
-});
-
-var upload = multer({ storage: storage });
 
 router.get("/", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {

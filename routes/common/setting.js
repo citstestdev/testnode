@@ -5,23 +5,24 @@ var multer = require("multer");
 var jwt = require("jsonwebtoken");
 var checkLogin = require("../../middleware/check");
 const async = require("async");
+var { upload, url } = require("../constants");
 
 var MongoClient = require("mongodb").MongoClient;
-var url =
-  "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+// var url =
+//   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 var { ObjectID } = require("mongodb");
 
-router.use("/uploads", express.static(__dirname + "/uploads"));
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
-  },
-});
+// router.use("/uploads", express.static(__dirname + "/uploads"));
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, new Date().toISOString() + file.originalname);
+//   },
+// });
 
-var upload = multer({ storage: storage });
+// var upload = multer({ storage: storage });
 
 router.get("/setting", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
@@ -100,7 +101,7 @@ router.post(
 
       if (file && !file.length) {
         // Do something
-        imagepath = file.path;
+        imagepath = file.filename;
       }
 
       var myobj = {

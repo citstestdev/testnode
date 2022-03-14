@@ -5,23 +5,24 @@ var multer = require("multer");
 var checkLogin = require("../../middleware/check");
 var axios = require("axios");
 const async = require("async");
+var { upload, url } = require("../constants");
 
 const MongoClient = require("mongodb").MongoClient;
-const url =
-  "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+// const url =
+//   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 const { ObjectID } = require("mongodb");
 
-router.use("/uploads", express.static(__dirname + "/uploads"));
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
-  },
-});
+// router.use("/uploads", express.static(__dirname + "/uploads"));
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, new Date().toISOString() + file.originalname);
+//   },
+// });
 
-var upload = multer({ storage: storage });
+// var upload = multer({ storage: storage });
 
 router.get("/expertise", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
@@ -153,7 +154,7 @@ router.post(
         imagepath = req.body.oldimage;
       }
       if (file && !file.length) {
-        imagepath = file.path;
+        imagepath = file.filename;
       }
 
       var myobj = {
@@ -187,7 +188,7 @@ router.post(
         imagepath = req.body.oldimage;
       }
       if (file && !file.length) {
-        imagepath = file.path;
+        imagepath = file.filename;
       }
 
       var myobj = {
@@ -250,6 +251,26 @@ router.get("/expertiseitem-show", async function (req, res, next) {
     dbo
       .collection("expertiseitem")
       .find()
+      .sort({ _id: -1 })
+      .toArray(function (err, result) {
+        if (err) {
+          return;
+        }
+        console.log(err);
+        res.status(200).json(result);
+      });
+  });
+});
+
+router.get("/expertiseitem-show-list", async function (req, res, next) {
+  var fullUrl = req.protocol + "://" + req.get("host");
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    dbo
+      .collection("expertiselist")
+      .find()
+      .sort({ _id: -1 })
       .toArray(function (err, result) {
         if (err) {
           return;
@@ -322,7 +343,7 @@ router.post(
         imagepath = req.body.oldimage;
       }
       if (file && !file.length) {
-        imagepath = file.path;
+        imagepath = file.filename;
       }
 
       var myobj = {

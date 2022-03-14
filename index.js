@@ -135,8 +135,6 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-// app.listen(process.env.PORT || 5000)
-
 app.use("/", SettingRouter);
 app.use("/", menuRoutes);
 app.use("/", bothmenuRoutes);

@@ -1,0 +1,14 @@
+<svg data-name="Group 71" xmlns="http://www.w3.org/2000/svg" width="44.871" height="44.886" viewBox="0 0 44.871 44.886">
+    <defs>
+        <clipPath id="an3hb0bwva">
+            <path data-name="Rectangle 687" style="fill:#fff" d="M0 0h44.871v44.886H0z"/>
+        </clipPath>
+    </defs>
+    <g data-name="Group 70" style="clip-path:url(#an3hb0bwva)">
+        <path data-name="Path 1177" d="M0 6.053a3.265 3.265 0 0 0 .208-.362Q1.292 3.137 2.37.58c.067-.16.138-.318.252-.58l2.621 6.2-1.626-.644v35.7h35.726l-.669-1.615 6.2 2.611c-.18.089-.285.148-.395.195l-5.274 2.233a3.371 3.371 0 0 0-.361.208h-.176l.693-1.637H1.622V5.542L0 6.229v-.176" style="fill:#fff"/>
+        <path data-name="Rectangle 684" transform="translate(27.87 17.05)" style="fill:#fff" d="M0 0h6.519v21.579H0z"/>
+        <path data-name="Rectangle 685" transform="translate(16.731 23.618)" style="fill:#fff" d="M0 0h6.502v15.028H0z"/>
+        <path data-name="Path 1178" d="m9.78 24.335-.451-1.929A51.1 51.1 0 0 0 33.421 8.672c-.436-.328-.818-.615-1.2-.9l-1.227-.916 7.4-3.191-.93 8-2.441-1.8A53.136 53.136 0 0 1 9.78 24.335" transform="translate(-2.67 -1.049)" style="fill:#fff"/>
+        <path data-name="Rectangle 686" transform="translate(6.888 30.816)" style="fill:#fff" d="M0 0h6.527v7.809H0z"/>
+    </g>
+</svg>

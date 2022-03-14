@@ -4,10 +4,11 @@ var multer = require("multer");
 // var nodemailer = require('nodemailer');
 var session = require("express-session");
 var checkLogin = require("../../middleware/check");
+var { upload, url } = require("../constants");
 
 var MongoClient = require("mongodb").MongoClient;
-var url =
-  "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+// var url =
+//   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 var { ObjectID } = require("mongodb");
 
 router.use(function (req, res, next) {
@@ -23,17 +24,17 @@ router.use(function (req, res, next) {
   next();
 });
 
-router.use("/uploads", express.static(__dirname + "/uploads"));
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
-  },
-});
+// router.use("/uploads", express.static(__dirname + "/uploads"));
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, new Date().toISOString() + file.originalname);
+//   },
+// });
 
-var upload = multer({ storage: storage });
+// var upload = multer({ storage: storage });
 
 router.get("/contact", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {

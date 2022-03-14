@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="39.204" height="38.192" viewBox="0 0 39.204 38.192">
+    <defs>
+        <clipPath id="osb9x6myea">
+            <path data-name="Rectangle 669" style="fill:none" d="M0 0h33.625v34.442H0z"/>
+        </clipPath>
+    </defs>
+    <g data-name="eCommerce Development Icon">
+        <path data-name="Path 1101" d="M5.494 5.258 6.577 23.11l23.261-1.621 3.787-16.231z" style="fill:#f2f2f2" transform="translate(5.579 3.75)"/>
+        <g data-name="Group 59">
+            <g data-name="Group 58" style="clip-path:url(#osb9x6myea)" transform="translate(5.579 3.75)">
+                <circle data-name="Ellipse 47" cx="3.012" cy="3.012" r="3.012" transform="translate(19.718 27.918)" style="stroke-miterlimit:10;stroke:#f2f2f2;fill:#f2f2f2"/>
+                <circle data-name="Ellipse 48" cx="3.012" cy="3.012" r="3.012" transform="translate(6.718 27.918)" style="stroke-miterlimit:10;stroke:#f2f2f2;fill:#f2f2f2"/>
+                <path data-name="Path 1102" d="M0 .5h5.193l1.721 29.164" style="stroke-miterlimit:10;stroke:#f2f2f2;fill:none"/>
+                <path data-name="Line 53" transform="translate(12.965 30.93)" style="stroke-miterlimit:10;stroke:#f2f2f2;fill:none" d="M0 0h7.187"/>
+            </g>
+        </g>
+        <g data-name="eCommerce Development" transform="translate(.75 -1.25)">
+            <circle data-name="Ellipse 45" cx="3" cy="3" r="3" transform="translate(8 29)" style="stroke:#000;stroke-width:1.5px;fill:transparent;stroke-miterlimit:10"/>
+            <circle data-name="Ellipse 46" cx="3" cy="3" r="3" transform="translate(21 29)" style="stroke:#000;stroke-width:1.5px;stroke-miterlimit:10;fill:none"/>
+            <path data-name="Line 52" transform="translate(14 32)" style="stroke:#000;stroke-width:1.5px;stroke-miterlimit:10;fill:none" d="M0 0h7"/>
+            <path data-name="Path 1099" d="M8 31.786 5.41 2H0" style="stroke-linecap:round;stroke:#000;stroke-width:1.5px;stroke-miterlimit:10;fill:none"/>
+            <path data-name="Path 1100" d="m12.082 27.852 23.262-1.622L39.131 10H11" transform="translate(-5.049 -3.672)" style="stroke:#000;stroke-width:1.5px;stroke-miterlimit:10;fill:none"/>
+        </g>
+    </g>
+</svg>
