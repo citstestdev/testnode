@@ -28,7 +28,7 @@
         <br>
          <label>Alternate Email:<input type="text" name="alternateemail" <% if(opt.alternateemail) { %> value="<%= opt.alternateemail %>" <% } %> ></label>
         <br>
-         <% if(opt.image) { %><img src="/<%= opt.image %>" style="width:155px;height: 100px;"/>  <% } %>
+         <% if(opt.image) { %><img src="imgupload/<%= opt.image %>" style="width:155px;height: 100px;"/>  <% } %>
          <input type="hidden" name="oldimage" <% if(opt.image) { %> value="<%= opt.image %>" <% } %>  >
         <input type="file" name="userPhoto" id="" placeholder=""  style="border:none;width:100%;">
         <br>
