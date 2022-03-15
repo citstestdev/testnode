@@ -18,6 +18,10 @@
         <br>
         <label>Address:<br><textarea name="address"><% if(opt.address) {%><%= opt.address %><%} %></textarea></label>
         <br>
+        <label>Address 1:<br><textarea name="address_1"><% if(opt.address_1) {%><%= opt.address_1 %><%} %></textarea></label>
+        <br>
+        <label>Address 2:<br><textarea name="address_2"><% if(opt.address_2) {%><%= opt.address_2 %><%} %></textarea></label>
+        <br>
          <label>Phone:<input type="text" name="phone" <% if(opt.phone) { %> value="<%= opt.phone %>" <% } %> ></label>
         <br>
          <label>Alternate Phone:<input type="text" name="alternatephone" <% if(opt.alternatephone) { %> value="<%= opt.alternatephone %>" <% } %> ></label>
@@ -25,7 +29,7 @@
          <label>Alternate Email:<input type="text" name="alternateemail" <% if(opt.alternateemail) { %> value="<%= opt.alternateemail %>" <% } %> ></label>
         <br>
          <% if(opt.image) { %><img src="/<%= opt.image %>" style="width:155px;height: 100px;"/>  <% } %>
-         <input type="hidden" name="oldimage" <% if(opt.image) { %> value="<%= opt.image %>" <% } %>  >
+         <input type="hidden" name="oldimage" <% if(opt.image) { %> value="imgupload/<%= opt.image %>" <% } %>  >
         <input type="file" name="userPhoto" id="" placeholder=""  style="border:none;width:100%;">
         <br>
         <label>Footer:<input type="text" name="footer" <% if(opt.footer) { %> value="<%= opt.footer %>" <% } %>  ></label>

@@ -10,18 +10,6 @@ var MongoClient = require("mongodb").MongoClient;
 //   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 var { ObjectID } = require("mongodb");
 
-// router.use("/uploads", express.static(__dirname + "/uploads"));
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, new Date().toISOString() + file.originalname);
-//   },
-// });
-
-// var upload = multer({ storage: storage });
-
 router.get("/awradscertification", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
@@ -220,6 +208,38 @@ router.get("/getawradsitem/:id", function (req, res, next) {
     dbo
       .collection("tbawradsitem")
       .findOne({ _id: ObjectID(aid) }, function (err, result) {
+        res.status(200).json(result);
+      });
+  });
+});
+
+router.get("/awardscertification", async function (req, res, next) {
+  var fullUrl = req.protocol + "://" + req.get("host");
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    dbo.collection("tbawradscertification").findOne(function (err, result) {
+      if (err) {
+        return;
+      }
+
+      res.status(200).json(result);
+    });
+  });
+});
+
+router.get("/awardsitem", async function (req, res, next) {
+  var fullUrl = req.protocol + "://" + req.get("host");
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    dbo
+      .collection("tbawradsitem")
+      .find()
+      .toArray(function (err, result) {
+        if (err) {
+          return;
+        }
         res.status(200).json(result);
       });
   });

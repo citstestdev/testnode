@@ -110,6 +110,8 @@ router.post(
         email: req.body.clientemail.trim(),
         description: req.body.description.trim(),
         address: req.body.address.trim(),
+        address_1: req.body.address_1.trim(),
+        address_2: req.body.address_2.trim(),
         phone: req.body.phone.trim(),
         alternatephone: req.body.alternatephone.trim(),
         alternateemail: req.body.alternateemail.trim(),

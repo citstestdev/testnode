@@ -10,18 +10,6 @@ const MongoClient = require("mongodb").MongoClient;
 // "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
 const { ObjectID } = require("mongodb");
 
-// router.use("/uploads", express.static(__dirname + "/uploads"));
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, new Date().toISOString() + file.originalname);
-//   },
-// });
-
-// var upload = multer({ storage: storage });
-
 router.get("/clientproject", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
@@ -174,7 +162,6 @@ router.post("/clientproject", checkLogin, async function (req, res, next) {
     dbo.collection("tbclientproject").insertOne(myobj, function (err, res) {
       if (err) throw err;
       console.log("document process inserted");
-      // db.close();
     });
   });
   session.message = "Our client project inserted successfully";
@@ -523,7 +510,7 @@ router.get("/getclientprojectitem/:id", function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
     var aid = req.params.id;
-    // var updatearr = [];
+
     dbo
       .collection("tbclientinfo")
       .findOne({ _id: ObjectID(aid) }, function (err, result) {
@@ -573,5 +560,55 @@ router.post(
     });
   }
 );
+
+router.get("/cp-show", async function (req, res, next) {
+  var fullUrl = req.protocol + "://" + req.get("host");
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    dbo.collection("tbclientproject").findOne(function (err, result) {
+      if (err) {
+        return;
+      }
+
+      res.status(200).json(result);
+    });
+  });
+});
+
+router.get("/cpi-show", async function (req, res, next) {
+  var fullUrl = req.protocol + "://" + req.get("host");
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    dbo
+      .collection("tbclientinfo")
+      .find()
+      .toArray(function (err, result) {
+        if (err) {
+          return;
+        }
+
+        res.status(200).json(result);
+      });
+  });
+});
+
+router.get("/cps-show", async function (req, res, next) {
+  var fullUrl = req.protocol + "://" + req.get("host");
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+    dbo
+      .collection("tbclientslider")
+      .find()
+      .toArray(function (err, result) {
+        if (err) {
+          return;
+        }
+        res.status(200).json(result);
+      });
+  });
+});
 
 module.exports = router;

@@ -4,7 +4,6 @@ td,th {
 }
 </style>
 <%- include('../../common/header') %>
-<% if(msg) { %> <%= msg %><% } %>
 <section class="center-wr" style="margin-top:77px !important;">
 <div class="row page-wraper">
   <div class="col-md-12 full-content-wraper">
@@ -29,16 +28,12 @@ td,th {
 <table border="2" cellspacing="5" cellpadding="5" style="width: 100%;">
 <tr>
 <th>Title</th>
-<th>Name</th>
 <th>Edit</th>
 <th>Remove</th>
 </tr>
 <% for(var item of expertiseitem) { %>
    <tr><td> 
       <%= item.name %>
-      </td>
-      <td> 
-      <%= item.description %>
       </td>
        <td> 
       <a href="javascript:void(0)"  onclick="getawradsedit('<%= item._id %>')">Edit</a>
