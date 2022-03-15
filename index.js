@@ -121,12 +121,12 @@ app.use(function (req, res, next) {
 //   },
 // });
 
-app.use("/uploads", express.static(__dirname + "/uploads"));
+app.use("/imgupload", express.static(__dirname + "/imgupload"));
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     var path = require("path");
     imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
-    cb(null, "uploads");
+    cb(null, "imgupload");
   },
   filename: function (req, file, cb) {
     cb(null, imagec);

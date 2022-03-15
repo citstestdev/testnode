@@ -29,7 +29,7 @@
          <label>Alternate Email:<input type="text" name="alternateemail" <% if(opt.alternateemail) { %> value="<%= opt.alternateemail %>" <% } %> ></label>
         <br>
          <% if(opt.image) { %><img src="/<%= opt.image %>" style="width:155px;height: 100px;"/>  <% } %>
-         <input type="hidden" name="oldimage" <% if(opt.image) { %> value="imgupload/<%= opt.image %>" <% } %>  >
+         <input type="hidden" name="oldimage" <% if(opt.image) { %> value="<%= opt.image %>" <% } %>  >
         <input type="file" name="userPhoto" id="" placeholder=""  style="border:none;width:100%;">
         <br>
         <label>Footer:<input type="text" name="footer" <% if(opt.footer) { %> value="<%= opt.footer %>" <% } %>  ></label>
