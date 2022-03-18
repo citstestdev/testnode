@@ -147,7 +147,6 @@ router.post(
       var dbo = db.db("conative");
 
       const file = req.file;
-      // console.warn("fileee",file);
 
       var imagepath = "";
       if (req.body.oldimage != "") {
@@ -175,19 +174,6 @@ router.post(
             session.massage = "Home updated successfully";
           }
         );
-
-      // var myobj = {
-      //   name: req.body.name.trim(),
-      //   title: req.body.title.trim(),
-      //   description: req.body.description.trim(),
-      //   image: imagepath,
-      // };
-
-      // dbo.collection("homes").insertOne(myobj, function (err, res) {
-      //   if (err) throw err;
-      //   console.log("document review inserted");
-      //   session.massage = "Home updated successfully";
-      // });
     });
 
     return res.redirect("/home");

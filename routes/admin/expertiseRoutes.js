@@ -8,21 +8,8 @@ const async = require("async");
 var { upload, url } = require("../constants");
 
 const MongoClient = require("mongodb").MongoClient;
-// const url =
-//   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+
 const { ObjectID } = require("mongodb");
-
-// router.use("/uploads", express.static(__dirname + "/uploads"));
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, new Date().toISOString() + file.originalname);
-//   },
-// });
-
-// var upload = multer({ storage: storage });
 
 router.get("/expertise", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
@@ -110,7 +97,6 @@ router.post("/expertise", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
     dbo.collection("expertise").findOne(function (err, result) {
-      // console.log(result);
       if (err) {
         return;
       }
@@ -131,7 +117,6 @@ router.post("/expertise", checkLogin, async function (req, res, next) {
     dbo.collection("expertise").insertOne(myobj, function (err, res) {
       if (err) throw err;
       console.log("document expertise inserted");
-      // db.close();
     });
   });
 
@@ -166,7 +151,6 @@ router.post(
       dbo.collection("expertiseitem").insertOne(myobj, function (err, res) {
         if (err) throw err;
         console.log("document expertiseitem inserted");
-        // db.close();
       });
     });
     session.massage = "Expertise item added successfully";
@@ -306,7 +290,7 @@ router.get("/singlepage/:id", function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
     var aid = req.params.id;
-    // var updatearr = [];
+
     dbo
       .collection("expertiseitem")
       .findOne({ _id: ObjectID(aid) }, function (err, result) {
@@ -320,7 +304,7 @@ router.get("/getexpertiseitem/:id", function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
     var aid = req.params.id;
-    // var updatearr = [];
+
     dbo
       .collection("expertiseitem")
       .findOne({ _id: ObjectID(aid) }, function (err, result) {
@@ -386,8 +370,6 @@ router.post("/expertiselistitem", async function (req, res, next) {
     dbo.collection("expertiselist").insertOne(myobj, function (err, res) {
       if (err) throw err;
       console.log("document expertiselist inserted");
-
-      // db.close();
     });
     session.massage = "Expertise list item added successfully";
     res.redirect("/expertise");

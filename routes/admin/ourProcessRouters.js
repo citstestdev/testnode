@@ -6,21 +6,8 @@ var checkLogin = require("../../middleware/check");
 var { upload, url } = require("../constants");
 
 const MongoClient = require("mongodb").MongoClient;
-// const url =
-//   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+
 const { ObjectID } = require("mongodb");
-
-// router.use("/uploads", express.static(__dirname + "/uploads"));
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, new Date().toISOString() + file.originalname);
-//   },
-// });
-
-// var upload = multer({ storage: storage });
 
 router.get("/process", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
@@ -113,7 +100,6 @@ router.post("/process", checkLogin, async function (req, res, next) {
     dbo.collection("process").insertOne(myobj, function (err, res) {
       if (err) throw err;
       console.log("document process inserted");
-      // db.close();
     });
   });
   session.message = "Our process inserted successfully";
@@ -200,7 +186,7 @@ router.get("/getprocessplan/:id", function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
     var aid = req.params.id;
-    // var updatearr = [];
+
     dbo
       .collection("processplan")
       .findOne({ _id: ObjectID(aid) }, function (err, result) {

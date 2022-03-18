@@ -20,7 +20,6 @@ const async = require("async");
 var multer = require("multer");
 var logger = require("morgan");
 const mongodb = require("mongodb");
-// const { createProxyMiddleware } = require("http-proxy-middleware");
 const { check, validationResult } = require("express-validator");
 
 const register = require("./models/Registermodel");
@@ -28,7 +27,6 @@ const register = require("./models/Registermodel");
 // run this port
 app.listen(process.env.PORT || 5000);
 
-// var SettingRouter = require('./')
 var SettingRouter = require("./routes/common/setting");
 
 //  ======================== menu ============================
@@ -65,7 +63,7 @@ app.use(bodyParser.json());
 
 app.use(express.static("public"));
 app.use(expressLayout);
-// app.use("/uploads", express.static(path.join("testnode/uploads")));
+
 app.use(
   session({
     secret: "secret token",
@@ -105,21 +103,6 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
-// app.use(
-//   "/conbackend/public/assets/imgupload",
-//   express.static(
-//     "/home/user/Desktop/testnode/conbackend/public/assets/imgupload"
-//   )
-// );
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, path.join(__dirname, "../confrontend/public/assets/imgupload"));
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
-//   },
-// });
 
 app.use("/imgupload", express.static(__dirname + "/imgupload"));
 var storage = multer.diskStorage({
@@ -300,10 +283,6 @@ app.post("/checklogin", async function (req, res, next) {
 });
 
 ///      ==================== login part  ========================
-
-// app.get("/", async function(req, res, next){
-//   return res.redirect("/admin");
-// });
 
 app.get("/register", async function (req, res, next) {
   let token = req.cookies.token ? true : false;

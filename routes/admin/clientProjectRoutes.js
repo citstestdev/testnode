@@ -6,8 +6,7 @@ var checkLogin = require("../../middleware/check");
 var { upload, url } = require("../constants");
 
 const MongoClient = require("mongodb").MongoClient;
-// const url =
-// "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+
 const { ObjectID } = require("mongodb");
 
 router.get("/clientproject", checkLogin, async function (req, res, next) {

@@ -6,8 +6,7 @@ var checkLogin = require("../../middleware/check");
 var { upload, url } = require("../constants");
 
 var MongoClient = require("mongodb").MongoClient;
-// var url =
-//   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+
 var { ObjectID } = require("mongodb");
 
 router.get("/awradscertification", checkLogin, async function (req, res, next) {

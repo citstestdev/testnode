@@ -6,21 +6,8 @@ var checkLogin = require("../../middleware/check");
 var { upload, url } = require("../constants");
 
 const MongoClient = require("mongodb").MongoClient;
-// const url =
-//   "mongodb+srv://sample_user:admin@cluster0.kt5lv.mongodb.net/conative?retryWrites=true&w=majority";
+
 const { ObjectID } = require("mongodb");
-
-// router.use("/uploads", express.static(__dirname + "/uploads"));
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, new Date().toISOString() + file.originalname);
-//   },
-// });
-
-// var upload = multer({ storage: storage });
 
 router.get("/industries", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
@@ -113,7 +100,6 @@ router.post("/industries", checkLogin, async function (req, res, next) {
     dbo.collection("tbindustrie").insertOne(myobj, function (err, res) {
       if (err) throw err;
       console.log("document process inserted");
-      // db.close();
     });
   });
   session.message = "Industries inserted successfully";
@@ -250,24 +236,5 @@ router.get("/industriesitem-show", async function (req, res, next) {
       });
   });
 });
-
-// router.get("/expertiseitem-show-list", async function (req, res, next) {
-//   var fullUrl = req.protocol + "://" + req.get("host");
-//   await MongoClient.connect(url, function (err, db) {
-//     if (err) throw err;
-//     var dbo = db.db("conative");
-//     dbo
-//       .collection("expertiselist")
-//       .find()
-//       .sort({ _id: -1 })
-//       .toArray(function (err, result) {
-//         if (err) {
-//           return;
-//         }
-//         console.log(err);
-//         res.status(200).json(result);
-//       });
-//   });
-// });
 
 module.exports = router;
