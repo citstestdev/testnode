@@ -190,9 +190,9 @@ app.get("/social-media", async function (req, res, next) {
   });
 });
 
-// app.get("/dashboard", checkLogin, async function (req, res, next) {
-//   return res.render("common/dashboard", { title: "dashboard" });
-// });
+app.get("/dashboard", checkLogin, async function (req, res, next) {
+  return res.render("common/dashboard", { title: "dashboard" });
+});
 
 app.get("/setting", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
@@ -308,7 +308,7 @@ app.get("/admin", (req, res) => {
   let token = req.cookies.token ? true : false;
 
   if (token) {
-    return res.redirect("/home");
+    return res.redirect("/dashboard");
   }
   // if there exists, send the error.
   if (bad_auth) {
@@ -329,7 +329,7 @@ app.get("/home", checkLogin, (req, res) => {
     return res.redirect("/admin");
   }
   // render welcome page
-  return res.redirect("/home");
+  return res.redirect("/dashboard");
 });
 
 app.post("/process_login", async (req, res) => {
@@ -362,7 +362,7 @@ app.post("/process_login", async (req, res) => {
             res.cookie("token", token);
             res.cookie("username", username);
             // redirect
-            return res.redirect("/home");
+            return res.redirect("/dashboard");
           } else {
             return res.redirect("/admin?msg=fail");
           }
