@@ -51,6 +51,9 @@ var acertificationRoutes = require("./routes/admin/acertificationRoutes");
 // ======================= PortfolioRoutes =========================
 var PortfolioRoutes = require("./routes/portfolio/PortfolioRoutes");
 
+// ======================= CareerRoutes =========================
+var CareerRoutes = require("./routes/career/CareerRoutes");
+
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -136,6 +139,8 @@ app.use("/", acertificationRoutes);
 
 app.use("/", PortfolioRoutes);
 
+app.use("/", CareerRoutes);
+
 try {
   mongoose.connect(
     process.env.MONGODB_URI ||
@@ -183,6 +188,10 @@ app.get("/social-media", async function (req, res, next) {
         res.status(200).json(result);
       });
   });
+});
+
+app.get("/dashboard", checkLogin, async function (req, res, next) {
+  return res.render("common/dashboard", { title: "dashboard" });
 });
 
 app.get("/setting", checkLogin, async function (req, res, next) {
@@ -299,7 +308,7 @@ app.get("/admin", (req, res) => {
   let token = req.cookies.token ? true : false;
 
   if (token) {
-    return res.redirect("/home");
+    return res.redirect("/dashboard");
   }
   // if there exists, send the error.
   if (bad_auth) {
@@ -320,7 +329,7 @@ app.get("/home", checkLogin, (req, res) => {
     return res.redirect("/admin");
   }
   // render welcome page
-  return res.redirect("/home");
+  return res.redirect("/dashboard");
 });
 
 app.post("/process_login", async (req, res) => {
@@ -353,7 +362,7 @@ app.post("/process_login", async (req, res) => {
             res.cookie("token", token);
             res.cookie("username", username);
             // redirect
-            return res.redirect("/home");
+            return res.redirect("/dashboard");
           } else {
             return res.redirect("/admin?msg=fail");
           }

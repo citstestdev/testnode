@@ -1,27 +1,194 @@
-<nav class="menu-wrp">
-  <ul class="menu-list sidebar">
-    <li><a class="<% if(title.toLowerCase() == 'home' || title.toLowerCase() == 'our projects' || title.toLowerCase() == 'expertise' || title.toLowerCase() == 'our process' || title.toLowerCase() == 'client project' || title.toLowerCase() == 'start project' || title.toLowerCase() == 'digital legacy' || title.toLowerCase() == 'industries we serve'  || title.toLowerCase() == 'certification & recognition') { %> <%= 'active' %> <% } %>" href="/home">Home</a>
-        <ul class="sub-menu">
-           <% for (var headermenus of headermenu) {  %>
-          <li ><a href="/<%= headermenus.urlslug %>"><% if(headermenus) { %><%= headermenus.title.replace(/\w/, c => c.toUpperCase()) %><% } %></a></li>
-          <% } %>
+	<!-- Menu -->
+  <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" data-bg-class="bg-menu-theme">
+    <div class="app-brand demo ">
+      <a href="/dashboard"> <span class="app-brand-logo demo">
+        <img src="./assets/img/conative-logo.svg"></span>
+      </a>
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none"> <i class="bx bx-chevron-left bx-sm align-middle"></i> </a>
+    </div>
+    <div class="menu-inner-shadow"></div>
+    <ul class="menu-inner py-1 ps ps--active-y">
+      <!-- Dashboard -->
+      <li class="menu-item  <% if(title.toLowerCase() == 'dashboard') { %> <%= 'active' %> <% } %>" >
+        <a href="/dashboard" class="menu-link"> <i class="menu-icon tf-icons bx bx-home-circle"></i>
+          <div data-i18n="Analytics">Dashboard</div>
+        </a>
+      </li>
+      <!-- Layouts -->
+      <li class="menu-item <% if(title.toLowerCase() == 'home') { %> <%= 'active open' %> <% } %>">
+        <a href="/home" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-layout"></i>
+          <div data-i18n="Layouts">Home</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item  <% if(title.toLowerCase() == 'home') { %> <%= 'active' %> <% } %>">
+            <a href="/home" class="menu-link">
+              <div data-i18n="Without menu">Home</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <div data-i18n="Without navbar">Our Projects</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <div data-i18n="Container">Awrads C & R</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#l" class="menu-link">
+              <div data-i18n="Fluid">Industries</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <div data-i18n="Blank">Our Expertise</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <div data-i18n="Blank">Our Process</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <div data-i18n="Blank">Client Project</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <div data-i18n="Blank">Start Project</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <div data-i18n="Blank">Digital Legacy</div>
+            </a>
+          </li>
         </ul>
-    </li>
-    <li><a class="<% if(title.toLowerCase() == 'setting' || title.toLowerCase() == 'frontend menu' || title.toLowerCase() == 'backend menu' || title.toLowerCase() == 'social media') { %> <%= 'active' %> <% } %>" href="/setting">Setting</a>
-      <ul class="sub-menu">
-        <li><a href="/frontend-menu">Frontend Menu</a></li>
-        <li><a href="/backend-menu">Backend Menu</a></li>
-           <% for (var settingmenus of settingmenu) {  %>
-          <li><a href="/<%= settingmenus.urlslug %>"><% if(settingmenus) { %><%= settingmenus.title.replace(/\w/, c => c.toUpperCase()) %><% } %></a></li>
-          <% } %>
+      </li>
+      <li class="menu-header small text-uppercase"> <span class="menu-header-text">Pages</span> </li>
+    
+      <li class="menu-item" style="">
+        <a href="javascript:void(0);" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+          <div data-i18n="Authentications">Users</div>
+        </a>
+        <ul class="menu-sub">
+          <!-- <li class="menu-item">
+            <a href="auth-login.html" class="menu-link" target="_blank">
+              <div data-i18n="Basic">Login</div>
+            </a>
+          </li> -->
+          <li class="menu-item">
+            <a href="/register" class="menu-link">
+              <div data-i18n="Basic">Register</div>
+            </a>
+          </li>
+          <!-- <li class="menu-item">
+            <a href="auth-forgot-password.html" class="menu-link" target="_blank">
+              <div data-i18n="Basic">Forgot Password</div>
+            </a>
+          </li> -->
         </ul>
-    </li> 
-    <li><a class="<% if(title.toLowerCase() == 'about us') { %> <%= 'active' %> <% } %>" href="/aboutus">About Us</a>
-        <ul class="sub-menu">
-          <li><a href="/aboutus">About us</a></li>
+      </li>
+
+      <li class="menu-item <% if(title.toLowerCase() == 'setting') { %> <%= 'active open' %> <% } %>" >
+        <a href="javascript:void(0);" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-copy"></i>
+          <div data-i18n="Authentications">Setting</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item <% if(title.toLowerCase() == 'setting') { %> <%= 'active' %> <% } %>">
+            <a href="/setting" class="menu-link">
+              <div data-i18n="Basic">Setting</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="" class="menu-link">
+              <div data-i18n="Basic">Social</div>
+            </a>
+          </li>
         </ul>
-    </li>
-     <li><a class="<% if(title.toLowerCase() == 'portfolio') { %> <%= 'active' %> <% } %>" href="/portfolio">Portfolio</a></li>
-    <li><a class="<% if(title.toLowerCase() == 'contact') { %> <%= 'active' %> <% } %>" href="/contact">Contact Us</a></li> 
-  </ul>
-</nav>
+      </li>
+   
+      <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
+      <!-- Cards -->
+      <li class="menu-item">
+        <a href="#" class="menu-link"> <i class="menu-icon tf-icons bx bx-collection"></i>
+          <div data-i18n="Basic">Cards</div>
+        </a>
+      </li>
+      
+      <li class="menu-item">
+        <a href="javascript:void(0)" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-copy"></i>
+          <div data-i18n="Extended UI">Extended UI</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <div data-i18n="Perfect Scrollbar">Perfect scrollbar</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <div data-i18n="Text Divider">Text Divider</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="#" class="menu-link"> <i class="menu-icon tf-icons bx bx-crown"></i>
+          <div data-i18n="Boxicons">Boxicons</div>
+        </a>
+      </li>
+      <!-- Forms & Tables -->
+      <li class="menu-header small text-uppercase"><span class="menu-header-text">Forms &amp; Tables</span></li>
+      <!-- Forms -->
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-detail"></i>
+          <div data-i18n="Form Elements">Form Elements</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="forms-basic-inputs.html" class="menu-link">
+              <div data-i18n="Basic Inputs">Basic Inputs</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="forms-input-groups.html" class="menu-link">
+              <div data-i18n="Input groups">Input groups</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-detail"></i>
+          <div data-i18n="Form Layouts">Form Layouts</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="form-layouts-vertical.html" class="menu-link">
+              <div data-i18n="Vertical Form">Vertical Form</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="form-layouts-horizontal.html" class="menu-link">
+              <div data-i18n="Horizontal Form">Horizontal Form</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!-- Tables -->
+      <li class="menu-item">
+        <a href="tables-basic.html" class="menu-link"> <i class="menu-icon tf-icons bx bx-table"></i>
+          <div data-i18n="Tables">Tables</div>
+        </a>
+      </li>
+
+      <div class="ps__rail-x" >
+        <div class="ps__thumb-x" tabindex="0" ></div>
+      </div>
+      <div class="ps__rail-y" >
+        <div class="ps__thumb-y" tabindex="0"></div>
+      </div>
+    </ul>
+  </aside>
