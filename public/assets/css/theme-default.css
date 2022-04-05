@@ -128,10 +128,10 @@ a.bg-primary:focus {
 .dropdown-notifications-item:not(.mark-as-read)
   .dropdown-notifications-read
   span {
-  background-color:#f84525;
+  background-color: #f84525;
 }
 .bg-label-primary {
-  background-color: rgba(248, 69, 37, .10) !important;
+  background-color: rgba(248, 69, 37, 0.1) !important;
   color: #f84525 !important;
 }
 .border-label-primary {
@@ -149,12 +149,12 @@ a.bg-primary:focus {
   border-color: #f84525;
   background-color: #f84525;
   color: #fff;
-  box-shadow: 0 0.125rem 0.25rem rgba(248, 69, 37,0.4);
+  box-shadow: 0 0.125rem 0.25rem rgba(248, 69, 37, 0.4);
 }
 .progress-bar {
   background-color: #f84525;
   color: #fff;
-  box-shadow: 0 2px 4px 0 rgba(248, 69, 37,0.4);
+  box-shadow: 0 2px 4px 0 rgba(248, 69, 37, 0.4);
 }
 .list-group-item-primary {
   background-color: #e1e2ff;
@@ -218,7 +218,7 @@ button.list-group-item-primary.active {
   color: #fff;
   background-color: #f84525;
   border-color: #f84525;
-  box-shadow: 0 0.125rem 0.25rem 0 rgba(248, 69, 37,0.4);
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(248, 69, 37, 0.4);
 }
 .btn-primary:hover {
   color: #fff;
@@ -264,7 +264,7 @@ button.list-group-item-primary.active {
   color: #fff;
   background-color: #f84525;
   border-color: #f84525;
-  box-shadow: 0 0.125rem 0.25rem 0 rgba(248, 69, 37,0.4);
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(248, 69, 37, 0.4);
   transform: translateY(-1px);
 }
 .btn-check:focus + .btn-outline-primary,
@@ -328,7 +328,7 @@ button.list-group-item-primary.active {
 .nav-pills .nav-link.active:focus {
   background-color: #f84525;
   color: #fff;
-  box-shadow: 0 2px 4px 0 rgbA(248, 69, 37,0.5);
+  box-shadow: 0 2px 4px 0 rgbA(248, 69, 37, 0.5);
 }
 .form-control:focus,
 .form-select:focus {
@@ -349,7 +349,7 @@ button.list-group-item-primary.active {
 .form-check-input[type="checkbox"]:indeterminate {
   background-color: #f84525;
   border-color: #f84525;
-  box-shadow: 0 2px 4px 0 rgba(248, 69, 37,0.4);
+  box-shadow: 0 2px 4px 0 rgba(248, 69, 37, 0.4);
 }
 .custom-option.checked {
   border: 1px solid #696cff;
@@ -857,7 +857,7 @@ html:not(.layout-menu-collapsed)
 }
 .bg-menu-theme .menu-inner > .menu-item.active > .menu-link {
   color: #f84525;
-  background-color: rgba(248, 69, 37,0.16) !important;
+  background-color: rgba(248, 69, 37, 0.16) !important;
 }
 .bg-menu-theme .menu-inner > .menu-item.active:before {
   background: #f84525;
@@ -869,7 +869,7 @@ html:not(.layout-menu-collapsed)
   .menu-sub
   > .menu-item.active
   > .menu-link:not(.menu-toggle):before {
-  background-color: #696cff !important;
+  background-color: #f84525 !important;
   border: 3px solid #e7e7ff !important;
 }
 .app-brand .layout-menu-toggle {

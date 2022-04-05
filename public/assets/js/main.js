@@ -101,6 +101,7 @@ var path = window.location.href; // because the 'href' property of the DOM eleme
 
 $("#accounteditform").hide();
 $("#editForm").hide();
+
 $("#account").click(function () {
   // $(this).addClass('active');
   $("#acountForm").hide();
@@ -116,3 +117,7 @@ $("#accounteditform").click(function () {
   $("#accounteditform").hide();
   $("#account").show();
 });
+
+// $("#ouritem").click(function () {
+//   alert("hes");
+// });
