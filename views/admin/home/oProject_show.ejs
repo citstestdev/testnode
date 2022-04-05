@@ -210,7 +210,7 @@ function geteditform(editid){
       // alert(response);
         $('#editid').val(editid);
         $('#name').val(response.name);
-        $('#description').val(response.description);
+        $('#description').html(response.description);
         $('#ouritemForm').hide();
         $('#ouritemviewForm').hide();
         $("#ouritem").hide();
