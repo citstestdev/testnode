@@ -106,7 +106,7 @@
             <h5 class="card-header">Add Item</h5>
             <hr class="my-0">
             <div class="card-body">
-              <form method="POST" action="/ourprojectsitem" enctype="multipart/form-data">
+              <form method="POST" action="/ourprojectsitem">
                 <div class="row">
                   <div class="mb-3 col-md-10">
                     <label for="firstName" class="form-label">Name :</label>
@@ -115,11 +115,6 @@
                     <label for="description" class="form-label">Description :</label>
                     <textarea id="editor1" name="description" class="form-control"  required></textarea> 
                   </div>
-                  <div class="mb-3 col-md-10">
-                    <input type="hidden" name="oldimage">
-                    <input type="file" name="userPhoto" class="form-control"  id="" placeholder=""  style="border:none;width:100%;" accept="image/*" required> </div>
-              
-                </div>
                 <div class="mt-2">
                   <button type="submit" class="btn btn-primary me-2">Add Item</button>
                 </div>
