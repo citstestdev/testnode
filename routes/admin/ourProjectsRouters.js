@@ -110,34 +110,39 @@ router.post("/projects", checkLogin, async function (req, res, next) {
   return res.redirect("/projects");
 });
 
-router.post("/ourprojectsitem", async function (req, res, next) {
-  await MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("conative");
-
-    // const file = req.file;
-    // var imagepath = "";
-    // if (req.body.oldimage != "") {
-    //   imagepath = req.body.oldimage.trim();
-    // }
-    // if (file && !file.length) {
-    //   imagepath = file.filename.trim();
-    // }
-
-    var myobj = {
-      name: req.body.name.trim(),
-      description: req.body.description.trim(),
-    };
-
-    dbo.collection("ourprojectsitem").insertOne(myobj, function (err, _res) {
+router.post(
+  "/ourprojectsitem",
+  upload.single("userPhoto"),
+  async function (req, res, next) {
+    await MongoClient.connect(url, function (err, db) {
       if (err) throw err;
-      console.log("document ourprojectsitem inserted");
-      // db.close();
+      var dbo = db.db("conative");
+
+      const file = req.file;
+      var imagepath = "";
+      if (req.body.oldimage != "") {
+        imagepath = req.body.oldimage.trim();
+      }
+      if (file && !file.length) {
+        imagepath = file.filename.trim();
+      }
+
+      var myobj = {
+        name: req.body.name.trim(),
+        description: req.body.description.trim(),
+        image: imagepath,
+      };
+
+      dbo.collection("ourprojectsitem").insertOne(myobj, function (err, _res) {
+        if (err) throw err;
+        console.log("document ourprojectsitem inserted");
+        // db.close();
+      });
     });
-  });
-  session.message = "Project item added successfully";
-  return res.redirect("/projects");
-});
+    session.message = "Project item added successfully";
+    return res.redirect("/projects");
+  }
+);
 
 router.get("/ourprojectsitemremove/:id", async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {

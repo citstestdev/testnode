@@ -10,7 +10,7 @@ var storage = multer.diskStorage({
     var path = require("path");
     imagec = new Date().toISOString().replace(/:/g, "-") + file.originalname;
     cb(null, "imgupload");
-    cb(null, path.join(__dirname, "../conativesite/public/assets/imgupload"));
+    // cb(null, path.join(__dirname, "../conativesite/public/assets/imgupload"));
   },
   filename: function (req, file, cb) {
     cb(null, imagec);
