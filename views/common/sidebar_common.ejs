@@ -16,7 +16,8 @@
       </li>
       <!-- Layouts -->
       <!-- <%= title.toLowerCase() %> -->
-      <li class="menu-item <% if(title.toLowerCase() == 'home' || title.toLowerCase() == 'our projects') { %> <%= 'active open' %> <% } %>">
+      <!-- industries we serve -->
+      <li class="menu-item <% if(title.toLowerCase() == 'home' || title.toLowerCase() == 'our projects' || title.toLowerCase() == 'digital legacy' || title.toLowerCase() == 'start project' || title.toLowerCase() == 'certification & recognition' || title.toLowerCase() == 'industries we serve') { %> <%= 'active open' %> <% } %>">
         <a href="/home" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-layout"></i>
           <div data-i18n="Layouts">Home</div>
         </a>
@@ -31,13 +32,13 @@
               <div data-i18n="Without navbar">Our Projects</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
+          <li class="menu-item  <% if(title.toLowerCase() == 'certification & recognition') { %> <%= 'active' %> <% } %>">
+            <a href="/awradscertification" class="menu-link">
               <div data-i18n="Container">Awrads C & R</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="#l" class="menu-link">
+          <li class="menu-item  <% if(title.toLowerCase() == 'industries we serve') { %> <%= 'active' %> <% } %>">
+            <a href="/industries" class="menu-link">
               <div data-i18n="Fluid">Industries</div>
             </a>
           </li>
@@ -56,13 +57,13 @@
               <div data-i18n="Blank">Client Project</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
+          <li class="menu-item  <% if(title.toLowerCase() == 'start project') { %> <%= 'active' %> <% } %>">
+            <a href="/startpjt" class="menu-link">
               <div data-i18n="Blank">Start Project</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
+          <li class="menu-item  <% if(title.toLowerCase() == 'digital legacy') { %> <%= 'active' %> <% } %>">
+            <a href="/digitallegacy" class="menu-link">
               <div data-i18n="Blank">Digital Legacy</div>
             </a>
           </li>

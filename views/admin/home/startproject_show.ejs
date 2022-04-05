@@ -1,61 +1,77 @@
-<style>
-td,th {
-    padding: 10px;
-}
-</style>
-<%- include('../../common/header') %>
-<% if(msg) { %> <%= msg %><% } %>
-<section class="center-wr" style="margin-top:77px;">
-<div class="row page-wraper">
-  <div class="col-md-12 full-content-wraper">
-    <div class="title-header"><h1 class="cmn-heading"><%= title.replace(/\w/, c => c.toUpperCase()) %></h1></div>
-    <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>
-        <span><button class="cmn-btn btn-show-hide"><a href="javascript:void(0);" id="startprojectbtn">Add</a></button></sapn>
-    <div class="col-md-2  sidebar-menu">
-    <%- include('../../common/sidebar_common') %>
-    </div>
-     <div class="col-md-5 content-wraper"> 
-    <h1><% if(pagedata){ %><%= pagedata.name %> <% } %></h1>
-    <br>
-    <h3><% if(pagedata){ %><%= pagedata.title %> <% } %></h3>
-    <br>
-    <h3><% if(pagedata){ %><%= pagedata.btnname %> <% } %></h3>
-    <br>
-   <% if(pagedata){ %> <textarea id="editor1" name="description" rows="10" cols="80"><%= pagedata.description %></textarea><% } %>
-</div>
-    
-<div class="col-md-4 form-wraper" style="display: none;" id="form-wrapper-form">
-  <div id="startprojectcreateform" style="display: none;">
-  <form method="POST" action="/addstartpjt" enctype="multipart/form-data">
-    <label>Name:<input type="text" name="name" required></label>
-    <br>
-    <label>Title:<input type="text" name="title" required></label>
-    <br>
-    <br>
-    <label>Button Name:<input type="text" name="btnname" required></label>
-    <br>
-    <label>Description:<br><textarea id="editor-show" name="description" rows="10" cols="80"></textarea></label>
-    <br>
-     <input type="hidden" name="oldimage">
-    <input type="file" name="userPhoto" id="" placeholder=""  style="border:none;width:100%;" accept="image/*" multiple>
-    <br>
-    <input type="submit" value="Submit">
-  </form>
-   </div>
-  </div>
+<%- include('../../common/sidebar_common') %>
+<div class="layout-page">
+  <%- include('../../common/header_new') %>
 
+  <div class="content-wrapper">
+    
+    <div class="container-xxl flex-grow-1 container-p-y">
+      <h4 class="fw-bold py-3 mb-4">
+      </h4>
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="nav nav-pills flex-column flex-md-row mb-3">
+            <li class="nav-item"><a class="nav-link form-toggle active" data-tab="#acountForm" id="account" href="javascript:void(0);">Edit</a></li>
+            <li class="nav-item"><a class="nav-link form-toggle active" data-tab="#editForm" id="accounteditform" href="javascript:void(0);">View</a></li>
+          </ul>
+          <div class="card mb-4" id="acountForm">
+            <h5 class="card-header"><?%= title %>/h5>
+            
+            <hr class="my-0">
+            <div class="card-body">
+              <h3><% if (pagedata) { %><%= pagedata.name %> <% } %></h3>
+              <br>
+              <h3><% if (pagedata) { %><%= pagedata.title %> <% } %></h3>
+              <br>
+              <h3><% if (pagedata) { %><%= pagedata.btnname %> <% } %></h3>
+              <br>
+              <% if (pagedata) { %> <textarea id="editor-content" name="description"><%= pagedata.description %></textarea><% } %>
+             
+            </div>
+          </div>
+          <!-- View Form start -->
+          <!-- Edit Form start -->
+          <div class="card mb-4 " id="editForm">
+            <h5 class="card-header">Edit</h5>
+            <hr class="my-0">
+            <div class="card-body">
+              <form method="POST" action="/addstartpjt" enctype="multipart/form-data">
+                <div class="row">
+                  <div class="mb-3 col-md-10">
+                    <label for="firstName" class="form-label">Name :</label>
+                    <input type="text" name="name" class="form-control" <% if (pagedata) { %>value="<%= pagedata.name %>" <% } %>  required> </div>
+                  <div class="mb-3 col-md-10">
+                    <label for="lastName" class="form-label">Title :</label>
+                    <input type="text" name="title" class="form-control" <% if (pagedata) { %>value="<%= pagedata.title %>" <% } %> required> 
+                  </div>
+                  <div class="mb-3 col-md-10">
+                    <label for="lastName" class="form-label">Button Name :</label>
+                    <input type="text" name="btnname" class="form-control" <% if (pagedata) { %>value="<%= pagedata.btnname %>" <% } %>  required> 
+                  </div>
+
+                  <div class="mb-3 col-md-10">
+                    <label for="email" class="form-label">Description :</label>
+                    <textarea id="editor1" name="description" class="form-control"  required><% if (pagedata) { %><%= pagedata.description %> <% } %> </textarea> </div>
+                  <div class="mb-3 col-md-10">
+                    <!-- <input type="hidden" name="oldimage"  <% if (pagedata) { %>value="<%= pagedata.oldimage %>" <% } %>> -->
+                    <input type="file" name="userPhoto" class="form-control"  id="" placeholder=""  style="border:none;width:100%;" accept="image/*"> </div>
+              
+                </div>
+                <div class="mt-2">
+                  <button type="submit" class="btn btn-primary me-2">Update</button>
+                </div>
+              </form>
+            </div>
+          
+          </div>
+            <!-- /Edit  end  -->
+        </div>
+      </div>
+    </div>
+    <!-- / Content -->
+		<%- include('../../common/footer') %>
+    <div class="content-backdrop fade"></div>
   </div>
-</div> 
-</section>
+</div>
 <script>
-  CKEDITOR.replace('editor-show');
-</script>
-<script>
-  $('#startprojectbtn').click(function(){
-    
-    $('#form-wrapper-form').toggle();
-    $('#startprojectcreateform').toggle();
-    $('#userPhoto').val("");
-    
-})
+  CKEDITOR.replace('editor-content');
 </script>
