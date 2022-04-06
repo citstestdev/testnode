@@ -87,28 +87,32 @@ router.post(
     await MongoClient.connect(url, function (err, db) {
       if (err) throw err;
       var dbo = db.db("conative");
-      dbo.collection("tbawradscertification").deleteMany();
-    });
-
-    await MongoClient.connect(url, function (err, db) {
-      if (err) throw err;
-      var dbo = db.db("conative");
 
       var myobj = {
         title: req.body.title.trim(),
         name: req.body.name.trim(),
         description: req.body.description.trim(),
       };
-
       dbo
         .collection("tbawradscertification")
-        .insertOne(myobj, function (err, res) {
-          if (err) throw err;
-          console.log("document expertise inserted");
-          // db.close();
-        });
+        .findOneAndUpdate(
+          { oid: "1" },
+          { $set: myobj },
+          { upsert: true, returnNewDocument: true },
+          function (err, res) {
+            session.massage = "Data updated successfully";
+          }
+        );
+
+      // dbo
+      //   .collection("tbawradscertification")
+      //   .insertOne(myobj, function (err, res) {
+      //     if (err) throw err;
+      //     console.log("document expertise inserted");
+      //     // db.close();
+      //   });
     });
-    session.message = "Awrads added successfully";
+    // session.message = "Awrads added successfully";
     return res.redirect("/awradscertification");
   }
 );
@@ -132,7 +136,6 @@ router.post(
 
       var myobj = {
         name: req.body.name.trim(),
-        description: req.body.description.trim(),
         image: imagepath,
       };
 
@@ -167,7 +170,6 @@ router.post(
       var myobj = {
         $set: {
           name: req.body.name.trim(),
-          description: req.body.description.trim(),
           image: imagepath,
         },
       };

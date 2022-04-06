@@ -76,7 +76,7 @@ router.get("/projects", checkLogin, async function (_req, res, next) {
 
       setTimeout(function () {
         session.message = "";
-      }, 3000);
+      }, 4000);
     });
   });
 });

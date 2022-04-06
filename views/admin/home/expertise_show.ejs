@@ -6,6 +6,7 @@
     
     <div class="container-xxl flex-grow-1 container-p-y">
       <h4 class="fw-bold py-3 mb-4">
+        <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>
       </h4>
     <!-- Start 1 section for items  -->
       <div class="row">
@@ -34,7 +35,7 @@
             <h5 class="card-header">Edit</h5>
             <hr class="my-0">
             <div class="card-body">
-              <form method="POST" action="/projects">
+              <form method="POST" action="/expertise">
                 <div class="row">
                   <div class="mb-3 col-md-10">
                     <label for="firstName" class="form-label">Name :</label>
@@ -89,7 +90,7 @@
                        <a href="javascript:void(0)"  onclick="geteditform('<%= item._id %>')">Edit</a>
                        </td> 
                        <td> 
-                       <a href="/ourprojectsitemremove/<%= item._id %>" onclick="return confirm('Are you sure you want to delete this item')">X</a>
+                       <a href="/expertiseitemremove/<%= item._id %>" onclick="return confirm('Are you sure you want to delete this item')">X</a>
                        </td>
                        </tr>
                  <% } %>
@@ -104,7 +105,7 @@
             <h5 class="card-header">Add New</h5>
             <hr class="my-0">
             <div class="card-body">
-              <form method="POST" action="/ourprojectsitem" enctype="multipart/form-data">
+              <form method="POST" action="/expertiseitem" enctype="multipart/form-data">
                 <div class="row">
                   <div class="mb-3 col-md-10">
                     <label for="firstName" class="form-label">Name :</label>
@@ -114,8 +115,10 @@
                     <textarea id="editor1" name="description" class="form-control"  required></textarea> 
                   </div>
                   <div class="mb-3 col-md-10">
-                    <input type="hidden" name="oldimage">
-                    <input type="file" name="userPhoto" class="form-control"  id="" placeholder=""  style="border:none;width:100%;" accept="image/*" required> </div>
+                    
+                    <input type="file" name="userPhoto" class="form-control"  onchange="readURL(this);"  style="border:none;width:100%;" accept="image/*" required> 
+                    <img id="insertimage"  src="/images/user.png" alt="your image" width="100px" height="100px"/> 
+                  </div>
               
                 </div>
                 <div class="mt-2">
@@ -130,7 +133,7 @@
             <h5 class="card-header">Edit</h5>
             <hr class="my-0">
             <div class="card-body">
-              <form method="POST" action="/ourprojectsitemedit" enctype="multipart/form-data">
+              <form method="POST" action="/expertiseitemedit" enctype="multipart/form-data">
                 <input type="hidden" class="form-control" name="editid" id="editid"/>
                 <div class="row">
                   <div class="mb-3 col-md-10">
@@ -141,8 +144,11 @@
                     <textarea  name="description" id="description" class="form-control"  required></textarea> 
                   </div>
                   <div class="mb-3 col-md-10">
-                    <input type="hidden" name="oldimage">
-                    <input type="file" name="userPhoto" class="form-control"  id="" placeholder=""  style="border:none;width:100%;" accept="image/*" required> </div>
+                    <input type="hidden" name="oldimage" id="preimage">
+                    <input type="file" name="userPhoto" class="form-control"  onchange="readURL(this);" style="border:none;width:100%;" accept="image/*" > 
+                    <img id="clientimageupdate" src="/images/user.png" alt="your image" width="100px" height="100px"/>
+
+                  </div>
               
                 </div>
                 <div class="mt-2">
@@ -166,34 +172,26 @@
     <div class="col-md-12">
       <div class="card mb-4" >
         <ul class="nav nav-pills flex-column flex-md-row mb-3" style="float:right">
-          <li class="nav-item"><a class="nav-link form-toggle active" data-tab="#ouritemForm" id="ouritem" href="javascript:void(0);">Add New</a></li>
-          <li class="nav-item"><a class="nav-link form-toggle active" data-tab="#ouritemviewForm" id="itemeditform" href="javascript:void(0);">View</a></li>
+          <li class="nav-item"><a class="nav-link form-toggle active"  id="expertiselist" href="javascript:void(0);">Add List</a></li>
+          <li class="nav-item"><a class="nav-link form-toggle active"  id="expertiselistview" href="javascript:void(0);">View</a></li>
         </ul>
-      <div id="ouritemviewForm">
+      <div id="listviewpop">
         
         <div class="card-body">
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Title</th>
                 <th>Name</th>
-                <th>Edit</th>
                 <th>Remove</th>
               </tr>
             </thead>
             <tbody>
-              <% for(var item of expertiseitem) { %>
+              <% for(var item of expertiseitemlist) { %>
                 <tr><td> 
                    <%= item.name %>
                    </td>
                    <td> 
-                   <%= item.description %>
-                   </td>
-                    <td> 
-                   <a href="javascript:void(0)"  onclick="geteditform('<%= item._id %>')">Edit</a>
-                   </td> 
-                   <td> 
-                   <a href="/ourprojectsitemremove/<%= item._id %>" onclick="return confirm('Are you sure you want to delete this item')">X</a>
+                   <a href="/expertiselistremove/<%= item._id %>" onclick="return confirm('Are you sure you want to delete this item')">X</a>
                    </td>
                    </tr>
              <% } %>
@@ -205,22 +203,15 @@
       </div>
      
 
-      <div id="ouritemForm">
-        <h5 class="card-header">Add New</h5>
+      <div id="expertiselistpop" >
+        <h5 class="card-header">Add List</h5>
         <hr class="my-0">
         <div class="card-body">
-          <form method="POST" action="/ourprojectsitem" enctype="multipart/form-data">
+          <form method="POST" action="/expertiselistitem">
             <div class="row">
               <div class="mb-3 col-md-10">
                 <label for="firstName" class="form-label">Name :</label>
                 <input type="text" name="name" class="form-control"  required> </div>
-              <div class="mb-3 col-md-10">
-                <label for="description" class="form-label">Description :</label>
-                <textarea id="editor1" name="description" class="form-control"  required></textarea> 
-              </div>
-              <div class="mb-3 col-md-10">
-                <input type="hidden" name="oldimage">
-                <input type="file" name="userPhoto" class="form-control"  id="" placeholder=""  style="border:none;width:100%;" accept="image/*" required> </div>
           
             </div>
             <div class="mt-2">
@@ -231,32 +222,7 @@
       </div>
        
 
-      <div id="edititemform">
-        <h5 class="card-header">Edit</h5>
-        <hr class="my-0">
-        <div class="card-body">
-          <form method="POST" action="/ourprojectsitemedit" enctype="multipart/form-data">
-            <input type="hidden" class="form-control" name="editid" id="editid"/>
-            <div class="row">
-              <div class="mb-3 col-md-10">
-                <label for="firstName" class="form-label">Name :</label>
-                <input type="text" name="name" id="name" class="form-control"  required> </div>
-              <div class="mb-3 col-md-10">
-                <label for="description"  class="form-label">Description :</label>
-                <textarea  name="description" id="description" class="form-control"  required></textarea> 
-              </div>
-              <div class="mb-3 col-md-10">
-                <input type="hidden" name="oldimage">
-                <input type="file" name="userPhoto" class="form-control"  id="" placeholder=""  style="border:none;width:100%;" accept="image/*" required> </div>
-          
-            </div>
-            <div class="mt-2">
-              <button type="submit" class="btn btn-primary me-2">Update</button>
-            </div>
-          </form>
-        </div>
-      
-      </div>
+
 
       </div>
 
@@ -284,6 +250,7 @@
   $("#ouritem").show();
   $('#edititemform').hide();
   $("#itemeditform").hide();
+
   $('#ouritem').click(function(){
     $('#ouritemForm').show();
     $('#ouritemviewForm').hide();
@@ -303,13 +270,19 @@
 function geteditform(editid){
   // alert(editid);
     $.ajax({
-    url:"/getprojectitem/"+editid,
+    url:"/getexpertiseitem/"+editid,
     method:"GET",
     success: function(response){
       // alert(response);
         $('#editid').val(editid);
         $('#name').val(response.name);
         $('#description').html(response.description);
+        $('#preimage').val(response.image);
+        if(response.image != ''){
+        $('#clientimageupdate').attr('src', 'imgupload/'+response.image).width(100).height(100); 
+        }else{
+        $('#clientimageupdate').attr('src', '/images/user.png').width(100).height(100); 
+        }
         $('#ouritemForm').hide();
         $('#ouritemviewForm').hide();
         $("#ouritem").hide();
@@ -320,4 +293,45 @@ function geteditform(editid){
     });
     return false;
  }
+
+
+//  3 part show and hide codeing
+  $('#expertiselistpop').hide();
+  $('#listviewpop').show();
+  $("#expertiselist").show();
+  $("#expertiselistview").hide();
+
+  $('#expertiselist').click(function(){
+    // alert("hello");
+    $('#expertiselistpop').show();
+    $('#listviewpop').hide();
+    $('#expertiselist').hide();
+    $('#expertiselistview').show();
+   
+  });
+
+  $('#expertiselistview').click(function(){
+    $('#expertiselistpop').hide();
+    $('#listviewpop').show();
+    $('#expertiselist').show();
+    $('#expertiselistview').hide();
+
+  });
+
+
+
+  function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    //  alert(ftype);
+    reader.onload = function (e) {
+      // $('#clientprojectimage').attr('src', e.target.result).width(100).height(100);
+      $('#insertimage').attr('src', e.target.result).width(100).height(100);
+      $('#clientimageupdate').attr('src', e.target.result).width(100).height(100);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
   </script>

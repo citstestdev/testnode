@@ -96,28 +96,29 @@ router.post("/expertise", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
-    dbo.collection("expertise").findOne(function (err, result) {
-      if (err) {
-        return;
-      }
-      dbo.collection("expertise").remove({ _id: ObjectID(result._id) });
-    });
-  });
-
-  await MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("conative");
 
     var myobj = {
+      oid: "1",
       title: req.body.title.trim(),
       name: req.body.name.trim(),
       description: req.body.description.trim(),
     };
 
-    dbo.collection("expertise").insertOne(myobj, function (err, res) {
-      if (err) throw err;
-      console.log("document expertise inserted");
-    });
+    dbo
+      .collection("expertise")
+      .findOneAndUpdate(
+        { oid: "1" },
+        { $set: myobj },
+        { upsert: true, returnNewDocument: true },
+        function (err, res) {
+          session.massage = "Data updated successfully";
+        }
+      );
+
+    // dbo.collection("expertise").insertOne(myobj, function (err, res) {
+    //   if (err) throw err;
+    //   console.log("document expertise inserted");
+    // });
   });
 
   session.massage = "Expertise added successfully";
@@ -364,7 +365,6 @@ router.post("/expertiselistitem", async function (req, res, next) {
 
     var myobj = {
       name: req.body.name,
-      description: req.body.description,
     };
 
     dbo.collection("expertiselist").insertOne(myobj, function (err, res) {

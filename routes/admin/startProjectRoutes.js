@@ -150,7 +150,7 @@ router.post(
       image: imagearr,
     });
     await myobj.save();
-    session.message = "Inserted successfully";
+    session.message = "Data updated successfully";
     return res.redirect("/startpjt");
   }
 );

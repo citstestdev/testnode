@@ -84,25 +84,31 @@ router.post("/industries", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
-    dbo.collection("tbindustrie").deleteMany();
-  });
-
-  await MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("conative");
 
     var myobj = {
+      oid: "1",
       title: req.body.title.trim(),
       name: req.body.name.trim(),
       description: req.body.description.trim(),
     };
 
-    dbo.collection("tbindustrie").insertOne(myobj, function (err, res) {
-      if (err) throw err;
-      console.log("document process inserted");
-    });
+    dbo
+      .collection("tbindustrie")
+      .findOneAndUpdate(
+        { oid: "1" },
+        { $set: myobj },
+        { upsert: true, returnNewDocument: true },
+        function (err, res) {
+          session.massage = "Data updated successfully";
+        }
+      );
+
+    // dbo.collection("tbindustrie").insertOne(myobj, function (err, res) {
+    //   if (err) throw err;
+    //   console.log("document process inserted");
+    // });
   });
-  session.message = "Industries inserted successfully";
+  // session.message = "Industries inserted successfully";
   return res.redirect("/industries");
 });
 

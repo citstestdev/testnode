@@ -152,7 +152,7 @@ router.post(
       image: imagearr,
     });
     await myobj.save();
-    session.message = "Digital legacy inserted successfully";
+    session.message = "Digital legacy new inserted successfully";
     return res.redirect("/digitallegacy");
   }
 );
