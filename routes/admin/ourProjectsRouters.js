@@ -85,27 +85,27 @@ router.post("/projects", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
-    dbo.collection("ourprojects").deleteMany();
-  });
-
-  await MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("conative");
 
     var myobj = {
+      oid: "1",
       title: req.body.title.trim(),
       name: req.body.name.trim(),
       description: req.body.description.trim(),
     };
 
-    dbo.collection("ourprojects").insertOne(myobj, function (err, _res) {
-      if (err) throw err;
-      console.log("document ourprojects inserted");
-      // db.close();
-    });
+    dbo
+      .collection("ourprojects")
+      .findOneAndUpdate(
+        { oid: "1" },
+        { $set: myobj },
+        { upsert: true, returnNewDocument: true },
+        function (err, res) {
+          session.massage = "Data updated successfully";
+        }
+      );
   });
 
-  session.message = "Inserted data successfully";
+  // session.message = "Inserted data successfully";
 
   return res.redirect("/projects");
 });

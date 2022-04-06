@@ -15,9 +15,9 @@
         </a>
       </li>
       <!-- Layouts -->
-      <!-- <%= title.toLowerCase() %> -->
-      <!-- industries we serve -->
-      <li class="menu-item <% if(title.toLowerCase() == 'home' || title.toLowerCase() == 'our projects' || title.toLowerCase() == 'digital legacy' || title.toLowerCase() == 'start project' || title.toLowerCase() == 'certification & recognition' || title.toLowerCase() == 'industries we serve') { %> <%= 'active open' %> <% } %>">
+      <%= title.toLowerCase() %>
+      <!-- expertise -->
+      <li class="menu-item <% if(title.toLowerCase() == 'home' || title.toLowerCase() == 'our projects' || title.toLowerCase() == 'digital legacy' || title.toLowerCase() == 'start project' || title.toLowerCase() == 'certification & recognition' || title.toLowerCase() == 'industries we serve' || title.toLowerCase() == 'expertise' || title.toLowerCase() == 'client project') { %> <%= 'active open' %> <% } %>">
         <a href="/home" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-layout"></i>
           <div data-i18n="Layouts">Home</div>
         </a>
@@ -42,7 +42,7 @@
               <div data-i18n="Fluid">Industries</div>
             </a>
           </li>
-          <li class="menu-item">
+          <li class="menu-item <% if(title.toLowerCase() == 'expertise') { %> <%= 'active' %> <% } %>">
             <a href="#" class="menu-link">
               <div data-i18n="Blank">Our Expertise</div>
             </a>
@@ -52,8 +52,8 @@
               <div data-i18n="Blank">Our Process</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
+          <li class="menu-item <% if(title.toLowerCase() == 'client project') { %> <%= 'active' %> <% } %>">
+            <a href="/clientproject" class="menu-link">
               <div data-i18n="Blank">Client Project</div>
             </a>
           </li>
