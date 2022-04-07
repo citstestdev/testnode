@@ -9,7 +9,7 @@ const MongoClient = require("mongodb").MongoClient;
 
 const { ObjectID } = require("mongodb");
 
-router.get("/startpjt", checkLogin, async function (req, res, next) {
+router.get("/gallery", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
@@ -151,7 +151,7 @@ router.post(
     });
     await myobj.save();
     session.message = "Data updated successfully";
-    return res.redirect("/startpjt");
+    return res.redirect("/gallery");
   }
 );
 

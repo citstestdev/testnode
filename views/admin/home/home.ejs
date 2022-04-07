@@ -22,7 +22,7 @@
               <h3><% if (pagedata) { %><%= pagedata.name %> <% } %></h3>
     
               <br>
-              <% if (pagedata) { %> <textarea id="editor-content" name="description"><%= pagedata.description %></textarea><% } %>
+              <% if (pagedata) { %> <%= pagedata.backname %><% } %>
              
             </div>
           </div>
@@ -40,9 +40,17 @@
                     <label for="firstName" class="form-label">Name :</label>
                     <input type="text" name="name" class="form-control"  <% if (pagedata) { %>value="<%= pagedata.name %>" <% } %> required> </div>
                   <div class="mb-3 col-md-10">
-                    <label for="email" class="form-label">Description :</label>
-                    <textarea id="editor1" name="description" class="form-control"  required> <% if (pagedata) { %><%= pagedata.description %> <% } %></textarea> </div>
+                    <label for="email" class="form-label">Back Name :</label>
+                    <input type="text" name="backname" class="form-control"  <% if (pagedata) { %>value="<%= pagedata.backname %>" <% } %> required> </div>
                   <div class="mb-3 col-md-10">
+                      <label for="email" class="form-label">Button Project :</label>
+                      <input type="text" name="btnproject" class="form-control"  <% if (pagedata) { %>value="<%= pagedata.btnproject %>" <% } %> required> 
+                  </div>
+                  <div class="mb-3 col-md-10">
+                        <label for="email" class="form-label">Button Team :</label>
+                        <input type="text" name="btnteam" class="form-control"  <% if (pagedata) { %>value="<%= pagedata.btnteam %>" <% } %> required> 
+                    </div>
+                    <div class="mb-3 col-md-10">
                     <input type="hidden" name="oldimage" id="preimage" <% if (pagedata) { %>value="<%= pagedata.image %>" <% } %> >
                     <input type="file" name="userPhoto" class="form-control" onchange="readURL(this);"  style="border:none;width:100%;" accept="image/*" > 
                     <img id="clientimageupdate"  alt="your image" width="100px" height="100px" <% if (pagedata.image == '') { %> src="/images/user.png" <% } %>  <% if (pagedata.image != '') { %> src="/imgupload/<%= pagedata.image %>" <% } %> />

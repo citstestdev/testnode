@@ -76,7 +76,7 @@ router.get("/", checkLogin, async function (req, res, next) {
   });
 });
 
-router.get("/home", checkLogin, function (req, res, next) {
+router.get("/header", checkLogin, function (req, res, next) {
   MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
@@ -124,7 +124,7 @@ router.get("/home", checkLogin, function (req, res, next) {
       console.log(err);
 
       res.render("admin/home/home", {
-        title: "home",
+        title: "header",
         headermenu: headermenu_dynamic,
         settingmenu: setting_dynamic,
         opt: result,
@@ -139,7 +139,7 @@ router.get("/home", checkLogin, function (req, res, next) {
 });
 
 router.post(
-  "/home",
+  "/header",
   upload.single("userPhoto"),
   async function (req, res, next) {
     await MongoClient.connect(url, function (err, db) {
@@ -160,7 +160,9 @@ router.post(
         hid: "1",
         name: req.body.name.trim(),
         title: req.body.title.trim(),
-        description: req.body.description.trim(),
+        backname: req.body.backname.trim(),
+        btnproject: req.body.btnproject.trim(),
+        btnteam: req.body.btnteam.trim(),
         image: imagepath,
       };
 
@@ -176,7 +178,7 @@ router.post(
         );
     });
 
-    return res.redirect("/home");
+    return res.redirect("/header");
   }
 );
 

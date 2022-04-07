@@ -27,6 +27,7 @@ const register = require("./models/Registermodel");
 // run this port
 app.listen(process.env.PORT || 5000);
 
+var userRoutes = require("./routes/common/userRoutes");
 var SettingRouter = require("./routes/common/setting");
 
 //  ======================== menu ============================
@@ -121,6 +122,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
+app.use("/", userRoutes);
 app.use("/", SettingRouter);
 app.use("/", menuRoutes);
 app.use("/", bothmenuRoutes);
@@ -292,6 +294,7 @@ app.post("/checklogin", async function (req, res, next) {
 });
 
 ///      ==================== login part  ========================
+
 
 app.get("/register", async function (req, res, next) {
   let token = req.cookies.token ? true : false;

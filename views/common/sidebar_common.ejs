@@ -17,24 +17,24 @@
       <!-- Layouts -->
       <!-- <%= title.toLowerCase() %> -->
       <!-- expertise -->
-      <li class="menu-item <% if(title.toLowerCase() == 'home' || title.toLowerCase() == 'our projects' || title.toLowerCase() == 'digital legacy' || title.toLowerCase() == 'start project' || title.toLowerCase() == 'certification & recognition' || title.toLowerCase() == 'industries we serve' || title.toLowerCase() == 'expertise' || title.toLowerCase() == 'client project') { %> <%= 'active open' %> <% } %>">
+      <li class="menu-item <% if(title.toLowerCase() == 'header' || title.toLowerCase() == 'our projects' || title.toLowerCase() == 'digital legacy' || title.toLowerCase() == 'start project' || title.toLowerCase() == 'certification & recognition' || title.toLowerCase() == 'industries we serve' || title.toLowerCase() == 'expertise' || title.toLowerCase() == 'client project') { %> <%= 'active open' %> <% } %>">
         <a href="/home" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-layout"></i>
           <div data-i18n="Layouts">Home</div>
         </a>
         <ul class="menu-sub">
-          <li class="menu-item  <% if(title.toLowerCase() == 'home') { %> <%= 'active' %> <% } %>">
-            <a href="/home" class="menu-link">
-              <div data-i18n="Without menu">Home</div>
+          <li class="menu-item  <% if(title.toLowerCase() == 'header') { %> <%= 'active' %> <% } %>">
+            <a href="/header" class="menu-link">
+              <div data-i18n="Without menu">Header</div>
             </a>
           </li>
           <li class="menu-item  <% if(title.toLowerCase() == 'digital legacy') { %> <%= 'active' %> <% } %>">
             <a href="/digitallegacy" class="menu-link">
-              <div data-i18n="Blank">Digital Legacy</div>
+              <div data-i18n="Blank">About Us Digital</div>
             </a>
           </li>
           <li class="menu-item  <% if(title.toLowerCase() == 'start project') { %> <%= 'active' %> <% } %>">
-            <a href="/startpjt" class="menu-link">
-              <div data-i18n="Blank">Start Project</div>
+            <a href="/gallery" class="menu-link">
+              <div data-i18n="Blank">gallery</div>
             </a>
           </li>
           <li class="menu-item <% if(title.toLowerCase() == 'expertise') { %> <%= 'active' %> <% } %>">
@@ -54,7 +54,7 @@
           </li>
            <li class="menu-item <% if(title.toLowerCase() == 'client project') { %> <%= 'active' %> <% } %>">
             <a href="/clientproject" class="menu-link">
-              <div data-i18n="Blank">Client Project</div>
+              <div data-i18n="Blank">Testimonial</div>
             </a>
           </li>
           <li class="menu-item  <% if(title.toLowerCase() == 'certification & recognition') { %> <%= 'active' %> <% } %>">
@@ -67,15 +67,20 @@
       </li>
       <li class="menu-header small text-uppercase"> <span class="menu-header-text">Pages</span> </li>
     
-      <li class="menu-item" style="">
+      <li class="menu-item <% if(title.toLowerCase() == 'register' || title.toLowerCase() == 'users') { %> <%= 'active open' %> <% } %>">
         <a href="javascript:void(0);" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
           <div data-i18n="Authentications">Users</div>
         </a>
         <ul class="menu-sub">
         
-          <li class="menu-item">
+          <li class="menu-item <% if(title.toLowerCase() == 'users') { %> <%= 'active' %> <% } %>">
+            <a href="/users" class="menu-link">
+              <div data-i18n="Basic">All Users</div>
+            </a>
+          </li>
+          <li class="menu-item <% if(title.toLowerCase() == 'register') { %> <%= 'active' %> <% } %>">
             <a href="/register" class="menu-link">
-              <div data-i18n="Basic">Register</div>
+              <div data-i18n="Basic">Add User</div>
             </a>
           </li>
     
@@ -89,7 +94,7 @@
         <ul class="menu-sub">
           <li class="menu-item <% if(title.toLowerCase() == 'setting') { %> <%= 'active' %> <% } %>">
             <a href="/setting" class="menu-link">
-              <div data-i18n="Basic">Setting</div>
+              <div data-i18n="Basic">General</div>
             </a>
           </li>
           <li class="menu-item">
