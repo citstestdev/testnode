@@ -44,7 +44,7 @@
                     <label for="email" class="form-label">Description :</label>
                     <textarea id="editor1" name="description" class="form-control"  required> <% if (pagedata) { %><%= pagedata.description %> <% } %></textarea> </div>
                   <div class="mb-3 col-md-10">
-                    <input type="hidden" name="oldimage" id="preimage" <% if (pagedata) { %><%= pagedata.image %> <% } %> >
+                    <input type="text" name="oldimage" id="preimage" <% if (pagedata) { %>value="<%= pagedata.image %>" <% } %> >
                     <input type="file" name="userPhoto" class="form-control" onchange="readURL(this);"  style="border:none;width:100%;" accept="image/*" > 
                     <img id="clientimageupdate"  alt="your image" width="100px" height="100px" <% if (pagedata.image == '') { %> src="/images/user.png" <% } %>  <% if (pagedata.image != '') { %> src="/imgupload/<%= pagedata.image %>" <% } %> />
                   </div>
