@@ -29,6 +29,7 @@ app.listen(process.env.PORT || 5000);
 
 var userRoutes = require("./routes/common/userRoutes");
 var SettingRouter = require("./routes/common/setting");
+// var headerRoutes = require("./routes/common/headerRoutes.js_not");
 
 //  ======================== menu ============================
 var menuRoutes = require("./routes/common/menuRoutes");
@@ -122,6 +123,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
+// app.use("/", headerRoutes);
 app.use("/", userRoutes);
 app.use("/", SettingRouter);
 app.use("/", menuRoutes);
@@ -140,7 +142,6 @@ app.use("/", IndustriesRoutes);
 app.use("/", acertificationRoutes);
 
 app.use("/", PortfolioRoutes);
-
 app.use("/", CareerRoutes);
 
 try {
@@ -157,6 +158,7 @@ try {
 } catch (error) {
   console.log("could not connect to database", error);
 }
+
 
 app.get("/option-show", async function (req, res, next) {
   var fullUrl = req.protocol + "://" + req.get("host");
@@ -192,9 +194,55 @@ app.get("/social-media", async function (req, res, next) {
   });
 });
 
+// app.get("/dashboard", checkLogin, async function (req, res, next) {
+  
+//   return res.render("common/dashboard", { title: "dashboard" });
+// });
+
+// app.get("/", async function (req, res, next) {
+  
+//   await MongoClient.connect(url, function (err, db) {
+//     if (err) throw err;
+//     var dbo = db.db("conative");
+
+
+//     dbo.collection("users").findOne(function (err, result) {
+//       if (err) {
+//         return;
+//       }
+//       if (!result) {
+//         res.send("Page Not Found Please Check Collection");
+//         console.log(err);
+//       } else {
+//         return res.render("common/layout", { title: "layout",user:result });
+//       }
+//     });
+//   });
+
+// });
+
 app.get("/dashboard", checkLogin, async function (req, res, next) {
-  return res.render("common/dashboard", { title: "dashboard" });
+  
+  await MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("conative");
+
+
+    dbo.collection("users").findOne(function (err, result) {
+      if (err) {
+        return;
+      }
+      if (!result) {
+        res.send("Page Not Found Please Check Collection");
+        console.log(err);
+      } else {
+        return res.render("common/dashboard", { title: "dashbord",user:result,session:session });
+      }
+    });
+  });
+
 });
+
 
 app.get("/setting", checkLogin, async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
@@ -250,7 +298,52 @@ app.get("/setting", checkLogin, async function (req, res, next) {
   });
 });
 
-///      ==================== login     ========================
+// ==================== login ========================
+
+// app.post("/", async function (req, res, next) {
+//   const { Loginmodel, validate } = require("./models/Loginmodel");
+
+//   await MongoClient.connect(url, function (err, db) {
+//     if (err) throw err;
+//     var dbo = db.db("conative");
+
+//     var username = req.body.email;
+//     var user_dynamic = [];
+//     dbo
+//       .collection("users")
+//       .findOne(
+//         { email: req.body.email, password: req.body.password },
+//         function (err, result) {
+//           if (result) {
+//             var user = {
+//               _id: result._id,
+//               email: result.email,
+//             };
+//             user_dynamic = result;
+//             var token = jwt.sign(user, "seceret");
+//             // console.log(token);
+//             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+//           }
+
+//           if (jwt.verify(token, "seceret")) {
+//             var decode = jwt.verify(token, "seceret");
+//             res.cookie(`token`, token, { maxAge: 3000, httpOnly: true });
+
+//             sessions.tokenseesion = token;
+//             //  console.log(req.sessions);
+//             res.render("common/header_new", {
+//               title: "user",
+//               user: user_dynamic,
+//             });
+//           } else {
+//             res.status(401).json({
+//               error: "Invalid Token",
+//             });
+//           }
+//         }
+//       );
+//   });
+// });
 
 app.post("/checklogin", async function (req, res, next) {
   const { Loginmodel, validate } = require("./models/Loginmodel");
@@ -293,8 +386,7 @@ app.post("/checklogin", async function (req, res, next) {
   });
 });
 
-///      ==================== login part  ========================
-
+// ==================== login part  ========================
 
 app.get("/register", async function (req, res, next) {
   let token = req.cookies.token ? true : false;
@@ -360,6 +452,7 @@ app.post("/process_login", async (req, res) => {
               _id: result._id,
               email: result.email,
             };
+            session.email = result.email;
             // session.massage = "Login successfully";
             var token = jwt.sign(user, "seceret");
             res.cookie("token", token);
@@ -448,14 +541,13 @@ app.get("/logout", (req, res) => {
     "success",
     `You've been successfully redirected to the Message route!`
   );
-
   return res.redirect("/admin");
 });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
-  if (req.originalUrl === "/adduser") {
+  if (req.originalUrl === "/addnewuser") {
     res.redirect("/register");
   } else {
     next(createError(404));

@@ -18,7 +18,19 @@ const registerSchema = new mongoose.Schema({
         }
       },
     },
+    phone: { 
+    	type:Number,
+        required: true
+    },
+    address: { 
+    	type:String,
+        required: true
+    },
     password: { 
+    	type:String,
+        required: true
+    },
+    userPhoto: { 
     	type:String,
         required: true
     },

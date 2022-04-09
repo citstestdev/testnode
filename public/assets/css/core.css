@@ -6729,6 +6729,7 @@ button:focus {
 .tab-pane,
 .tab-pane .card-body {
   outline: none !important;
+
 }
 .nav-tabs .nav-item .nav-link {
   color: #566a7f;
@@ -14857,4 +14858,8 @@ html:not(.layout-footer-fixed) .content-wrapper {
 }
 .footer.bg-light hr {
   border-color: rgba(105, 122, 141, 0.0783835294);
+}
+.nav .nav-item {
+  outline: none !important;
+  margin: 12px 12px 0px 0px !important;
 }
