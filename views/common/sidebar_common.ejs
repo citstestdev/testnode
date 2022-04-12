@@ -87,7 +87,7 @@
         </ul>
       </li>
 
-      <li class="menu-item <% if(title.toLowerCase() == 'setting') { %> <%= 'active open' %> <% } %>" >
+      <li class="menu-item <% if(title.toLowerCase() == 'setting' || title.toLowerCase() == 'social') { %> <%= 'active open' %> <% } %>" >
         <a href="javascript:void(0);" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-copy"></i>
           <div data-i18n="Authentications">Setting</div>
         </a>
@@ -97,8 +97,8 @@
               <div data-i18n="Basic">General</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="" class="menu-link">
+          <li class="menu-item <% if(title.toLowerCase() == 'social') { %> <%= 'active' %> <% } %>">
+            <a href="/social" class="menu-link">
               <div data-i18n="Basic">Social</div>
             </a>
           </li>
@@ -106,12 +106,6 @@
       </li>
    
       <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
-
-      <li class="menu-item">
-        <a href="#" class="menu-link"> <i class="menu-icon tf-icons bx bx-collection"></i>
-          <div data-i18n="Basic">Cards</div>
-        </a>
-      </li>
       
       <li class="menu-item">
         <a href="javascript:void(0)" class="menu-link menu-toggle"> <i class="menu-icon tf-icons bx bx-copy"></i>

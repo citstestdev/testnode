@@ -34,6 +34,11 @@ const registerSchema = new mongoose.Schema({
     	type:String,
         required: true
     },
+    updateAt: {
+        type: Date,
+        default: Date.now,
+
+    },
     createAt: {
         type: Date,
         default: Date.now,

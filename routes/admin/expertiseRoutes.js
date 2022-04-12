@@ -16,6 +16,14 @@ router.get("/expertise", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
+    var userlogin = [];
+    dbo
+    .collection("users")
+    .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+      userlogin =  result;
+    });
+
+
     var option = [];
     dbo.collection("option").findOne(function (err, result1) {
       option = result1;
@@ -83,6 +91,7 @@ router.get("/expertise", checkLogin, async function (req, res, next) {
         expertiseitemlist: expertiseitemlist,
         expertiseitem: expertiseitem,
         updatearr: [],
+        userlogin: userlogin,
         msg: session.massage,
       });
       setTimeout(function () {

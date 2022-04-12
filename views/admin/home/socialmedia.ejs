@@ -1,125 +1,208 @@
-<%- include('../../common/header') %>
-<style>
-td,th {
-    padding: 11px;
-}
-</style>
-<section class="center-wr" style="margin-top:77px;">
-<% if(locals.error) {%>
-    <div class="alert alert-danger" id="alertmsg" role="alert"><%= error %></div>
-<%}%>
-<div class="row page-wraper">
-  <div class="col-md-12 full-content-wraper">
-    <div class="title-header"><h1 class="cmn-heading"><%= title.replace(/\w/, c => c.toUpperCase()) %></h1></div>
-    <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>
-    <div class="col-md-2 sidebar-menu">
-    <%- include('../../common/sidebar_common') %>
-    </div>
-     <div class="col-md-5 content-wraper">
-          <div id="socialcreateform">
-            <form method="POST" action="/social" enctype="multipart/form-data">
-                <label>Title:<input type="text" name="title"  required></label>
-                <br>
-                <label>Url:<input type="text" name="socialurl" required></label>
-                <br>
-                <label>Description:<br><textarea name="description"></textarea></label>
-                <br>
-                <input type="hidden" name="oldimage">
-                <input type="file" name="userPhoto" id="userPhoto" onchange="readURL('create',this);" placeholder=""  style="border:none;width:100%;" accept="image/*">
-                <img id="create-show-image" src="/images/user.png" alt="your image" width="100px" height="100px" />
-                <br>
-                <input type="submit" value="Submit">
-            </form>
+
+<%- include('../../common/sidebar_common') %>
+<div class="layout-page">
+  <%- include('../../common/header_new') %>
+  <div class="content-wrapper">
+    
+    <div class="container-xxl flex-grow-1 container-p-y">
+      <h4 class="fw-bold py-3 mb-4">
+        <% if(msg) { %> <div  class="alert alert-success" id="alertmsg" ><span class="cmn-message"><%= msg %></span></div><% } %>
+      </h4>
+
+      <!-- Start section items  -->
+      <div class="row" style="--bs-gutter-x: 0.625rem;">
+        <div class="col-md-12">
+          <div class="card mb-4" >
+            <ul class="nav nav-pills flex-column-reverse flex-md-row-reverse mb-3" style="float:right">
+              <li class="nav-item"><a class="nav-link form-toggle active"  id="ouritem" href="javascript:void(0);">Add New</a></li>
+              <li class="nav-item"><a class="nav-link form-toggle active" id="itemeditform" href="javascript:void(0);">View</a></li>
+            </ul>
+          <div id="ouritemviewForm">
+            
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Social Url</th>
+                    <th>Edit</th>
+                    <th>Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(var item of pagedata) { %>
+                    <tr>
+                      <td> 
+                       <%= item.title %>
+                       </td>
+                       <td> 
+                        <%= item.socialurl %>
+                        </td>
+                        <td> 
+                       <a href="javascript:void(0)"  onclick="geteditform('<%= item._id %>')">Edit</a>
+                       </td> 
+                       <td> 
+                       <a href="/socialremove/<%= item._id %>" onclick="return confirm('Are you sure you want to delete this item')">X</a>
+                       </td>
+                       </tr>
+                 <% } %>
+                 
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+         
+          <div id="ouritemForm">
+            <h5 class="card-header">Add New</h5>
+            <hr class="my-0">
+            <div class="card-body">
+              <form method="POST" action="/social" enctype="multipart/form-data">
+                <div class="row">
+                  <div class="mb-3 col-md-10">
+                    <label for="firstName" class="form-label">Title :</label>
+                    <input type="text" name="title" class="form-control"  required> 
+                  </div>
+
+                  <div class="mb-3 col-md-10">
+                    <label for="firstName" class="form-label">Url :</label>
+                    <input type="text" name="socialurl" class="form-control"  required> 
+                  </div>
+
+                  <div class="mb-3 col-md-10">
+                    <label for="firstName" class="form-label">Description :</label>
+                    <textarea  name="description" class="form-control"  required></textarea> 
+                  </div>
+            
+                  <div class="mb-3 col-md-10">
+                    <input type="file" name="userPhoto"  class="form-control" onchange="readURL(this);"  style="border:none;width:100%;" accept="image/*" required>
+                    <img id="insertimage"  src="/images/user.png" alt="your image" width="100px" height="100px"/> 
+                  </div>
+              
+                </div>
+                <div class="mt-2">
+                  <button type="submit" class="btn btn-primary me-2">Add</button>
+                </div>
+              </form>
+            </div>
+          </div>
+           
+
+          <div id="edititemform">
+            <h5 class="card-header">Edit</h5>
+            <hr class="my-0">
+            <div class="card-body">
+              <form method="POST" action="/socialedit" enctype="multipart/form-data">
+                <input type="hidden" class="form-control" name="editid" id="editid"/>
+                <div class="row">
+                  <div class="mb-3 col-md-10">
+                    <label for="firstName" class="form-label">Title :</label>
+                    <input type="text" name="title" id="title" class="form-control"  required> 
+                  </div>
+
+                  <div class="mb-3 col-md-10">
+                    <label for="firstName" class="form-label">Url :</label>
+                    <input type="text" name="socialurl" id="socialurl" class="form-control"  required> 
+                  </div>
+
+                  <div class="mb-3 col-md-10">
+                    <label for="firstName" class="form-label">Description :</label>
+                    <textarea  name="description" id="description" class="form-control"  required></textarea> 
+                  </div>
+            
+                  <div class="mb-3 col-md-10">
+                    <input type="hidden" name="oldimage" id="preimage">
+                    <input type="file" name="userPhoto"  class="form-control" onchange="readURL(this);"  style="border:none;width:100%;" accept="image/*" >
+                    <img id="clientimageupdate" src="/images/user.png" alt="your image" width="100px" height="100px"/>
+                    </div>
+                </div>
+                <div class="mt-2">
+                  <button type="submit" class="btn btn-primary me-2">Update</button>
+                </div>
+              </form>
+            </div>
+          
           </div>
 
-          <div id="socialupdateform" style="display: none;">
-            <form method="POST" action="/socialedit" enctype="multipart/form-data">
-                <input type="hidden" name="editid" id="editid"/>
-                <label>Title:<input type="text" name="title" id="title" required></label>
-                <br>
-                <label>Url:<input type="text" name="socialurl" id="socialurl" required></label>
-                <br>
-                <label>Description:<br><textarea name="description" id="description" ></textarea></label>
-                <br>
-                <input type="hidden" name="oldimage" id="oldfile">
-                <input type="file" name="userPhoto" id="userPhotoupdate" onchange="readURL('update',this);" placeholder=""  style="border:none;width:100%;" accept="image/*">
-                <img id="show-image" src="#" alt="your image" width="100px" height="100px"/>
-                <br>
-                <input type="submit" value="Update">
-            </form>
           </div>
+        </div>
       </div>
-     <div class="col-md-4 form-wraper">
+      </div>
 
-      <table border="2" cellspacing="5" cellpadding="5">
-      <tr>
-      <th>Name</th>
-      <th>Url</th>
-      <th>Edit</th>
-      <th>Delete</th>
-      </tr>
-      <% for(var person of pagedata) { %>
-         <tr>
-            <td> 
-            <%= person.title %>
-            </td>
-            <td> 
-            <%= person.socialurl %>
-            </td>
-            <td> 
-            <a href="javascript:void(0)"  onclick="geteditform('<%= person._id %>')">Edit</a>
-            </td> 
-            <td> 
-            <a href="/socialremove/<%= person._id %>" title="X" class="delete" onclick="return confirm('Are you sure you want to delete this item')">X</a>
-            </td>
-            </tr>
-      <% } %>
-      </table>
-
-     </div>
-   </div>
- </div>  
-
-</section>
+ <!-- Start section  items  -->
+    </div>
+    <!-- / Content -->
+		<%- include('../../common/footer') %>
+    <div class="content-backdrop fade"></div>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-
- 
-  function geteditform(editid){
-   
-   $.ajax({
-   url:"/getsocialitem/"+editid,
-   method:"GET",
-   success: function(response){
-   
-      $('#userPhoto').val("");
-      $('#userPhotoupdate').val("");
-      $('#socialcreateform').hide();
-      $('#socialupdateform').show();
-      $('#editid').val(editid);
-      $('#title').val(response.title);
-      $('#socialurl').val(response.socialurl);
-      $('#description').val(response.description);
-      $('#oldfile').val(response.image);
-      if(response.image != ''){
-       $('#show-image').attr('src', response.image).width(100).height(100); 
-      }else{
-       $('#show-image').attr('src', '/images/user.png').width(100).height(100); 
-      }      
-     }
-   });
-   return false;
-   }
-
-   function readURL(ftype,input) {
-      if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        $('#show-image').attr('src', e.target.result).width(100).height(100);
-        $('#create-show-image').attr('src', e.target.result).width(100).height(100);
-      };
-
-      reader.readAsDataURL(input.files[0]);
-      }
-    }
+  CKEDITOR.replace('editor-content');
+  CKEDITOR.replace('editor-content1');
+</script>
+<script>
   
-  </script>
+  $('#ouritemForm').hide();
+  $('#ouritemviewForm').show();
+  $("#ouritem").show();
+  $('#edititemform').hide();
+  $("#itemeditform").hide();
+  $('#ouritem').click(function(){
+    $('#ouritemForm').show();
+    $('#ouritemviewForm').hide();
+    $('#ouritem').hide();
+    $('#itemeditform').show();
+    $('#edititemform').hide();
+  });
+
+  $('#itemeditform').click(function(){
+    $('#ouritemForm').hide();
+    $('#ouritemviewForm').show();
+    $('#ouritem').show();
+    $('#itemeditform').hide();
+    $('#edititemform').hide();
+  });
+
+function geteditform(editid){
+  // alert(editid);
+    $.ajax({
+    url:"/getsocialitem/"+editid,
+    method:"GET",
+    success: function(response){
+      // alert(response);
+        $('#editid').val(editid);
+        $('#title').val(response.title);
+        $('#socialurl').val(response.socialurl);
+        $('#description').html(response.description);
+        $('#preimage').val(response.image);
+        if(response.image != ''){
+        $('#clientimageupdate').attr('src', 'imgupload/'+response.image).width(100).height(100); 
+        }else{
+        $('#clientimageupdate').attr('src', '/images/user.png').width(100).height(100); 
+        }
+        $('#ouritemForm').hide();
+        $('#ouritemviewForm').hide();
+        $("#ouritem").hide();
+        $('#edititemform').show();
+        $("#itemeditform").show();
+      
+      }
+    });
+    return false;
+ }
+
+ function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    //  alert("ftype");
+    reader.onload = function (e) {
+      $('#insertimage').attr('src', e.target.result).width(100).height(100);
+      $('#clientimageupdate').attr('src', e.target.result).width(100).height(100);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+</script>

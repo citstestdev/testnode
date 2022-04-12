@@ -17,6 +17,13 @@ router.get("/", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
+    var userlogin = [];
+    dbo
+    .collection("users")
+    .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+      userlogin =  result;
+    });
+
     var option = [];
     dbo.collection("option").findOne(function (err, result) {
       option = result;
@@ -66,6 +73,7 @@ router.get("/", checkLogin, async function (req, res, next) {
         settingmenu: setting_dynamic,
         opt: option,
         pagedata: result,
+        userlogin: userlogin,
         msg: "",
       });
 
@@ -80,6 +88,14 @@ router.get("/header", checkLogin, function (req, res, next) {
   MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
+
+    var userlogin = [];
+    dbo
+    .collection("users")
+    .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+      userlogin =  result;
+    });
+
 
     var homepage = [];
     dbo.collection("homes").findOne(function (err, result) {
@@ -129,6 +145,7 @@ router.get("/header", checkLogin, function (req, res, next) {
         settingmenu: setting_dynamic,
         opt: result,
         pagedata: homepage,
+        userlogin: userlogin,
         msg: session.massage,
       });
       setTimeout(function () {

@@ -29,6 +29,14 @@ router.get("/setting", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
+    var userlogin = [];
+    dbo
+    .collection("users")
+    .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+      userlogin =  result;
+    });
+
+
     var headermenu_dynamic = [];
     dbo
       .collection("menus")
@@ -73,6 +81,7 @@ router.get("/setting", checkLogin, async function (req, res, next) {
           opt: result,
           headermenu: headermenu_dynamic,
           settingmenu: setting_dynamic,
+          userlogin: userlogin,
           msg: session.massage,
         });
         setTimeout(function () {

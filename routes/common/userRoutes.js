@@ -1,3 +1,4 @@
+var createError = require("http-errors");
 const session = require("express-session");
 var express = require("express");
 var router = express.Router();
@@ -17,10 +18,19 @@ const register = require("../../models/Registermodel");
 // const urlencodedParser = bodyParser.urlencoded({ extended: false });
 // router.use(bodyParser.json());
 
+
 router.get("/users", checkLogin, async function (req, res, next) {
     await MongoClient.connect(url, function (err, db) {
       if (err) throw err;
       var dbo = db.db("conative");
+
+
+      // var userlogin = [];
+      // dbo
+      // .collection("users")
+      // .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+      //   userlogin =  result;
+      // });
   
       var headermenu_dynamic = [];
       dbo
@@ -62,10 +72,17 @@ router.get("/users", checkLogin, async function (req, res, next) {
               return;
             }
             getUser = resultuser;
-            // console.log("fsddddddddddd",getUser);
+
           });  
 
-  
+      var userlogin = [];
+      dbo
+      .collection("users")
+      .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+        userlogin =  result;
+      });
+
+
       dbo.collection("option").findOne(function (err, result) {
         if (err) {
           return;
@@ -80,7 +97,8 @@ router.get("/users", checkLogin, async function (req, res, next) {
             userdata: getUser,
             headermenu: headermenu_dynamic,
             settingmenu: setting_dynamic,
-            msg: session.massage,
+            userlogin: [],
+            successmsg: session.massage,
           });
           setTimeout(function () {
             session.massage = "";
@@ -95,6 +113,13 @@ router.get("/register", async function (req, res, next) {
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
+
+    var userlogin = [];
+    dbo
+    .collection("users")
+    .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+      userlogin =  result;
+    });
 
     var headermenu_dynamic = [];
     dbo
@@ -140,6 +165,7 @@ router.get("/register", async function (req, res, next) {
           opt: result,
           headermenu: headermenu_dynamic,
           settingmenu: setting_dynamic,
+          userlogin: userlogin,
           successmsg: session.massage,
         });
         setTimeout(function () {
@@ -149,46 +175,6 @@ router.get("/register", async function (req, res, next) {
     });
   });
 });
-
-// router.post(
-//   "/addnewuser",
-//   upload.single("userPhoto"),
-//   async function (req, res, next) {
-//     var person = req.body;
-
-//     const file = req.file;
-//     await MongoClient.connect(url, function (err, db) {
-//       if (err) throw err;
-//       var dbo = db.db("conative");
-
-//       var imagepath = "";
-//       if (req.body.oldimage != "") {
-//         imagepath = req.body.oldimage;
-//       }
-
-//       if (file && !file.length) {
-//         // Do something
-//         imagepath = file.filename;
-//       }
-
-//       var myobj = {
-//         name: req.body.name.trim(),
-//         email: req.body.email.trim(),
-//         address: req.body.address.trim(),
-//         phone: req.body.phone.trim(),
-//         image: imagepath,
-//         password: req.body.password.trim(),
-//       };
-
-//       dbo.collection("tbregister").insertOne(myobj, function (err, res) {
-//         if (err) throw err;
-//         console.log("document clientinfo inserted");
-//       });
-//     });
-//     session.message = "New user register successfully";
-//     return res.redirect("/register");
-//   }
-// );
 
 
 router.post('/addnewuser', upload.single("userPhoto"), [
@@ -250,6 +236,7 @@ router.post('/addnewuser', upload.single("userPhoto"), [
         opt: [],
         headermenu: [],
         settingmenu: [],
+        userlogin: [],
         successmsg: "",
       });
     } else {
@@ -310,6 +297,7 @@ router.post('/usereditform', upload.single("userPhoto"), [
         userdata: [],
         headermenu: [],
         settingmenu: [],
+        userlogin:[],
         successmsg: "",
       });
     } else {
@@ -317,73 +305,64 @@ router.post('/usereditform', upload.single("userPhoto"), [
       await MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("conative");
-      const file = req.file;
-      var imagepath = "";
-      if (req.body.oldimage != "") {
-        imagepath = req.body.oldimage;
-      }
-      if (file && !file.length) {
-        imagepath = file.filename;
-      }
 
-      var myobj = {
-        $set: {
-          username: req.body.username.trim(),
-          email: req.body.email.trim(),
-          phone: req.body.phone.trim(),
-          address: req.body.address.trim(),
-          userPhoto: imagepath,
-        },
-      };
 
-      var collection = dbo.collection("users");
+      // dbo.collection("users").find(function (err, result) {
+        dbo
+        .collection("users")
+        .findOne({ _id: ObjectID(req.body.editid) }, function (err, result) {
+        if (err) {
+          return;
+        }
+        if (result) {
+          // console.log("userdata",result);
+          if(result.email == req.body.email.trim()){
 
-      collection.updateOne(
-        { _id: ObjectID(req.body.editid) },
-        myobj,
-        function (err, result) {
-          if (err) {
-            throw err;
+            const file = req.file;
+            var imagepath = "";
+              // console.log("hhd",result.email);
+               if (req.body.oldimage != "") {
+                  imagepath = req.body.oldimage;
+                }
+                if (file && !file.length) {
+                  imagepath = file.filename;
+                }
+
+                var myobj = {
+                  $set: {
+                    username: req.body.username.trim(),
+                    email: req.body.email.trim(),
+                    phone: req.body.phone.trim(),
+                    address: req.body.address.trim(),
+                    userPhoto: imagepath,
+                    updateAt: new Date(),
+                  },
+                };
+
+                var collection = dbo.collection("users");
+
+                collection.updateOne(
+                  { _id: ObjectID(req.body.editid) },
+                  myobj,
+                  function (err, result) {
+                    if (err) {
+                      throw err;
+                    }
+
+                    session.massage = "User updated successfully";
+                    res.redirect("/users");
+                  }
+                );
           }
 
-          session.massage = "User updated successfully";
-          res.redirect("/users");
         }
-      );
       });
-      // const salt = await bcrypt.genSalt(10);
-      console.log("nooo");
-      // const hashpassword = await bcrypt.hash(req.body.password, salt);
-      
-      // const file = req.file;
 
-      // var imagepath = "";
-      // if (req.body.oldimage != "") {
-      //   imagepath = req.body.oldimage;
-      // }
-      // if (file && !file.length) {
-      //   imagepath = file.filename;
-      // }
-
-
-      // var myobj = new register({
-      //   username: req.body.username.trim(),
-      //   email: req.body.email.trim(),
-      //   phone: req.body.phone.trim(),
-      //   address: req.body.address.trim(),
-      //   password: hashpassword.trim(),
-      //   userPhoto: imagepath,
-      // });
-      // myobj.save();
-      // session.massage = "User register successfully";
-      // return res.redirect("/register");
-
+      });
       
     }
   }
  );
-
-
 
 router.get("/getuserbyid/:id", function (req, res, next) {
   MongoClient.connect(url, function (err, db) {
@@ -398,5 +377,95 @@ router.get("/getuserbyid/:id", function (req, res, next) {
       });
   });
 });
+
+router.get("/changepassword", function (req, res, next) {
+  res.render("admin/user/forgotpassword", {title: "Forgot",
+    opt: [],
+    headermenu: [],
+    settingmenu: [],
+    userlogin:[],
+    successmsg: "",
+  });
+  // const check = false;
+});
+
+// forgotpassword
+router.post("/forgotpassword",  [
+  check("password", "Please enter password")
+  .exists()
+  .trim()
+  .isLength({ min: 5 }),
+  check("newpassword")
+  .trim()
+  .isLength({ min: 5 })
+  .withMessage("Password must be minlength 5 characters")
+  .custom(async (newpassword, { req }) => {
+    const password = req.body.password;
+    if (password !== newpassword) {
+      throw new Error("Password must be same");
+    }
+  }),
+  ], async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const alert = errors.array();
+
+      res.render("admin/user/forgotpassword", {
+        alert,title: "Forgot",
+        opt: [],
+        headermenu: [],
+        settingmenu: [],
+        userlogin:[],
+        successmsg: "",
+      });
+
+    } else {
+
+      const salt = await  bcrypt.genSalt(10);
+      const hashpassword = await  bcrypt.hash(req.body.password, salt);
+      
+       await MongoClient.connect(url,function (err, db) {
+          if (err) throw err;
+          var dbo = db.db("conative");
+
+          var myobj = {
+            $set: {
+              password: hashpassword,
+            },
+          };
+
+          // console.log("psdfds",myobj); 
+
+          var collection = dbo.collection("users");
+
+          collection.updateOne(
+            { _id: ObjectID(session.userid) },
+            myobj,
+            function (err, result) {
+              if (err) {
+                throw err;
+              }
+              // console.log("session",session.userid); 
+              session.massage = "User password updated successfully";
+              res.redirect("/changepassword");
+            }
+          );
+   });
+    }
+  });
+
+
+router.get("/userremove/:id", checkLogin, async function (req, res, next) {
+    await MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("conative");
+      dbo.collection("users").remove({ _id: ObjectID(req.params.id) });
+});
+session.message = "User deleted successfully";
+
+return res.redirect("/users");
+});
+
 
 module.exports = router;

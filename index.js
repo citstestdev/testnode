@@ -13,6 +13,7 @@ var cookieParser = require("cookie-parser");
 const session = require("express-session");
 var jwt = require("jsonwebtoken");
 var checkLogin = require("./middleware/check");
+var usercheck = require("./middleware/usercheck");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
 var axios = require("axios");
@@ -74,9 +75,9 @@ app.use(
     secret: "secret token",
     resave: false,
     saveUninitialized: true,
-    unset: "destroy",
     name: "session cookie name",
     genid: (req) => {
+      // console.log("uniqueid",req);
       // Returns a random string to be used as a session ID
     },
   })
@@ -160,6 +161,11 @@ try {
 }
 
 
+// function usercheck(){
+//   return res.render("common/layout", { title: "",user:usercheck })
+
+// }
+
 app.get("/option-show", async function (req, res, next) {
   var fullUrl = req.protocol + "://" + req.get("host");
 
@@ -220,13 +226,42 @@ app.get("/social-media", async function (req, res, next) {
 //   });
 
 // });
+// app.get("/", checkLogin, async function (req, res, next) {
+  
+//   return res.render("index", { title: "index"});
+ 
+// });
 
+// function getuserdatalogin(){
+//   return session.userid;
+// }
+
+//  MongoClient.connect(url, function (err, db) {
+//   if (err) throw err;
+//   var dbo = db.db("conative");
+ 
+//   var userlogin = [];
+
+//   dbo
+//   .collection("users")
+//   .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+//     userlogin =  result;
+//   });
+// });
+
+// console.log(userdetails);
 app.get("/dashboard", checkLogin, async function (req, res, next) {
   
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("conative");
-
+   
+    var userlogin = [];
+    dbo
+    .collection("users")
+    .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+      userlogin =  result;
+    });
 
     dbo.collection("users").findOne(function (err, result) {
       if (err) {
@@ -235,12 +270,13 @@ app.get("/dashboard", checkLogin, async function (req, res, next) {
       if (!result) {
         res.send("Page Not Found Please Check Collection");
         console.log(err);
+       
       } else {
-        return res.render("common/dashboard", { title: "dashbord",user:result,session:session });
+  
+        return res.render("common/dashboard", { title: "dashbord",user:result,session:session.userid, userlogin:userlogin });
       }
     });
   });
-
 });
 
 
@@ -363,6 +399,8 @@ app.post("/checklogin", async function (req, res, next) {
               _id: result._id,
               email: result.email,
             };
+            
+          
 
             var token = jwt.sign(user, "seceret");
             // console.log(token);
@@ -453,6 +491,8 @@ app.post("/process_login", async (req, res) => {
               email: result.email,
             };
             session.email = result.email;
+            session.userid = result._id;
+            // res.session("persnalid",result._id);
             // session.massage = "Login successfully";
             var token = jwt.sign(user, "seceret");
             res.cookie("token", token);
@@ -552,6 +592,24 @@ app.use(function (req, res, next) {
   } else {
     next(createError(404));
   }
+  if (req.originalUrl === "/forgotpassword") {
+    res.redirect("/changepassword");
+  } else {
+    next(createError(404));
+  }
 });
+
+
+// app.get(function (req, res, next) {
+//   var fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+//   console.log("urllll",fullUrl);
+//   console.log("for",req.originalUrl);
+//   if (req.originalUrl === "/forgotpassword") {
+//     res.redirect("/changepassword");
+//   } else {
+//     next(createError(404));
+//   }
+// });
+
 
 module.exports = app;

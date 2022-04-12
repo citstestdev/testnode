@@ -14,6 +14,14 @@ router.get("/gallery", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
+    var userlogin = [];
+    dbo
+    .collection("users")
+    .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+      userlogin =  result;
+    });
+
+
     var option = [];
     dbo.collection("option").findOne(function (err, result) {
       option = result;
@@ -60,6 +68,7 @@ router.get("/gallery", checkLogin, async function (req, res, next) {
         settingmenu: setting_dynamic,
         opt: option,
         pagedata: result,
+        userlogin: userlogin,
         msg: session.message,
       });
 

@@ -14,6 +14,13 @@ router.get("/process", checkLogin, async function (req, res, next) {
     if (err) throw err;
     var dbo = db.db("conative");
 
+    var userlogin = [];
+    dbo
+    .collection("users")
+    .findOne({ _id: ObjectID(session.userid) }, function (err, result) {
+      userlogin =  result;
+    });
+
     var option = [];
     dbo.collection("option").findOne(function (err, result1) {
       option = result1;
@@ -70,6 +77,7 @@ router.get("/process", checkLogin, async function (req, res, next) {
         settingmenu: setting_dynamic,
         pagedata: result,
         expertiseitem: expertiseitem,
+        userlogin: userlogin,
         msg: session.message,
       });
 
